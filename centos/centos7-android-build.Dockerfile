@@ -23,34 +23,26 @@ ARG GRADLE_FILE_NAME=gradle-${GRADLE_VERSION}-bin.zip
 ARG GRADLE_FILE_EXTRACT_DIR=gradle-${GRADLE_VERSION}
 ARG GRADLE_FILE_URL=https://services.gradle.org/distributions/${GRADLE_FILE_NAME}
 
-ENV MAVEN_HOME=${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_EXTRACT_DIR} \
-    GRADLE_HOME=${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR} \
-    ANDROID_HOME=/opt/soft/android \
-    PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
+ENV MAVEN_HOME=${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_EXTRACT_DIR}
+ENV GRADLE_HOME=${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR}
+ENV ANDROID_HOME=/opt/soft/android
+ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
 
-RUN echo "install maven." \
-    && mkdir -p ${MAVEN_FILE_SAVE_PATH} \
+RUN for it in $(rpm -aq | grep java-1.*); do rpm -e --nodeps $it; done;
+RUN mkdir -p ${MAVEN_HOME} \
     && wget --no-check-certificate --no-cookies --directory-prefix=${MAVEN_FILE_SAVE_PATH} ${MAVEN_FILE_URL} \
     && echo "${MAVEN_FILE_SHA} ${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_NAME}" | sha1sum -c - \
-    && mkdir -p ${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_EXTRACT_DIR} \
-    && mkdir -p ${MAVEN_HOME} \
     && tar -zvxf ${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_NAME} -C ${MAVEN_HOME} --strip-components=1 \
     && rm -f ${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_NAME} \
     && alternatives --install /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn 1 \
-    && echo "install gradle." \
-    && mkdir -p ${GRADLE_FILE_SAVE_HOME} \
+    && mkdir -p ${GRADLE_HOME} \
+    && mkdir ${GRADLE_WORK_HOME} \
     && wget --directory-prefix=${GRADLE_FILE_SAVE_HOME} ${GRADLE_FILE_URL} \
     && mkdir -p ${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR} \
     && unzip ${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_NAME} -d ${GRADLE_FILE_SAVE_HOME} \
-	&& rm -f ${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_NAME} \	
-    && mkdir ${GRADLE_WORK_HOME} \
+	&& rm -f ${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_NAME} \
     && alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1 \
-    && echo "init android dir." \
-    && mkdir -p ${ANDROID_HOME} \
-    && echo "remote openjdk." \
-    && openjdks=$(rpm -aq | grep java-1.*);for it in $openjdks; do rpm -e --nodeps $it; done; \
-    && echo "end." \
-    && chown -R ${WORK_USER_NAME} ${MAVEN_FILE_SAVE_PATH} ${GRADLE_FILE_SAVE_HOME} ${GRADLE_WORK_HOME} 
+    && mkdir -p ${ANDROID_HOME}
 
 VOLUME ${ANDROID_HOME}
 VOLUME ${GRADLE_WORK_HOME}

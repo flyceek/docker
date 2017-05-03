@@ -17,18 +17,18 @@ ARG JDK_FILE_SHA256=62b215bdfb48bace523723cdbb2157c665e6a25429c73828a32f00e58730
 ARG JDK_FILE_EXTRACT_DIR=jdk1.${JDK_VER}.0_${JDK_UPD}
 ARG JDK_FILE_URL=http://download.oracle.com/otn-pub/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URLID}/${JDK_FILE_NAME}
 
-ENV JAVA_HOME=${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR} \
-    JRE_HOME=${JAVA_HOME}/jre \
-    CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar \
-    PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
+ENV JAVA_HOME=${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}
+ENV JRE_HOME=${JAVA_HOME}/jre
+ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
+ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
 WORKDIR ${JDK_FILE_SAVE_PATH}
 RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
     && echo "${JDK_FILE_SHA256} ${JDK_FILE_NAME}" | sha256sum -c \
     && mkdir -p ${JDK_FILE_EXTRACT_DIR} \
     && tar -xvf ${JDK_FILE_NAME} -C ${JDK_FILE_EXTRACT_DIR} --strip-components=1 \
-    && rm -fr ${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}/*.zip \
-    && rm -fr ${JDK_FILE_NAME} \
+    && rm -f ${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}/*.zip \
+    && rm -f ${JDK_FILE_NAME} \
     && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \
     && alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1 \
     && alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1 \
