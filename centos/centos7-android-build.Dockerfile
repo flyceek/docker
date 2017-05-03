@@ -1,4 +1,4 @@
-FROM flyceek/centos7-jdk:latest
+FROM flyceek/centos7-jdk-ssh:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 RUN yum update -y \
@@ -46,5 +46,3 @@ RUN mkdir -p ${MAVEN_HOME} \
 
 VOLUME ${ANDROID_HOME}
 VOLUME ${GRADLE_WORK_HOME}
-
-#COPY android ${ANDROID_HOME}
