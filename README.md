@@ -1,1 +1,1 @@
-# docker-filecentos7-jdk
+# docker-centos7-jdk
