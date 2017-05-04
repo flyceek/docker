@@ -1,8 +1,6 @@
 FROM alpine:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
-RUN apk update && apk upgrade
-
 ARG JDK_VER=8 
 ARG JDK_UPD=131
 ARG JDK_BUILD=b11
