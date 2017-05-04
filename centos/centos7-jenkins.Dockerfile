@@ -33,7 +33,7 @@ ENV JENKINS_JAVA_OPTIONS=-Xmx512m
 
 WORKDIR ${JENKINS_FILE_SAVE_PATH}
 RUN curl -O ${JENKINS_FILE_URL} \
-    && echo "${JENKINS_FILE_SHA} ${JENKINS_FILE_NAME}" | sha1sum -c \
+    && echo "${JENKINS_FILE_SHA} ${JENKINS_FILE_NAME}" | sha1sum -c - \
     && echo "java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}" >> run.sh \
     && chown -R ${JENKINS_USER_NAME} "${JENKINS_FILE_SAVE_PATH}" 
 

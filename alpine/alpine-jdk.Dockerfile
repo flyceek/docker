@@ -19,7 +19,7 @@ ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
 RUN apk add --no-cache --virtual=build-dependencies wget \
-    && cd /tmp \
+    && cd "/tmp" \
     && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
     && echo "${JDK_FILE_SHA256} ${JDK_FILE_NAME}" | sha256sum -c \
     && mkdir -p ${JDK_FILE_EXTRACT_DIR} \
