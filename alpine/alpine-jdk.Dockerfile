@@ -25,7 +25,8 @@ ENV JRE_HOME=${JAVA_HOME}/jre
 ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
-RUN apk update && apk upgrade \
+RUN mkdir -p ${WORK_DIR} \
+    && apk update && apk upgrade \
     && apk add --no-cache --virtual=build-dependencies --update wget libstdc++ ca-certificates bash \
     && wget --directory-prefix=${WORK_DIR} ${GLIBC_FILE_URL} \
     && apk add --allow-untrusted ${WORK_DIR}/${GLIBC_FILE_NAME} \
