@@ -1,6 +1,8 @@
 FROM alpine:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
+RUN apk update && apk upgrade
+
 ARG JDK_VER=8 
 ARG JDK_UPD=131
 ARG JDK_BUILD=b11
@@ -13,21 +15,29 @@ ARG JDK_FILE_SHA256=62b215bdfb48bace523723cdbb2157c665e6a25429c73828a32f00e58730
 ARG JDK_FILE_EXTRACT_DIR=jdk1.${JDK_VER}.0_${JDK_UPD}
 ARG JDK_FILE_URL=http://download.oracle.com/otn-pub/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URLID}/${JDK_FILE_NAME}
 
+ARG GLIBC_VERSION=2.25-r0
+ARG GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
+ARG GLIBC_FILE_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${GLIBC_FILE_NAME}
+
 ENV JAVA_HOME=${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}
 ENV JRE_HOME=${JAVA_HOME}/jre
 ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
-RUN apk add --no-cache --virtual=build-dependencies wget \
-    && cd "/tmp" \
+WORKDIR ${JDK_FILE_SAVE_PATH}
+RUN apk update && apk upgrade \
+    && apk add --no-cache --virtual=build-dependencies --update wget libstdc++ ca-certificates bash \
+    && wget --directory-prefix=/tmp/ ${GLIBC_FILE_URL} \
+    && apk add --allow-untrusted /tmp/${GLIBC_FILE_NAME} \
     && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
-    && echo "${JDK_FILE_SHA256} ${JDK_FILE_NAME}" | sha256sum -c \
+    && echo "${JDK_FILE_SHA256}  ${JDK_FILE_NAME}" | sha256sum -c - \
     && mkdir -p ${JDK_FILE_EXTRACT_DIR} \
-    && tar -xvf ${JDK_FILE_NAME} -C ${JDK_FILE_EXTRACT_DIR} --strip-components=1 \
-    && rm -f ${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}/*.zip \
+    && tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1 \
+    && ln -s ${JAVA_HOME}/bin/java /usr/bin/java \
+    && ln -s ${JAVA_HOME}/bin/javac /usr/bin/javac \
+    && ln -s ${JAVA_HOME}/bin/jar /usr/bin/jar \
+    && rm -f ${JAVA_HOME}/*.zip \
     && rm -f ${JDK_FILE_NAME} \
-    && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \
-    && alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1 \
-    && alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1 \
-    && rm -rf /tmp/* \
+    && rm -fr /tmp/* \
+    && rm -fr /var/cache/apk/* \
     && echo "root:123321" | chpasswd

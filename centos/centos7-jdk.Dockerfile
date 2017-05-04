@@ -27,7 +27,7 @@ RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2
     && echo "${JDK_FILE_SHA256} ${JDK_FILE_NAME}" | sha256sum -c \
     && mkdir -p ${JDK_FILE_EXTRACT_DIR} \
     && tar -xvf ${JDK_FILE_NAME} -C ${JDK_FILE_EXTRACT_DIR} --strip-components=1 \
-    && rm -f ${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}/*.zip \
+    && rm -f ${JAVA_HOME}/*.zip \
     && rm -f ${JDK_FILE_NAME} \
     && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \
     && alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1 \
