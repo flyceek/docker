@@ -34,7 +34,7 @@ ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin::${GIT_HOME}/bin
 
 RUN $(rpm -aq | grep git-);for it in $(rpm -aq | grep git-); do rpm -e --nodeps $it; done;
 RUN $(rpm -aq | grep java-1.*);for it in $(rpm -aq | grep java-1.*); do rpm -e --nodeps $it; done;
-RUN RUN yum update -y \
+RUN yum update -y \
     && yum install -y unzip lsof wget \
     && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
     && yum install -y gcc-c++ curl-devel expat-devel gettext-devel openssl-devel zlib-devel  perl-ExtUtils-MakeMaker \
