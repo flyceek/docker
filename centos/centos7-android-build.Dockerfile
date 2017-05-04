@@ -1,11 +1,6 @@
 FROM flyceek/centos7-jdk:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
-RUN yum update -y \
-    && yum install -y unzip lsof wget git \
-    && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
-    && yum clean all
-
 ARG WORK_USER_NAME="root"
 ARG WORK_USER_HOME="/root"
 
@@ -23,13 +18,27 @@ ARG GRADLE_FILE_NAME=gradle-${GRADLE_VERSION}-bin.zip
 ARG GRADLE_FILE_EXTRACT_DIR=gradle-${GRADLE_VERSION}
 ARG GRADLE_FILE_URL=https://services.gradle.org/distributions/${GRADLE_FILE_NAME}
 
+ARG GIT_HOME_PATH=/opt/soft/git
+ARG GIT_VERSION=2.9.3
+ARG GIT_MAKE_PATH=${GIT_HOME_PATH}/${GIT_VERSION}
+ARG GIT_FILENAME=git-${GIT_VERSION}.tar.gz
+ARG GIT_FILE_SHA256=a252b6636b12d5ba57732c8469701544c26c2b1689933bd1b425e603cbb247c0
+ARG GIT_FILE_EXTRACT_DIR=git-${GIT_VERSION}
+ARG GIT_FILE_URL=https://www.kernel.org/pub/software/scm/git/${GIT_FILENAME}
+
 ENV MAVEN_HOME=${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_EXTRACT_DIR}
 ENV GRADLE_HOME=${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR}
 ENV ANDROID_HOME=/opt/soft/android
-ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
+ENV GIT_HOME=${GIT_HOME_PATH}/${GIT_FILE_EXTRACT_DIR}
+ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin::${GIT_HOME}/bin
 
-RUN for it in $(rpm -aq | grep java-1.*); do rpm -e --nodeps $it; done;
-RUN mkdir -p ${MAVEN_HOME} \
+RUN RUN yum update -y \
+    && yum install -y unzip lsof wget \
+    && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
+    && yum install -y gcc-c++ curl-devel expat-devel gettext-devel openssl-devel zlib-devel  perl-ExtUtils-MakeMaker \
+    && yum install -y automake autoconf libtool make \
+    && yum clean all \
+    && mkdir -p ${MAVEN_HOME} \
     && wget --no-check-certificate --no-cookies --directory-prefix=${MAVEN_FILE_SAVE_PATH} ${MAVEN_FILE_URL} \
     && echo "${MAVEN_FILE_SHA} ${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_NAME}" | sha1sum -c - \
     && tar -zvxf ${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_NAME} -C ${MAVEN_HOME} --strip-components=1 \
@@ -42,6 +51,19 @@ RUN mkdir -p ${MAVEN_HOME} \
     && unzip ${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_NAME} -d ${GRADLE_FILE_SAVE_HOME} \
 	&& rm -f ${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_NAME} \
     && alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1 \
+    && mkdir -p ${GIT_HOME} \
+    && wget --no-check-certificate --no-cookies --directory-prefix=${GIT_HOME_PATH} ${GIT_FILE_URL} \
+    && echo "${GIT_FILE_SHA256} ${GIT_HOME_PATH}/${GIT_FILENAME}" | sha256sum -c \
+    && mkdir -p ${GIT_MAKE_PATH} \
+    && tar -zvxf ${GIT_HOME_PATH}/${GIT_FILENAME} -C ${GIT_MAKE_PATH} --strip-components=1 \    
+    && rm -f ${GIT_HOME_PATH}/${GIT_FILENAME} \
+    && cd ${GIT_MAKE_PATH} \
+    && ./configure --prefix=${GIT_HOME} \
+    && make install \
+    && make clean \
+    && cd ${GIT_HOME_PATH} \
+    && rm -fr ${GIT_MAKE_PATH} \
+    && alternatives --install /usr/bin/git gradle ${GIT_HOME}/bin/git 1 \
     && mkdir -p ${ANDROID_HOME}
 
 VOLUME ${ANDROID_HOME}
