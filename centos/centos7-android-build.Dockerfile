@@ -32,6 +32,8 @@ ENV ANDROID_HOME=/opt/soft/android
 ENV GIT_HOME=${GIT_HOME_PATH}/${GIT_FILE_EXTRACT_DIR}
 ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin::${GIT_HOME}/bin
 
+RUN $(rpm -aq | grep git-);for it in $(rpm -aq | grep git-); do rpm -e --nodeps $it; done;
+RUN $(rpm -aq | grep java-1.*);for it in $(rpm -aq | grep java-1.*); do rpm -e --nodeps $it; done;
 RUN RUN yum update -y \
     && yum install -y unzip lsof wget \
     && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
