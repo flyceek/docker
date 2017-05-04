@@ -29,5 +29,5 @@ RUN apk add --no-cache --virtual=build-dependencies wget \
     && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \
     && alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1 \
     && alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1 \
-    && rm -rf /tmp/*
+    && rm -rf /tmp/* \
     && echo "root:123321" | chpasswd
