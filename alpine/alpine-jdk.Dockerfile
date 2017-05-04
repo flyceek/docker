@@ -24,14 +24,13 @@ ENV JRE_HOME=${JAVA_HOME}/jre
 ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
-WORKDIR ${JDK_FILE_SAVE_PATH}
 RUN apk update && apk upgrade \
     && apk add --no-cache --virtual=build-dependencies --update wget libstdc++ ca-certificates bash \
     && wget --directory-prefix=/tmp/ ${GLIBC_FILE_URL} \
     && apk add --allow-untrusted /tmp/${GLIBC_FILE_NAME} \
-    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
-    && echo "${JDK_FILE_SHA256}  ${JDK_FILE_NAME}" | sha256sum -c - \
-    && mkdir -p ${JDK_FILE_EXTRACT_DIR} \
+    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" --directory-prefix=/tmp/ ${JDK_FILE_URL} \ 
+    && echo "${JDK_FILE_SHA256}  /tmp/${JDK_FILE_NAME}" | sha256sum -c - \
+    && mkdir -p ${JAVA_HOME} \
     && tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1 \
     && ln -s ${JAVA_HOME}/bin/java /usr/bin/java \
     && ln -s ${JAVA_HOME}/bin/javac /usr/bin/javac \
