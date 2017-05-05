@@ -29,15 +29,14 @@ ENV ANDROID_HOME=/opt/soft/android-sdk
 ENV GIT_HOME=${GIT_FILE_SAVE_PATH}/${GIT_FILE_EXTRACT_DIR}
 ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin::${GIT_HOME}/bin
 
-RUN $(rpm -aq | grep git-);for it in $(rpm -aq | grep git-); do rpm -e --nodeps $it; done;
-RUN $(rpm -aq | grep java-1.*);for it in $(rpm -aq | grep java-1.*); do rpm -e --nodeps $it; done;
-
 RUN yum update -y \
     && yum install -y unzip lsof wget \
     && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
     && yum install -y gcc-c++ curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker \
     && yum install -y automake autoconf libtool make \
     && yum clean all \
+    && { $(rpm -aq | grep git-);for it in $(rpm -aq | grep git-); do rpm -e --nodeps $it; done; } \
+    && { $(rpm -aq | grep java-1.*);for it in $(rpm -aq | grep java-1.*); do rpm -e --nodeps $it; done; }
     && mkdir -p ${MAVEN_HOME} \
     && cd ${MAVEN_FILE_SAVE_PATH} \
     && wget --no-check-certificate --no-cookies ${MAVEN_FILE_URL} \
