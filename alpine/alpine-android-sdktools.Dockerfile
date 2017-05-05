@@ -10,6 +10,8 @@ ARG SDK_TOOLS_FILE_URL=https://dl.google.com/android/repository/${SDK_TOOLS_FILE
 ARG GLIBC_VERSION=2.25-r0
 ARG GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
 ARG GLIBC_FILE_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${GLIBC_FILE_NAME}
+ARG GLIBC_BIN_FILE_NAME=glibc-bin-${GLIBC_VERSION}.apk
+ARG GLIBC_BIN_FILE_URL https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/${GLIBC_BIN_FILE_NAME}
 ARG WORK_DIR=/tmp
 
 ENV ANDROID_HOME=/opt/soft/android-sdk
@@ -19,7 +21,9 @@ RUN apk add --no-cache --virtual=.build-dependencies libstdc++ wget unzip ca-cer
     && mkdir -p ${ANDROID_HOME} \
     && cd ${WORK_DIR} \
     && wget --no-cookies --no-check-certificate ${GLIBC_FILE_URL} \
+    && wget --no-cookies --no-check-certificate ${GLIBC_BIN_FILE_URL} \
     && apk add --no-cache --allow-untrusted ${GLIBC_FILE_NAME} \
+    && apk add --no-cache --allow-untrusted ${GLIBC_BIN_FILE_NAME} \
     && cd ${ANDROID_HOME} \
     && wget --no-cookies --no-check-certificate ${SDK_TOOLS_FILE_URL} \
     && echo "${SDK_TOOLS_FILE_SHA256}  ${SDK_TOOLS_FILE_NAME}" | sha256sum -c - \
