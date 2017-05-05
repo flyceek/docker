@@ -23,7 +23,8 @@ ENV JRE_HOME=${JAVA_HOME}/jre
 ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
-RUN apk update && apk upgrade \
+RUN apk update \
+    && apk upgrade \
     && apk add --no-cache --virtual=build-dependencies --update wget libstdc++ ca-certificates bash \
     && mkdir -p ${WORK_DIR} \
     && mkdir -p ${JAVA_HOME} \
@@ -38,5 +39,6 @@ RUN apk update && apk upgrade \
     && ln -s ${JAVA_HOME}/bin/jar /usr/bin/jar \
     && rm -f ${JAVA_HOME}/*.zip \
     && rm -fr ${WORK_DIR}/* \
+    && apk cache clean
     && rm -fr /var/cache/apk/* \
     && echo "root:123321" | chpasswd

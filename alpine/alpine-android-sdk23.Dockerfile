@@ -7,8 +7,11 @@ ENV ANDROID_SDK_UPDATE=tools,platform-tools,build-tools-${BUILD_TOOLS},${ANDROID
 ENV ANDROID_HOME=/opt/soft/android-sdk
 
 RUN cd ${ANDROID_HOME}/tools \
-    && echo y | android update sdk --filter ${ANDROID_SDK_UPDATE} --all --no-ui --force \
+    && echo y | ./android update sdk --filter ${ANDROID_SDK_UPDATE} --all --no-ui --force \
     && cd ${ANDROID_HOME}/tools \
-    && rm -fr ${ANDROID_HOME}/tools
+    && rm -fr ${ANDROID_HOME}/tools \
+    && apk update \
+    && apk del openjdk8 \
+    && apk cache clean
 
 VOLUME ${ANDROID_HOME}
