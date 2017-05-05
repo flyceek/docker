@@ -1,4 +1,5 @@
 FROM alpine:3.5
+MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG JAVA_VERSION=8u121
 ARG JAVA_ALPINE_VERSION=8.121.13-r0
@@ -13,8 +14,6 @@ RUN { \
 		echo; \
 		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
 	} > /usr/local/bin/docker-java-home \
-	&& chmod +x /usr/local/bin/docker-java-home
-
-RUN set -x \
+	&& chmod +x /usr/local/bin/docker-java-home \
 	&& apk add --no-cache openjdk8="$JAVA_ALPINE_VERSION" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
