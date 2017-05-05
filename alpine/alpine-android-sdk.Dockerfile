@@ -51,6 +51,7 @@ RUN { \
     && echo "${SDK_TOOLS_FILE_SHA256}  ${SDK_TOOLS_FILE_NAME}" | sha256sum -c - \
     && unzip ${SDK_TOOLS_FILE_NAME} \
     && rm -f ${SDK_TOOLS_FILE_NAME} \
+    && cd tools \
     && echo y | ./android update sdk --filter ${ANDROID_SDK_UPDATE} --all --no-ui --force \
     && cd / \
     && rm -fr ${ANDROID_HOME}/tools \
