@@ -23,20 +23,20 @@ ENV JRE_HOME=${JAVA_HOME}/jre
 ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
-RUN mkdir -p ${WORK_DIR} \
-    && apk update && apk upgrade \
+RUN apk update && apk upgrade \
     && apk add --no-cache --virtual=build-dependencies --update wget libstdc++ ca-certificates bash \
-    && wget --directory-prefix=${WORK_DIR} ${GLIBC_FILE_URL} \
-    && apk add --allow-untrusted ${WORK_DIR}/${GLIBC_FILE_NAME} \
-    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" --directory-prefix=${WORK_DIR} ${JDK_FILE_URL} \ 
-    && echo "${JDK_FILE_SHA256}  /tmp/${JDK_FILE_NAME}" | sha256sum -c - \
+    && mkdir -p ${WORK_DIR} \
     && mkdir -p ${JAVA_HOME} \
-    && tar -xvf ${WORK_DIR}/${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1 \
+    && cd ${WORK_DIR} \
+    && wget --no-cookies --no-check-certificate ${GLIBC_FILE_URL} \
+    && apk add --no-cache --allow-untrusted ${GLIBC_FILE_NAME} \
+    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
+    && echo "${JDK_FILE_SHA256}  ${JDK_FILE_NAME}" | sha256sum -c - \
+    && tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1 \
     && ln -s ${JAVA_HOME}/bin/java /usr/bin/java \
     && ln -s ${JAVA_HOME}/bin/javac /usr/bin/javac \
     && ln -s ${JAVA_HOME}/bin/jar /usr/bin/jar \
     && rm -f ${JAVA_HOME}/*.zip \
-    && rm -f ${JDK_FILE_NAME} \
     && rm -fr ${WORK_DIR}/* \
     && rm -fr /var/cache/apk/* \
     && echo "root:123321" | chpasswd
