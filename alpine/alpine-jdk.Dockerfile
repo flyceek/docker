@@ -38,6 +38,7 @@ RUN apk update \
     && ln -s ${JAVA_HOME}/bin/javac /usr/bin/javac \
     && ln -s ${JAVA_HOME}/bin/jar /usr/bin/jar \
     && rm -f ${JAVA_HOME}/*.zip \
+    && cd / \
     && rm -fr ${WORK_DIR}/* \
     && apk cache clean
     && rm -fr /var/cache/apk/* \
