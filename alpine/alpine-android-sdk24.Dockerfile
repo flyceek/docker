@@ -16,7 +16,7 @@ ARG GLIBC_SGERRAND_URL=https://raw.githubusercontent.com/sgerrand/alpine-pkg-gli
 
 ENV ANDROID_BUILD_TOOLS='build-tools-24.0.0'
 ENV ANDROID_SDK='android-24'
-ENV ANDROID_SDK_UPDATE=tools,platform-tools,build-tools-${ANDROID_BUILD_TOOLS},${ANDROID_SDK},extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository
+ENV ANDROID_SDK_UPDATE=tools,platform-tools,build-tools-${ANDROID_BUILD_TOOLS},${ANDROID_SDK},extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,,extra-google-analytics_sdk_v2
 ENV ANDROID_HOME=/opt/soft/android-sdk
 
 ENV JAVA_VERSION=8u121
