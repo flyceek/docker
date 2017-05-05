@@ -16,7 +16,7 @@ ARG GLIBC_SGERRAND_URL=https://raw.githubusercontent.com/sgerrand/alpine-pkg-gli
 
 ENV ANDROID_BUILD_TOOLS='build-tools-23.0.2'
 ENV ANDROID_SDK='android-23'
-ENV ANDROID_SDK_UPDATE=tools,platform-tools,${ANDROID_BUILD_TOOLS},${ANDROID_SDK},extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,extra-google-analytics_sdk_v2
+ENV ANDROID_EXTRA_SDK='extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,extra-google-analytics_sdk_v2'
 
 ENV ANDROID_HOME=/opt/soft/android-sdk
 
@@ -51,7 +51,8 @@ RUN { \
     && unzip ${SDK_TOOLS_FILE_NAME} \
     && rm -f ${SDK_TOOLS_FILE_NAME} \
     && cd tools \
-    && echo y | ./android update sdk --filter ${ANDROID_SDK_UPDATE} --all --no-ui --force \
+    && echo y | ./android update sdk -u -a -t tools,platform-tools,${ANDROID_EXTRA_SDK} \
+    && echo y | ./android update sdk -u -a -t ${ANDROID_BUILD_TOOLS},${ANDROID_SDK}  \
     && cd / \
     && rm -fr ${ANDROID_HOME}/tools \
     && rm -fr ${WORK_DIR}/* \
