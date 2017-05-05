@@ -10,8 +10,6 @@ ENV PATH $PATH:${JAVA_HOME}/jre/bin:${JAVA_HOME}/bin
 
 RUN { \
 		echo '#!/bin/sh'; \
-		echo 'set -e'; \
-		echo; \
 		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
 	} > /usr/local/bin/docker-java-home \
 	&& chmod +x /usr/local/bin/docker-java-home \

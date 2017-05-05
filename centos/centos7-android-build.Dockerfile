@@ -23,7 +23,11 @@ ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
 RUN yum update -y \
     && yum install -y unzip lsof wget git \
     && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
-    && {for it in $(rpm -aq | grep java-1.*); do rpm -e --nodeps $it; done;} \
+    && { \ 
+        for it in $(rpm -aq | grep java-1.*); \
+        do rpm -e --nodeps $it; \
+        done;
+    } \
     && mkdir -p ${MAVEN_HOME} \
     && cd ${MAVEN_FILE_SAVE_PATH} \
     && wget --no-check-certificate --no-cookies ${MAVEN_FILE_URL} \
