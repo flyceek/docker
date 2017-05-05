@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM flyceek/alpine-openjdk:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG WORK_DIR=/tmp
@@ -17,11 +17,11 @@ ARG WORK_DIR=/tmp
 
 ENV ANDROID_HOME=/opt/soft/android-sdk
 
-RUN apk add --no-cache --virtual=.build-dependencies libstdc++ wget unzip ca-certificates bash \
+RUN apk add --no-cache --virtual=.build-dependencies wget unzip ca-certificates bash \
     && mkdir -p ${WORK_DIR} \ 
     && mkdir -p ${ANDROID_HOME} \
     && cd ${WORK_DIR} \
-    && wget ${GLIBC_SGERRAND_URL} -O /etc/apk/keys/sgerrand.rsa.pub && \
+    && wget ${GLIBC_SGERRAND_URL} -O /etc/apk/keys/sgerrand.rsa.pub \
     && wget --no-cookies --no-check-certificate ${GLIBC_FILE_URL} \
     && wget --no-cookies --no-check-certificate ${GLIBC_BIN_FILE_URL} \
     && apk add --no-cache --allow-untrusted ${GLIBC_FILE_NAME} \
