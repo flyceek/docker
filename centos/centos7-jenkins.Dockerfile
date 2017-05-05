@@ -17,7 +17,11 @@ ENV JENKINS_HTTP_PORT=8080
 ENV JENKINS_OPTIONS=--httpPort=${JENKINS_HTTP_PORT}
 ENV JENKINS_JAVA_OPTIONS=-Xmx512m
 
-RUN groupadd --system -g ${JENKINS_USER_GID} ${JENKINS_USER_GROUP} \
+WORKDIR ${JENKINS_HOME}
+RUN yum update -y \
+    && yum install -y sudo \
+    && yum clean all \
+    && groupadd --system -g ${JENKINS_USER_GID} ${JENKINS_USER_GROUP} \
     && useradd --system -d "${JENKINS_USER_HOME}" -u ${JENKINS_USER_UID} -g ${JENKINS_USER_GID} -m -s /bin/bash ${JENKINS_USER} \
     && usermod -aG wheel ${JENKINS_USER} \
     && chmod a+w /etc/sudoers \
@@ -25,11 +29,6 @@ RUN groupadd --system -g ${JENKINS_USER_GID} ${JENKINS_USER_GROUP} \
     && chown -R ${JENKINS_USER} "${JENKINS_USER_HOME}" \
     && echo "${JENKINS_USER}:${JENKINS_USER_PWD}" | chpasswd \
     && chmod a-w /etc/sudoers
-
-WORKDIR ${JENKINS_HOME}
-RUN yum update -y \
-    && yum install -y sudo \
-    && yum clean all \
     && curl -O ${JENKINS_FILE_URL} \
     && echo "${JENKINS_FILE_SHA} ${JENKINS_FILE_NAME}" | sha1sum -c - \
     && echo "java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}" >> run.sh \
