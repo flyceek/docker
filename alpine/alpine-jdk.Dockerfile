@@ -40,6 +40,6 @@ RUN apk update \
     && rm -f ${JAVA_HOME}/*.zip \
     && cd / \
     && rm -fr ${WORK_DIR}/* \
-    && apk cache clean
+    && apk cache clean \
     && rm -fr /var/cache/apk/* \
     && echo "root:123321" | chpasswd
