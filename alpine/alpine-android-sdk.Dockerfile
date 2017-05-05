@@ -29,8 +29,8 @@ ENV ANDROID_HOME=/opt/soft/android-sdk
 ENV PATH $PATH:${JAVA_HOME}/jre/bin:${JAVA_HOME}/bin
 
 RUN { \
-		echo '#!/bin/sh'; \
-		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
+        echo '#!/bin/sh'; \
+        echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
 	} > /usr/local/bin/docker-java-home \
     && chmod +x /usr/local/bin/docker-java-home \
     && set -x \
@@ -51,8 +51,8 @@ RUN { \
     && unzip ${SDK_TOOLS_FILE_NAME} \
     && rm -f ${SDK_TOOLS_FILE_NAME} \
     && cd tools \
-    && echo y | ./android update sdk --all --no-ui --force --filter tools,platform-tools,${ANDROID_EXTRA_SDK} \
-    && echo y | ./android update sdk --all --no-ui --force --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK}  \
+    && echo y | android update sdk --all --no-ui --force --filter tools,platform-tools,${ANDROID_EXTRA_SDK} \
+    && echo y | android update sdk --all --no-ui --force --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK}  \
     && cd / \
     && rm -fr ${ANDROID_HOME}/tools \
     && rm -fr ${WORK_DIR}/* \
