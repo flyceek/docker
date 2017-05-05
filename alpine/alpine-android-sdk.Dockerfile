@@ -51,8 +51,8 @@ RUN { \
     && unzip ${SDK_TOOLS_FILE_NAME} \
     && rm -f ${SDK_TOOLS_FILE_NAME} \
     && cd tools \
-    && echo y | ./android update sdk -u -a -t tools,platform-tools,${ANDROID_EXTRA_SDK} \
-    && echo y | ./android update sdk -u -a -t ${ANDROID_BUILD_TOOLS},${ANDROID_SDK}  \
+    && echo y | ./android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_EXTRA_SDK} \
+    && echo y | ./android update sdk --no-ui -a --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK}  \
     && cd / \
     && rm -fr ${ANDROID_HOME}/tools \
     && rm -fr ${WORK_DIR}/* \
