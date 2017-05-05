@@ -1,4 +1,4 @@
-FROM flyceek/alpine-android-sdk-tools:r25.2.3
+FROM flyceek/alpine-android-sdktools:r25.2.3
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ENV BUILD_TOOLS='build-tools-23.0.2'
