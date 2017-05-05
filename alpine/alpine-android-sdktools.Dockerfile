@@ -12,6 +12,7 @@ ARG GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
 ARG GLIBC_FILE_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${GLIBC_FILE_NAME}
 ARG GLIBC_BIN_FILE_NAME=glibc-bin-${GLIBC_VERSION}.apk
 ARG GLIBC_BIN_FILE_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/${GLIBC_BIN_FILE_NAME}
+ARG GLIBC_SGERRAND_URL=https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
 ARG WORK_DIR=/tmp
 
 ENV ANDROID_HOME=/opt/soft/android-sdk
@@ -20,6 +21,7 @@ RUN apk add --no-cache --virtual=.build-dependencies libstdc++ wget unzip ca-cer
     && mkdir -p ${WORK_DIR} \ 
     && mkdir -p ${ANDROID_HOME} \
     && cd ${WORK_DIR} \
+    && wget ${GLIBC_SGERRAND_URL} -O /etc/apk/keys/sgerrand.rsa.pub && \
     && wget --no-cookies --no-check-certificate ${GLIBC_FILE_URL} \
     && wget --no-cookies --no-check-certificate ${GLIBC_BIN_FILE_URL} \
     && apk add --no-cache --allow-untrusted ${GLIBC_FILE_NAME} \
