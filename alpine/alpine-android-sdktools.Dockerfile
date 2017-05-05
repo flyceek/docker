@@ -14,7 +14,7 @@ ARG WORK_DIR=/tmp
 
 ENV ANDROID_HOME=/opt/soft/android-sdk
 
-RUN apk --no-cache --virtual=.build-dependencies libstdc++ wget unzip ca-certificates bash \
+RUN apk add --no-cache --virtual=.build-dependencies libstdc++ wget unzip ca-certificates bash \
     && mkdir -p ${WORK_DIR} \ 
     && mkdir -p ${ANDROID_HOME} \
     && cd ${WORK_DIR} \
