@@ -11,7 +11,7 @@ ARG GLIBC_VERSION=2.25-r0
 ARG GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
 ARG GLIBC_FILE_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${GLIBC_FILE_NAME}
 ARG GLIBC_BIN_FILE_NAME=glibc-bin-${GLIBC_VERSION}.apk
-ARG GLIBC_BIN_FILE_URL https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/${GLIBC_BIN_FILE_NAME}
+ARG GLIBC_BIN_FILE_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/${GLIBC_BIN_FILE_NAME}
 ARG WORK_DIR=/tmp
 
 ENV ANDROID_HOME=/opt/soft/android-sdk
