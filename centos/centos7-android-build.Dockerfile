@@ -26,7 +26,7 @@ RUN yum update -y \
     && { \ 
         for it in $(rpm -aq | grep java-1.*); \
         do rpm -e --nodeps $it; \
-        done;
+        done; \
     } \
     && mkdir -p ${MAVEN_HOME} \
     && cd ${MAVEN_FILE_SAVE_PATH} \
