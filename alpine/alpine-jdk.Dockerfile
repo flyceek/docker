@@ -16,7 +16,6 @@ ARG JDK_FILE_URL=http://download.oracle.com/otn-pub/java/jdk/${JDK_ED}-${JDK_BUI
 ARG GLIBC_VERSION=2.25-r0
 ARG GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
 ARG GLIBC_FILE_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${GLIBC_FILE_NAME}
-ARG WORK_DIR=/tmp
 
 ENV JAVA_HOME=${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}
 ENV JRE_HOME=${JAVA_HOME}/jre
@@ -26,9 +25,8 @@ ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache --virtual=build-dependencies --update wget libstdc++ ca-certificates bash \
-    && mkdir -p ${WORK_DIR} \
     && mkdir -p ${JAVA_HOME} \
-    && cd ${WORK_DIR} \
+    && cd ${JDK_FILE_SAVE_PATH} \
     && wget --no-cookies --no-check-certificate ${GLIBC_FILE_URL} \
     && apk add --no-cache --allow-untrusted ${GLIBC_FILE_NAME} \
     && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
@@ -37,7 +35,7 @@ RUN apk update \
     && ln -s ${JAVA_HOME}/bin/java /usr/bin/java \
     && ln -s ${JAVA_HOME}/bin/javac /usr/bin/javac \
     && ln -s ${JAVA_HOME}/bin/jar /usr/bin/jar \
+    && rm -f ${JDK_FILE_NAME} \
     && rm -f ${JAVA_HOME}/*.zip \
+    && rm -fr /var/cache/apk/* \
     && cd / \
-    && rm -fr ${WORK_DIR}/* \
-    && rm -fr /var/cache/apk/*

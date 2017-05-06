@@ -31,4 +31,5 @@ RUN yum update -y \
     && alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1 \
     && rm -f ${JDK_FILE_NAME} \
     && rm -f ${JAVA_HOME}/*.zip \
+    && cd / \
     && echo "root:123321" | chpasswd
