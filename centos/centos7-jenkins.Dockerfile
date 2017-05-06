@@ -28,7 +28,7 @@ RUN yum update -y \
     && echo "${JENKINS_USER} ALL=(ALL) ALL" >> /etc/sudoers \
     && chown -R ${JENKINS_USER} "${JENKINS_USER_HOME}" \
     && echo "${JENKINS_USER}:${JENKINS_USER_PWD}" | chpasswd \
-    && chmod a-w /etc/sudoers
+    && chmod a-w /etc/sudoers \
     && curl -O ${JENKINS_FILE_URL} \
     && echo "${JENKINS_FILE_SHA} ${JENKINS_FILE_NAME}" | sha1sum -c - \
     && echo "java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}" >> run.sh \
