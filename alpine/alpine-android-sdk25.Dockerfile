@@ -24,7 +24,7 @@ ENV JAVA_VERSION=8u121
 ARG JAVA_ALPINE_VERSION=8.121.13-r0
 
 ENV LANG C.UTF-8
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 ENV ANDROID_HOME=/opt/soft/android-sdk
 ENV PATH $PATH:${JAVA_HOME}/jre/bin:${JAVA_HOME}/bin
 

@@ -54,26 +54,30 @@ RUN yum update -y \
         rm -f ${MAVEN_FILE_NAME} \
         alternatives --install /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn 1; \
     } \
-    && mkdir -p ${GRADLE_HOME} \
-    && cd ${GRADLE_FILE_SAVE_HOME} \
-    && wget --no-check-certificate --no-cookies ${GRADLE_FILE_URL} \
-    && unzip ${GRADLE_FILE_NAME} -d ${GRADLE_FILE_SAVE_HOME} \
-	&& rm -f ${GRADLE_FILE_NAME} \
-    && alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1 \
-    && mkdir -p ${GIT_HOME} \
-    && mkdir -p ${GIT_MAKE_PATH} \
-    && cd ${GIT_FILE_SAVE_PATH} \
-    && wget --no-check-certificate --no-cookies ${GIT_FILE_URL} \
-    && echo "${GIT_FILE_SHA256} ${GIT_FILENAME}" | sha256sum -c \
-    && tar -zvxf ${GIT_FILENAME} -C ${GIT_MAKE_PATH} --strip-components=1 \    
-    && rm -f ${GIT_FILENAME} \
-    && cd ${GIT_MAKE_PATH} \
-    && ./configure --prefix=${GIT_HOME} \
-    && make install \
-    && make clean \
-    && cd ${GIT_FILE_SAVE_PATH} \
-    && rm -fr ${GIT_MAKE_PATH} \
-    && alternatives --install /usr/bin/git gradle ${GIT_HOME}/bin/git 1 \
+    && { \
+         mkdir -p ${GRADLE_HOME}; \
+         cd ${GRADLE_FILE_SAVE_HOME}; \
+         wget --no-check-certificate --no-cookies ${GRADLE_FILE_URL}; \
+         unzip ${GRADLE_FILE_NAME} -d ${GRADLE_FILE_SAVE_HOME}; \
+	     rm -f ${GRADLE_FILE_NAME}; \
+         alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1; \
+    } \
+    && { \
+        mkdir -p ${GIT_HOME}; \
+        mkdir -p ${GIT_MAKE_PATH}; \
+        cd ${GIT_FILE_SAVE_PATH}; \
+        wget --no-check-certificate --no-cookies ${GIT_FILE_URL}; \
+        echo "${GIT_FILE_SHA256} ${GIT_FILENAME}" | sha256sum -c; \
+        tar -zvxf ${GIT_FILENAME} -C ${GIT_MAKE_PATH} --strip-components=1; \    
+        rm -f ${GIT_FILENAME}; \
+        cd ${GIT_MAKE_PATH}; \
+        ./configure --prefix=${GIT_HOME}; \
+        make install; \
+        make clean; \
+        cd ${GIT_FILE_SAVE_PATH}; \
+        rm -fr ${GIT_MAKE_PATH}; \
+        alternatives --install /usr/bin/git gradle ${GIT_HOME}/bin/git 1; \
+    } \
     && mkdir -p ${ANDROID_HOME}
 
 VOLUME ${ANDROID_HOME}
