@@ -32,7 +32,11 @@ RUN yum update -y \
         mkdir -p ${MAVEN_HOME}; \
         cd ${MAVEN_FILE_SAVE_PATH}; \
         wget --no-check-certificate --no-cookies ${MAVEN_FILE_URL}; \
-        echo "${MAVEN_FILE_SHA} ${MAVEN_FILE_NAME}" | sha1sum -c -; \
+        echo sha1sum ${MAVEN_FILE_NAME}; \
+        if [ "${MAVEN_FILE_SHA}  ${MAVEN_FILE_NAME}" != "`sha1sum ${MAVEN_FILE_NAME}`" ]; then \
+            echo 'maven file sha validate fail!'; \
+            exit 999; \
+        fi; \
         tar -zvxf ${MAVEN_FILE_NAME} -C ${MAVEN_HOME} --strip-components=1; \
         rm -f ${MAVEN_FILE_NAME}; \
         alternatives --install /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn 1; \

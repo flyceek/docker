@@ -49,7 +49,10 @@ RUN yum update -y \
         mkdir -p ${MAVEN_HOME}; \
         cd ${MAVEN_FILE_SAVE_PATH}; \
         wget --no-check-certificate --no-cookies ${MAVEN_FILE_URL}; \
-        echo "${MAVEN_FILE_SHA} ${MAVEN_FILE_NAME}" | sha1sum -c -; \
+        if [ "${MAVEN_FILE_SHA}  ${MAVEN_FILE_NAME}" != "`sha1sum ${MAVEN_FILE_NAME}`" ]; then \
+            echo 'maven file sha validate fail!'; \
+            exit 999; \
+        fi; \
         tar -zvxf ${MAVEN_FILE_NAME} -C ${MAVEN_HOME} --strip-components=1; \
         rm -f ${MAVEN_FILE_NAME} \
         alternatives --install /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn 1; \
@@ -67,7 +70,10 @@ RUN yum update -y \
         mkdir -p ${GIT_MAKE_PATH}; \
         cd ${GIT_FILE_SAVE_PATH}; \
         wget --no-check-certificate --no-cookies ${GIT_FILE_URL}; \
-        echo "${GIT_FILE_SHA256} ${GIT_FILENAME}" | sha256sum -c; \
+        if [ "${GIT_FILE_SHA256}  ${GIT_FILENAME}" != "`sha256sum ${GIT_FILENAME}`" ]; then \
+            echo 'maven file sha validate fail!'; \
+            exit 999; \
+        fi; \
         tar -zvxf ${GIT_FILENAME} -C ${GIT_MAKE_PATH} --strip-components=1; \    
         rm -f ${GIT_FILENAME}; \
         cd ${GIT_MAKE_PATH}; \
