@@ -50,13 +50,13 @@ RUN apk --update add --no-cache --virtual .run-deps \
     && make install \
     && make clean \
     && strip -s /usr/sbin/nginx \
+    && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log \
     && cd / \
     && apk del .build-deps \
     && rm -rf ${WORK_DIR}/* \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/www/* \
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
 
 VOLUME ["/var/log/nginx"]
 EXPOSE 80
