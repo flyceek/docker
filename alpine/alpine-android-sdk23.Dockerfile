@@ -10,7 +10,6 @@ ARG SDK_TOOLS_FILE_URL=https://dl.google.com/android/repository/${SDK_TOOLS_FILE
 ENV ANDROID_BUILD_TOOLS='build-tools-23.0.2'
 ENV ANDROID_SDK='android-23'
 ENV ANDROID_EXTRA_SDK='extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,extra-google-analytics_sdk_v2'
-ENV ANDROID_HOME=/opt/soft/android-sdk
 
 ENV JAVA_VERSION=8u121
 ARG JAVA_ALPINE_VERSION=8.121.13-r0
@@ -34,7 +33,6 @@ RUN { \
     && echo "${SDK_TOOLS_FILE_SHA256}  ${SDK_TOOLS_FILE_NAME}" | sha256sum -c - \
     && unzip ${SDK_TOOLS_FILE_NAME} \
     && rm -f ${SDK_TOOLS_FILE_NAME} \
-    && chmod +x ${ANDROID_HOME}/tools \
     && cd ${ANDROID_HOME}/tools \
     && echo y | ./android update sdk --all --no-ui --force --filter tools,platform-tools,${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_EXTRA_SDK} \
     && cd / \
