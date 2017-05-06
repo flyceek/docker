@@ -16,7 +16,8 @@ ARG GLIBC_SGERRAND_URL=https://raw.githubusercontent.com/sgerrand/alpine-pkg-gli
 
 ENV ANDROID_BUILD_TOOLS='build-tools-25.0.2'
 ENV ANDROID_SDK='android-25'
-ENV ANDROID_SDK_UPDATE=tools,platform-tools,build-tools-${ANDROID_BUILD_TOOLS},${ANDROID_SDK},extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,,extra-google-analytics_sdk_v2
+ENV ANDROID_EXTRA_SDK='extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,extra-google-analytics_sdk_v2'
+
 ENV ANDROID_HOME=/opt/soft/android-sdk
 
 ENV JAVA_VERSION=8u121
@@ -28,10 +29,8 @@ ENV ANDROID_HOME=/opt/soft/android-sdk
 ENV PATH $PATH:${JAVA_HOME}/jre/bin:${JAVA_HOME}/bin
 
 RUN { \
-		echo '#!/bin/sh'; \
-		echo 'set -e'; \
-		echo; \
-		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
+        echo '#!/bin/sh'; \
+        echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
 	} > /usr/local/bin/docker-java-home \
     && chmod +x /usr/local/bin/docker-java-home \
     && set -x \
@@ -51,7 +50,9 @@ RUN { \
     && echo "${SDK_TOOLS_FILE_SHA256}  ${SDK_TOOLS_FILE_NAME}" | sha256sum -c - \
     && unzip ${SDK_TOOLS_FILE_NAME} \
     && rm -f ${SDK_TOOLS_FILE_NAME} \
-    && echo y | ./android update sdk --filter ${ANDROID_SDK_UPDATE} --all --no-ui --force \
+    && chmod +x ${ANDROID_HOME}/tools \
+    && cd ${ANDROID_HOME}/tools \
+    && echo y | ./android update sdk --all --no-ui --force --filter tools,platform-tools,${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_EXTRA_SDK} \
     && cd / \
     && rm -fr ${ANDROID_HOME}/tools \
     && rm -fr ${WORK_DIR}/* \
