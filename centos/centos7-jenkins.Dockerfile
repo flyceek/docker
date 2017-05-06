@@ -21,14 +21,16 @@ WORKDIR ${JENKINS_HOME}
 RUN yum update -y \
     && yum install -y sudo \
     && yum clean all \
-    && groupadd --system -g ${JENKINS_USER_GID} ${JENKINS_USER_GROUP} \
-    && useradd --system -d "${JENKINS_HOME}" -u ${JENKINS_USER_UID} -g ${JENKINS_USER_GID} -m -s /bin/bash ${JENKINS_USER} \
-    && usermod -aG wheel ${JENKINS_USER} \
-    && chmod a+w /etc/sudoers \
-    && echo "${JENKINS_USER} ALL=(ALL) ALL" >> /etc/sudoers \
-    && chown -R ${JENKINS_USER} "${JENKINS_HOME}" \
-    && echo "${JENKINS_USER}:${JENKINS_USER_PWD}" | chpasswd \
-    && chmod a-w /etc/sudoers \
+    && { \
+        groupadd --system -g ${JENKINS_USER_GID} ${JENKINS_USER_GROUP}; \
+        useradd --system -d "${JENKINS_HOME}" -u ${JENKINS_USER_UID} -g ${JENKINS_USER_GID} -m -s /bin/bash ${JENKINS_USER}; \
+        usermod -aG wheel ${JENKINS_USER}; \
+        chmod a+w /etc/sudoers; \
+        echo "${JENKINS_USER} ALL=(ALL) ALL" >> /etc/sudoers; \
+        chown -R ${JENKINS_USER} "${JENKINS_HOME}"; \
+        echo "${JENKINS_USER}:${JENKINS_USER_PWD}" | chpasswd; \
+        chmod a-w /etc/sudoers; \
+    } \
     && curl -O ${JENKINS_FILE_URL} \
     && echo "${JENKINS_FILE_SHA} ${JENKINS_FILE_NAME}" | sha1sum -c - \
     && echo "java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}" >> run.sh \

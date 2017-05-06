@@ -36,7 +36,7 @@ RUN { \
     && set -x \
 	&& apk add --no-cache openjdk8="${JAVA_ALPINE_VERSION}" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ] \ 
-    && apk add --no-cache --virtual=.build-dependencies wget unzip ca-certificates bash \
+    && apk add --no-cache --virtual=.build-dependencies wget unzip ca-certificates \
     && mkdir -p ${WORK_DIR} \ 
     && mkdir -p ${ANDROID_HOME} \
     && cd ${WORK_DIR} \
