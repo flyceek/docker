@@ -15,6 +15,7 @@ ARG WORK_DIR=/tmp
 ENV PATH=${PATH}:${NGINX_HOME}/bin 
 
 RUN apk --update add --no-cache --virtual .run-dependencies \
+        openssl \
         pcre \
         zlib \
     && apk --update add --no-cache --virtual .build-dependencies \
