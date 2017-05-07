@@ -15,27 +15,18 @@ ARG WORK_DIR=/tmp
 ENV PATH=${PATH}:${NGINX_HOME}/bin 
 
 RUN apk --update add --no-cache --virtual .run-dependencies \
-        ca-certificates \
-        openssl \
         pcre \
         zlib \
     && apk --update add --no-cache --virtual .build-dependencies \
-		build-base \
+        gcc \
+		make \
 		libc-dev \
 		openssl-dev \
 		pcre-dev \
 		zlib-dev \
 		linux-headers \
 		wget \
-    && mkdir -p ${WORK_DIR} \
-    && mkdir -p ${NGINX_HOME}/www ${NGINX_HOME}/sites ${NGINX_HOME}/certs \
-    && addgroup -g ${NGINX_GID} ${NGINX_GROUP} \
-    && adduser -D -h ${NGINX_HOME} -G ${NGINX_GROUP} -s /sbin/nologin -u ${NGINX_USER_UID} ${NGINX_USER} \
-    && cd ${WORK_DIR} \
-    && wget ${NGINX_FILE_URL} \
-    && tar -zxvf ${NGINX_FILE_NAME} \
-    && cd ${NGINX_FILE_EXTRACT_DIR} \
-    && ./configure \
+    && CONFIG="\
         --prefix=${NGINX_HOME} \
         --sbin-path=${NGINX_HOME}/bin/nginx \
 		--error-log-path=${NGINX_HOME}/log/error.log \
@@ -46,6 +37,16 @@ RUN apk --update add --no-cache --virtual .run-dependencies \
         --with-http_gzip_static_module \
         --user=${NGINX_USER} \
 		--group=${NGINX_GROUP} \
+    " \
+    && mkdir -p ${WORK_DIR} \
+    && mkdir -p ${NGINX_HOME}/www ${NGINX_HOME}/sites ${NGINX_HOME}/certs \
+    && addgroup -g ${NGINX_GID} ${NGINX_GROUP} \
+    && adduser -D -h ${NGINX_HOME} -G ${NGINX_GROUP} -s /sbin/nologin -u ${NGINX_USER_UID} ${NGINX_USER} \
+    && cd ${WORK_DIR} \
+    && wget ${NGINX_FILE_URL} \
+    && tar -zxvf ${NGINX_FILE_NAME} \
+    && cd ${NGINX_FILE_EXTRACT_DIR} \
+    && ./configure ${CONFIG} \
     && make -j2 \
     && make install \
     && make clean \
