@@ -15,7 +15,7 @@ RUN apk add --update openssh \
     && sed -i 's/#RSAAuthentication yes/RSAAuthentication yes/' /etc/ssh/sshd_config \
     && sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed -i 's/#UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
+    && sed -i 's/#UsePAM yes/UsePAM no/' /etc/ssh/sshd_config \
     && mkdir -p /var/run/sshd \
     && rm -rf /tmp/* /var/cache/apk/* \
     && echo "root:123321" | chpasswd
