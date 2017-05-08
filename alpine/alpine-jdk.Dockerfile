@@ -50,4 +50,5 @@ RUN apk --update add --no-cache --virtual=.build-dependencies wget ca-certificat
     && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true \
     && apk del glibc-i18n \
     && apk del .build-dependencies \
-    && cd /
+    && cd / \
+    && echo "root:123321" | chpasswd
