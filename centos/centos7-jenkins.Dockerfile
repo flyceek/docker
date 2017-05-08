@@ -19,7 +19,7 @@ ENV JENKINS_JAVA_OPTIONS=-Xmx512m
 
 WORKDIR ${JENKINS_HOME}
 RUN yum update -y \
-    && yum install -y sudo \
+    && yum install -y sudo git \
     && yum clean all \
     && { \
         groupadd --system -g ${JENKINS_USER_GID} ${JENKINS_USER_GROUP}; \
