@@ -21,7 +21,7 @@ ENV ANDROID_HOME=/opt/soft/android-sdk
 ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
 
 RUN yum update -y \
-    && yum install -y unzip lsof wget git \
+    && yum install -y unzip lsof wget \
     && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
     && { \ 
         for it in $(rpm -aq | grep java-1.*); \
