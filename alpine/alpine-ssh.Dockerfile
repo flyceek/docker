@@ -1,7 +1,7 @@
 FROM alpine:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
-RUN apk add --update openssh \
+RUN apk add --update openssh openssh-client bash \
     && rm -rf /etc/ssh/ssh_host_*_key \
     && ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N ''  \
     && ssh-keygen -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N '' \
