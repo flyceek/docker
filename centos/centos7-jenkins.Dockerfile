@@ -1,4 +1,4 @@
-FROM flyceek/centos7-jdk:latest
+FROM flyceek/centos7-openjdk:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG JENKINS_USER=jenkins
@@ -14,8 +14,8 @@ ARG JENKINS_FILE_SHA=1fd02a942cca991577ee9727dd3d67470e45c031
 ARG JENKINS_FILE_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/${JENKINS_FILE_NAME}
 
 ENV JENKINS_HTTP_PORT=8080
-ENV JENKINS_OPTIONS=--httpPort=${JENKINS_HTTP_PORT}
-ENV JENKINS_JAVA_OPTIONS=-Xmx512m
+ENV JENKINS_OPTIONS='--httpPort=${JENKINS_HTTP_PORT}'
+ENV JENKINS_JAVA_OPTIONS='-Xmx512m'
 
 WORKDIR ${JENKINS_USER_HOME}
 RUN yum update -y \
@@ -33,9 +33,13 @@ RUN yum update -y \
     } \
     && curl -O ${JENKINS_FILE_URL} \
     && echo "${JENKINS_FILE_SHA} ${JENKINS_FILE_NAME}" | sha1sum -c - \
-    && echo "java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}" >> run.sh
+    && { \
+		echo '#!/bin/sh'; \
+		echo 'java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}'; \
+	} > /usr/local/bin/jenkins-start \
+    && chmod +x /usr/local/bin/jenkins-start
 
 VOLUME ${JENKINS_USER_HOME}
 USER ${JENKINS_USER}
 EXPOSE ${JENKINS_HTTP_PORT}
-CMD ["sh","run.sh"]
+CMD ["sh","jenkins-start"]

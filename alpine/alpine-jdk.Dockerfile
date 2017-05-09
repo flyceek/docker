@@ -48,7 +48,6 @@ RUN apk --update add --no-cache --virtual=.build-dependencies wget ca-certificat
     && rm -fr /var/cache/apk/* \
     && rm /etc/apk/keys/sgerrand.rsa.pub \
     && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true \
-    && apk del glibc-i18n \
-    && apk del .build-dependencies \
+    && apk --update del glibc-i18n .build-dependencies\
     && cd / \
     && echo "root:123321" | chpasswd
