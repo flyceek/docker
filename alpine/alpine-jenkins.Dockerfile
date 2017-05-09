@@ -20,7 +20,7 @@ ENV JENKINS_JAVA_OPTIONS=-Xmx512m
 
 RUN mkdir -p ${JENKINS_FILE_PATH} \
     && apk --update add --no-cache --virtual=.init-dependencies curl \
-    && apk --update add --no-cache --virtual=.jenkins-dependencies git ttf-dejavu \
+    && apk --update add --no-cache --virtual=.jenkins-dependencies bash git ttf-dejavu \
     && addgroup -g ${JENKINS_GID} ${JENKINS_GROUP} \
     && adduser -h ${JENKINS_HOME} -u ${JENKINS_UID} -G ${JENKINS_GROUP} -s /bin/bash -D ${JENKINS_USER} \
     && chown -R ${JENKINS_USER} "${JENKINS_HOME}" \
