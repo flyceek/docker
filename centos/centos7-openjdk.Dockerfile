@@ -1,4 +1,4 @@
-FROM flyceek/centos7-jdk:latest
+FROM centos:centos7
 MAINTAINER flyceek <flyceek@gmail.com>
 
 RUN yum update -y \
