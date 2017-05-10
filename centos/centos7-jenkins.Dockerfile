@@ -2,7 +2,7 @@ FROM flyceek/centos7-openjdk:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG JENKINS_USER=jenkins
-ENV JENKINS_USER_HOME=/var/jenkins_home
+ENV JENKINS_USER_HOME=/var/jenkins
 ARG JENKINS_USER_PWD=jenkins
 ARG JENKINS_USER_GROUP=jenkins
 ARG JENKINS_USER_UID=1069
