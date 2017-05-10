@@ -1,4 +1,4 @@
-FROM flyceek/centos7-android-build:gradle-2.14.1
+FROM flyceek/centos7-android-build:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 RUN yum update -y \
