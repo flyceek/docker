@@ -84,7 +84,6 @@ RUN yum update -y \
         alternatives --install /usr/bin/git gradle ${GIT_HOME}/bin/git 1; \
     } \
     && mkdir -p ${ANDROID_HOME} \
-    && yum remove -y unzip \
-    && yum remove -y wget
+    && yum remove -y unzip wget gcc-c++ curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 
 VOLUME ${ANDROID_HOME}
