@@ -19,7 +19,7 @@ ENV GRADLE_HOME=${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR}
 ENV ANDROID_HOME=/opt/soft/android-sdk
 ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
 
-RUN apk --update add --no-cache unzip wget gcc zlib ca-certificates libstdc++ \
+RUN apk --update add --no-cache unzip git wget gcc zlib ca-certificates libstdc++ \
     && { \
         mkdir -p ${MAVEN_HOME}; \
         cd ${MAVEN_FILE_SAVE_PATH}; \

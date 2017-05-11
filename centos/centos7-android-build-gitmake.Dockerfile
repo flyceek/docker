@@ -83,6 +83,8 @@ RUN yum update -y \
         rm -fr ${GIT_MAKE_PATH}; \
         alternatives --install /usr/bin/git gradle ${GIT_HOME}/bin/git 1; \
     } \
-    && mkdir -p ${ANDROID_HOME}
+    && mkdir -p ${ANDROID_HOME} \
+    && yum remove -y unzip \
+    && yum remove -y wget
 
 VOLUME ${ANDROID_HOME}

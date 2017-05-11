@@ -20,7 +20,7 @@ ENV GRADLE_HOME=${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR}
 ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
 
 RUN yum update -y \
-    && yum install -y unzip lsof wget \
+    && yum install -y unzip lsof wget git \
     && yum install -y gcc glibc.i686 zlib.i686 libstdc++.i686 \
     && yum clean all \
     && { \
@@ -48,7 +48,9 @@ RUN yum update -y \
         unzip ${GRADLE_FILE_NAME} -d ${GRADLE_FILE_SAVE_HOME}; \
 	    rm -f ${GRADLE_FILE_NAME}; \
         alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1; \
-    } \
-    && mkdir -p ${ANDROID_HOME}
+    } \    
+    && mkdir -p ${ANDROID_HOME} \
+    && yum remove -y unzip \
+    && yum remove -y wget
 
 VOLUME ${ANDROID_HOME}
