@@ -11,7 +11,7 @@ ENV ANDROID_SDK='android-25'
 ENV ANDROID_EXTRA_SDK='extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,extra-google-analytics_sdk_v2'
 
 ENV LANG=C.UTF-8
-ENV JAVA_OPENJDK_VERSION=8.121.13-r0
+ENV JAVA_OPENJDK_VERSION=8.131.11-r1
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 ENV ANDROID_HOME=/opt/soft/android-sdk
 ENV PATH=$PATH:${JAVA_HOME}/jre/bin:${JAVA_HOME}/bin
