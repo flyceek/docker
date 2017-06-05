@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG JAVA_VERSION=8u121
