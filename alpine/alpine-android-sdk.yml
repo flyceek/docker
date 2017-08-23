@@ -1,0 +1,6 @@
+version: "2"
+
+services:
+  android-sdk23:
+    image: 'flyceek/alpine-android-sdk:sdk23'
+    container_name: "android-sdk23"

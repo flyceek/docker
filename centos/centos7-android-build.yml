@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  android-build-gradle-2.14.1:
+    image: 'flyceek/centos7-android-build:gradle-2.14.1-ssh'
+    restart: always
+    container_name: "android-build-gradle-2.14.1"
+    expose:
+      - "5000"
+    ports:
+      - "5000:22"
+    volumes:
+      - "/var/jenkins:/var/jenkins"
+      - "/root/.gradle:/var/gradle"
+    volumes_from:
+      - "android-sdk23"

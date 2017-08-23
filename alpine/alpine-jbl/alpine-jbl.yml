@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+  jbl:
+    image: 'flyceek/alpine:alpine-jbl'
+    restart: always
+    container_name: "jbl"
+    expose:
+      - "8088"
+    ports:
+      - "8088:8088"
