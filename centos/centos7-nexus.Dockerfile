@@ -18,16 +18,21 @@ ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 ARG NEXUS_VERSION=3.5.1-02
 ARG NEXUS_FILE_NAME=nexus-${NEXUS_VERSION}-unix.tar.gz
 ARG NEXUS_FILE_EXTRACT_DIR=nexus-${NEXUS_VERSION}
-ARG NEXUS_DOWNLOAD_URL=https://download.sonatype.com/nexus/3/${NEXUS_FILE_NAME}
+ARG NEXUS_DOWNLOAD_URL=https://sonatype-download.global.ssl.fastly.net/nexus/3/${NEXUS_FILE_NAME}
 
 ENV SONATYPE_DIR=/opt/soft/sonatype
 ENV NEXUS_HOME=${SONATYPE_DIR}/nexus
-ENV NEXUS_DATA=/nexus-data
+ENV NEXUS_DATA=/var/nexus-data
 ENV NEXUS_CONTEXT=''
 ENV SONATYPE_WORK=${SONATYPE_DIR}/sonatype-work
 
 ENV INSTALL4J_ADD_VM_PARAMS="-Xms1200m -Xmx1200m"
-ENV INSTALL4J_JAVA_HOME_OVERRIDE=${JAVA_HOME}
+
+ENV NEXUS_DOMAIN=flyceek.org
+ENV NEXUS_IP_ADDRESS=192.168.0.1
+ENV NEXUS_PASSWORD=flyceek
+ENV NEXUS_HTTP_PORT=8081
+ENV NEXUS_HTTPS_PORT=8443
 
 RUN yum install -y curl tar \
     && yum clean all \
@@ -36,20 +41,38 @@ RUN yum install -y curl tar \
     && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \
     && alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1 \
     && alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1 \
-    && mkdir -p ${NEXUS_HOME} \
-    && curl --location --retry 3 ${NEXUS_DOWNLOAD_URL} | gunzip | tar x -C ${NEXUS_HOME} --strip-components=1 ${NEXUS_FILE_EXTRACT_DIR} \
+    && mkdir -p ${NEXUS_HOME} ${NEXUS_DATA}/etc ${NEXUS_DATA}/log ${NEXUS_DATA}/tmp ${SONATYPE_WORK} \
     && chown -R root:root ${NEXUS_HOME} \
-    && sed -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' -i ${NEXUS_HOME}/etc/nexus-default.properties \
+    && curl --location --retry 3 ${NEXUS_DOWNLOAD_URL} | gunzip | tar -x -C ${NEXUS_HOME} --strip-components=1 nexus-${NEXUS_VERSION} 
+
+RUN sed -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' -i ${NEXUS_HOME}/etc/nexus-default.properties \
+    && sed 's:^application-port=\(.*\):application-port='${NEXUS_HTTP_PORT}':' -i ${NEXUS_HOME}/etc/nexus-default.properties \
+    && sed '$a\application-port-ssl='${NEXUS_HTTPS_PORT} -i ${NEXUS_HOME}/etc/nexus-default.properties \
+    && sed 's/^nexus-args=\(.*\)/nexus-args=${jetty.etc}\/jetty.xml,${jetty.etc}\/jetty-http.xml,${jetty.etc}\/jetty-requestlog.xml,${jetty.etc}\/jetty-https.xml,${jetty.etc}\/jetty-http-redirect-to-https.xml/' -i ${NEXUS_HOME}/etc/nexus-default.properties \
+    && sed 's:<Set name="KeyStorePassword">\(.*\)<\/Set>:<Set name="KeyStorePassword">'${NEXUS_PASSWORD}'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
+    && sed 's:<Set name="KeyManagerPassword">\(.*\)<\/Set>:<Set name="KeyManagerPassword">'${NEXUS_PASSWORD}'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
+    && sed 's:<Set name="KeyManagerPassword">\(.*\)<\/Set>:<Set name="KeyManagerPassword">'${NEXUS_PASSWORD}'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
+    && sed 's:<Set name="KeyStorePath"><Property name="ssl.etc"/>\(.*\)<\/Set>:<Set name="KeyStorePath"><Property name="ssl.etc"/>\/keystore.jks<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
+    && sed 's:<Set name="TrustStorePath"><Property name="ssl.etc"/>\(.*\)</Set>:<Set name="TrustStorePath"><Property name="ssl.etc"/>\/keystore.jks</Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
+    && sed 's:<Set name="EndpointIdentificationAlgorithm">\(.*\)</Set>:<Set name="EndpointIdentificationAlgorithm">'${NEXUS_IP_ADDRESS}'</Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
     && sed -e '/^-Xms/d' -e '/^-Xmx/d' -i ${NEXUS_HOME}/bin/nexus.vmoptions \
-    && useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/false nexus \
-    && mkdir -p ${NEXUS_DATA}/etc ${NEXUS_DATA}/log ${NEXUS_DATA}/tmp ${SONATYPE_WORK} \
+    && useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/bash nexus \
     && ln -s ${NEXUS_DATA} ${SONATYPE_WORK}/nexus3 \
+    && { \
+        echo '#!/bin/sh'; \
+        echo 'cd ${NEXUS_HOME}/etc/ssl'; \
+        echo 'keytool -genkeypair -keystore keystore.jks -storepass '${NEXUS_PASSWORD}' -keypass '${NEXUS_PASSWORD}' -alias jetty -keyalg RSA -keysize 2048 -validity 5000 -dname "CN=*.${NEXUS_DOMAIN}, OU=FLYCEEK, O=Sonatype, L=Unspecified, ST=Unspecified, C=US" -ext "SAN=DNS:${NEXUS_DOMAIN},IP:${NEXUS_IP_ADDRESS}" -ext "BC=ca:true"'; \
+        echo '${NEXUS_HOME}/bin/./nexus run'; \
+	} > ${NEXUS_HOME}/nexus-start \
+    && chmod +x ${NEXUS_HOME}/nexus-start \
     && chown -R nexus:nexus ${NEXUS_DATA} \
+    && chown -R nexus:nexus ${NEXUS_HOME} \
     && echo "root:123321" | chpasswd
 
 VOLUME ${NEXUS_DATA}
-EXPOSE 8081
+EXPOSE ${NEXUS_HTTP_PORT}
+EXPOSE ${NEXUS_HTTPS_PORT}
 USER nexus
 WORKDIR ${NEXUS_HOME}
 
-CMD ["bin/nexus", "run"]
+CMD ["./nexus-start"]
