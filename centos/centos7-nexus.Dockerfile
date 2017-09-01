@@ -51,7 +51,7 @@ RUN sed -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' -i ${NEXUS_HOME}/etc/nexus-d
     && sed 's/^nexus-args=\(.*\)/nexus-args=${jetty.etc}\/jetty.xml,${jetty.etc}\/jetty-http.xml,${jetty.etc}\/jetty-requestlog.xml,${jetty.etc}\/jetty-https.xml,${jetty.etc}\/jetty-http-redirect-to-https.xml/' -i ${NEXUS_HOME}/etc/nexus-default.properties \
     && sed 's:<Set name="KeyStorePassword">\(.*\)<\/Set>:<Set name="KeyStorePassword">'${NEXUS_PASSWORD}'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
     && sed 's:<Set name="KeyManagerPassword">\(.*\)<\/Set>:<Set name="KeyManagerPassword">'${NEXUS_PASSWORD}'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
-    && sed 's:<Set name="KeyManagerPassword">\(.*\)<\/Set>:<Set name="KeyManagerPassword">'${NEXUS_PASSWORD}'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
+    && sed 's:<Set name="TrustStorePassword">\(.*\)<\/Set>:<Set name="TrustStorePassword">'${NEXUS_PASSWORD}'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
     && sed 's:<Set name="KeyStorePath"><Property name="ssl.etc"/>\(.*\)<\/Set>:<Set name="KeyStorePath"><Property name="ssl.etc"/>\/keystore.jks<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
     && sed 's:<Set name="TrustStorePath"><Property name="ssl.etc"/>\(.*\)</Set>:<Set name="TrustStorePath"><Property name="ssl.etc"/>\/keystore.jks</Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
     && sed 's:<Set name="EndpointIdentificationAlgorithm">\(.*\)</Set>:<Set name="EndpointIdentificationAlgorithm">'${NEXUS_IP_ADDRESS}'</Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
@@ -66,7 +66,7 @@ RUN sed -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' -i ${NEXUS_HOME}/etc/nexus-d
 	} > ${NEXUS_HOME}/nexus-start \
     && chmod +x ${NEXUS_HOME}/nexus-start \
     && chown -R nexus:nexus ${NEXUS_DATA} \
-    && chown -R nexus:nexus ${NEXUS_HOME} \
+    && chown -R nexus:nexus ${SONATYPE_DIR} \
     && echo "root:123321" | chpasswd
 
 VOLUME ${NEXUS_DATA}
