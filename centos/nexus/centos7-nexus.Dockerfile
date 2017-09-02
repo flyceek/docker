@@ -48,12 +48,7 @@ RUN yum install -y curl tar \
     && useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/bash nexus \
     && chown -R nexus:nexus ${NEXUS_DATA} ${SONATYPE_DIR} \
     && sed -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' -i ${NEXUS_HOME}/etc/nexus-default.properties\
-    && sed \
-        -e 's:<Set name="KeyStorePath"><Property name=\(.*\)/>\(.*\)<\/Set>:<Set name="KeyStorePath"><Property name="ssl.etc"/>\/keystore.jks<\/Set>:' \
-        -e 's:<Set name="TrustStorePath"><Property name=\(.*\)/>\(.*\)</Set>:<Set name="TrustStorePath"><Property name="ssl.etc"/>\/keystore.jks</Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
-    && sed \
-        -e '/^-Xms/d' \
-        -e '/^-Xmx/d' -i ${NEXUS_HOME}/bin/nexus.vmoptions \
+    && sed -e '/^-Xms/d' -e '/^-Xmx/d' -i ${NEXUS_HOME}/bin/nexus.vmoptions \
     && { \
         echo '#!/bin/sh'; \
         echo "sed 's:^application-port=\(.*\):application-port='"'${NEXUS_HTTP_PORT}'"':' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
@@ -63,6 +58,8 @@ RUN yum install -y curl tar \
         echo "sed 's:<Set name=\"KeyStorePassword\">\(.*\)<\/Set>:<Set name=\"KeyStorePassword\">'"'${NEXUS_PASSWORD}'"'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
         echo "sed 's:<Set name=\"KeyManagerPassword\">\(.*\)<\/Set>:<Set name=\"KeyManagerPassword\">'"'${NEXUS_PASSWORD}'"'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
         echo "sed 's:<Set name=\"TrustStorePassword\">\(.*\)<\/Set>:<Set name=\"TrustStorePassword\">'"'${NEXUS_PASSWORD}'"'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
+        echo "sed 's:<Set name=\"KeyStorePath\"><Property name=\(.*\)/>\(.*\)<\/Set>:<Set name=\"KeyStorePath\"><Property name=\"ssl.etc\"/>\/keystore.jks<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
+        echo "sed 's:<Set name=\"TrustStorePath\"><Property name=\(.*\)/>\(.*\)<\/Set>:<Set name=\"TrustStorePath\"><Property name=\"ssl.etc\"/>\/keystore.jks<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
         echo 'cd ${NEXUS_HOME}/etc/ssl'; \
         echo 'keytool -genkeypair -keystore ${NEXUS_HOME}/etc/ssl/keystore.jks -storepass '${NEXUS_PASSWORD}' -keypass '${NEXUS_PASSWORD}' -alias jetty -keyalg RSA -keysize 2048 -validity 5000 -dname "CN=*.${NEXUS_DOMAIN}, OU=flyceek-tech, O=flyceek, L=china-shanghai, ST=shanghai, C=CN" -ext "SAN=DNS:${NEXUS_DOMAIN},IP:${NEXUS_IP_ADDRESS}" -ext "BC=ca:true"'; \
         echo '${NEXUS_HOME}/bin/./nexus run'; \
