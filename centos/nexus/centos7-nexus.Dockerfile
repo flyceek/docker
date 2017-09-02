@@ -46,30 +46,33 @@ RUN yum install -y curl tar \
     && curl --location --retry 3 ${NEXUS_DOWNLOAD_URL} | gunzip | tar -x -C ${NEXUS_HOME} --strip-components=1 nexus-${NEXUS_VERSION} \
     && ln -s ${NEXUS_DATA} ${SONATYPE_WORK}/nexus3 \
     && useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/bash nexus \
-    && chown -R nexus:nexus ${NEXUS_DATA} ${SONATYPE_DIR}
-
-RUN sed \
-        -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' \
-        -e 's:^application-port=\(.*\):application-port='${NEXUS_HTTP_PORT}':' \
-        -e '$a\application-port-ssl='${NEXUS_HTTPS_PORT} \
-        -e 's/^nexus-args=\(.*\)/nexus-args=${jetty.etc}\/jetty.xml,${jetty.etc}\/jetty-http.xml,${jetty.etc}\/jetty-requestlog.xml,${jetty.etc}\/jetty-https.xml,${jetty.etc}\/jetty-http-redirect-to-https.xml/' -i ${NEXUS_HOME}/etc/nexus-default.properties \
+    && chown -R nexus:nexus ${NEXUS_DATA} ${SONATYPE_DIR} \
+    && sed -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' -i ${NEXUS_HOME}/etc/nexus-default.properties\
     && sed \
-        -e 's:<Set name="KeyStorePassword">\(.*\)<\/Set>:<Set name="KeyStorePassword">'${NEXUS_PASSWORD}'<\/Set>:' \
-        -e 's:<Set name="KeyManagerPassword">\(.*\)<\/Set>:<Set name="KeyManagerPassword">'${NEXUS_PASSWORD}'<\/Set>:' \
-        -e 's:<Set name="TrustStorePassword">\(.*\)<\/Set>:<Set name="TrustStorePassword">'${NEXUS_PASSWORD}'<\/Set>:' \
         -e 's:<Set name="KeyStorePath"><Property name=\(.*\)/>\(.*\)<\/Set>:<Set name="KeyStorePath"><Property name="ssl.etc"/>\/keystore.jks<\/Set>:' \
         -e 's:<Set name="TrustStorePath"><Property name=\(.*\)/>\(.*\)</Set>:<Set name="TrustStorePath"><Property name="ssl.etc"/>\/keystore.jks</Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml \
     && sed \
         -e '/^-Xms/d' \
         -e '/^-Xmx/d' -i ${NEXUS_HOME}/bin/nexus.vmoptions \
-       && { \
+    && { \
         echo '#!/bin/sh'; \
+        echo "sed 's:^application-port=\(.*\):application-port='"'${NEXUS_HTTP_PORT}'"':' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
+        echo "sed '\$a\application-port-ssl='"'${NEXUS_HTTPS_PORT}'" -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
+        echo "sed 's/^nexus-args=\(.*\)/nexus-args=\${jetty.etc}\/jetty.xml,\${jetty.etc}\/jetty-http.xml,\${jetty.etc}\/jetty-requestlog.xml,\${jetty.etc}\/jetty-https.xml,\${jetty.etc}\/jetty-http-redirect-to-https.xml/' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
         echo "sed 's:<Set name=\"EndpointIdentificationAlgorithm\">\(.*\)<\/Set>:<Set name=\"EndpointIdentificationAlgorithm\">'"'${NEXUS_IP_ADDRESS}'"'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
+        echo "sed 's:<Set name=\"KeyStorePassword\">\(.*\)<\/Set>:<Set name=\"KeyStorePassword\">'"'${NEXUS_PASSWORD}'"'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
+        echo "sed 's:<Set name=\"KeyManagerPassword\">\(.*\)<\/Set>:<Set name=\"KeyManagerPassword\">'"'${NEXUS_PASSWORD}'"'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
+        echo "sed 's:<Set name=\"TrustStorePassword\">\(.*\)<\/Set>:<Set name=\"TrustStorePassword\">'"'${NEXUS_PASSWORD}'"'<\/Set>:' -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml"; \
         echo 'cd ${NEXUS_HOME}/etc/ssl'; \
-        echo 'keytool -genkeypair -keystore keystore.jks -storepass '${NEXUS_PASSWORD}' -keypass '${NEXUS_PASSWORD}' -alias jetty -keyalg RSA -keysize 2048 -validity 5000 -dname "CN=*.${NEXUS_DOMAIN}, OU=flyceek-tech, O=flyceek, L=china-shanghai, ST=shanghai, C=CN" -ext "SAN=DNS:${NEXUS_DOMAIN},IP:${NEXUS_IP_ADDRESS}" -ext "BC=ca:true"'; \
+        echo 'keytool -genkeypair -keystore ${NEXUS_HOME}/etc/ssl/keystore.jks -storepass '${NEXUS_PASSWORD}' -keypass '${NEXUS_PASSWORD}' -alias jetty -keyalg RSA -keysize 2048 -validity 5000 -dname "CN=*.${NEXUS_DOMAIN}, OU=flyceek-tech, O=flyceek, L=china-shanghai, ST=shanghai, C=CN" -ext "SAN=DNS:${NEXUS_DOMAIN},IP:${NEXUS_IP_ADDRESS}" -ext "BC=ca:true"'; \
         echo '${NEXUS_HOME}/bin/./nexus run'; \
-	} > ${NEXUS_HOME}/nexus-start \
-    && chmod +x ${NEXUS_HOME}/nexus-start \
+	} > ${NEXUS_HOME}/nexus-https-start \
+    && { \
+        echo '#!/bin/sh'; \
+        echo "sed 's:^application-port=\(.*\):application-port='"'${NEXUS_HTTP_PORT}'"':' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
+        echo '${NEXUS_HOME}/bin/./nexus run'; \
+	} > ${NEXUS_HOME}/nexus-http-start \
+    && chmod +x ${NEXUS_HOME}/nexus-https-start ${NEXUS_HOME}/nexus-http-start \
     && echo "root:123321" | chpasswd
 
 VOLUME ${NEXUS_DATA}
@@ -78,4 +81,4 @@ EXPOSE ${NEXUS_HTTPS_PORT}
 USER nexus
 WORKDIR ${NEXUS_HOME}
 
-CMD ["./nexus-start"]
+CMD ["./nexus-https-start"]
