@@ -69,13 +69,14 @@ RUN yum install -y curl tar \
         echo "sed 's:^application-port=\(.*\):application-port='"'${NEXUS_HTTP_PORT}'"':' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
         echo '${NEXUS_HOME}/bin/./nexus run'; \
 	} > ${NEXUS_HOME}/nexus-http-start \
-    && chmod +x ${NEXUS_HOME}/nexus-https-start ${NEXUS_HOME}/nexus-http-start \
+    && ln ${NEXUS_HOME}/nexus-https-start /usr/local/bin/nexus-https-start \
+    && ln ${NEXUS_HOME}/nexus-http-start /usr/local/bin/nexus-http-start \
+    && chmod +x ${NEXUS_HOME}/nexus-https-start ${NEXUS_HOME}/nexus-http-start /usr/local/bin/nexus-https-start /usr/local/bin/nexus-http-start \
     && echo "root:123321" | chpasswd
 
 VOLUME ${NEXUS_DATA}
 EXPOSE ${NEXUS_HTTP_PORT}
 EXPOSE ${NEXUS_HTTPS_PORT}
 USER nexus
-WORKDIR ${NEXUS_HOME}
 
-CMD ["./nexus-https-start"]
+CMD ["nexus-https-start"]
