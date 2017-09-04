@@ -76,7 +76,6 @@ RUN yum install -y curl tar \
 
 VOLUME ${NEXUS_DATA}
 EXPOSE ${NEXUS_HTTP_PORT}
-EXPOSE ${NEXUS_HTTPS_PORT}
 USER nexus
 
 CMD ["nexus-https-start"]
