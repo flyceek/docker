@@ -1,0 +1,15 @@
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+    fetch = +refs/heads/*:refs/heads/*
+    fetch = +refs/tags/*:refs/tags/*
+    mirror = true
+    url = https://github.com/CocoaPods/Specs.git
+[remote "mirrors"]
+    url = https://git.coding.net/flyceek/cocoapods.git
+    mirror = true
+    skipDefaultUpdate = true

@@ -50,7 +50,7 @@ RUN yum install -y curl tar \
     && sed -e '/^nexus-context/ s:$:${NEXUS_CONTEXT}:' -i ${NEXUS_HOME}/etc/nexus-default.properties\
     && sed -e '/^-Xms/d' -e '/^-Xmx/d' -i ${NEXUS_HOME}/bin/nexus.vmoptions \
     && { \
-        echo '#!/bin/sh'; \
+        echo '#!/bin/bash'; \
         echo "sed 's:^application-port=\(.*\):application-port='"'${NEXUS_HTTP_PORT}'"':' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
         echo "sed '\$a\application-port-ssl='"'${NEXUS_HTTPS_PORT}'" -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
         echo "sed 's/^nexus-args=\(.*\)/nexus-args=\${jetty.etc}\/jetty.xml,\${jetty.etc}\/jetty-http.xml,\${jetty.etc}\/jetty-requestlog.xml,\${jetty.etc}\/jetty-https.xml,\${jetty.etc}\/jetty-http-redirect-to-https.xml/' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
@@ -65,7 +65,7 @@ RUN yum install -y curl tar \
         echo '${NEXUS_HOME}/bin/./nexus run'; \
 	} > ${NEXUS_HOME}/nexus-https-start \
     && { \
-        echo '#!/bin/sh'; \
+        echo '#!/bin/bash'; \
         echo "sed 's:^application-port=\(.*\):application-port='"'${NEXUS_HTTP_PORT}'"':' -i ${NEXUS_HOME}/etc/nexus-default.properties"; \
         echo '${NEXUS_HOME}/bin/./nexus run'; \
 	} > ${NEXUS_HOME}/nexus-http-start \
