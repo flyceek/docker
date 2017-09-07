@@ -32,4 +32,4 @@ RUN apk --update add --no-cache --virtual=.update-dependencies git \
     && echo "root:123321" | chpasswd
 
 WORKDIR ${COCOAPODS_WORK_DIR}
-//CMD ["init-cocoapods-start"]
+#CMD ["init-cocoapods-start"]
