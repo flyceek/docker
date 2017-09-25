@@ -2,7 +2,7 @@ FROM alpine:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG JAVA_VERSION=8u121
-ARG JAVA_ALPINE_VERSION=8.131.11-r1
+ARG JAVA_ALPINE_VERSION=8.131.11-r2
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
