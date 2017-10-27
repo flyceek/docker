@@ -2,9 +2,9 @@ version: "2"
 
 services:
   nexus:
-    image: 'flyceek/centosu-nexus:nexus3'
+    image: 'flyceek/centos-nexus:3.6.0'
     restart: always
-    container_name: "nexus3"
+    container_name: "nexus-3.6.0"
     # extra_hosts:
     #   - "redis.centaline.com:10.4.19.105"
     # expose:
