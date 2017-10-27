@@ -15,7 +15,7 @@ ENV JRE_HOME=${JAVA_HOME}/jre
 ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
-ARG NEXUS_VERSION=3.5.1-02
+ARG NEXUS_VERSION=3.6.0-02
 ARG NEXUS_FILE_NAME=nexus-${NEXUS_VERSION}-unix.tar.gz
 ARG NEXUS_FILE_EXTRACT_DIR=nexus-${NEXUS_VERSION}
 ARG NEXUS_DOWNLOAD_URL=https://sonatype-download.global.ssl.fastly.net/nexus/3/${NEXUS_FILE_NAME}
