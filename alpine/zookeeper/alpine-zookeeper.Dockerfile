@@ -51,7 +51,7 @@ RUN apk add --no-cache bash su-exec \
         echo 'echo syncLimit=${ZOOKEEPER_SYNC_LIMIT} >> ${CONFIG}'; \
         echo 'echo maxClientCnxns=${ZOOKEEPER_MAX_CLIENT_CNXNS} >> ${CONFIG}'; \
         echo 'for server in ${ZOOKEEPER_SERVERS}; do echo "$server" >> ${CONFIG}; done'; \
-        echo '${ZOOKEEPER_MY_ID:-1} > "${ZOOKEEPER_DATA_DIR}/myid'; \
+        echo '${ZOOKEEPER_MY_ID:-1} > ${ZOOKEEPER_DATA_DIR}/myid'; \
         echo 'exec su-exec ${ZOOKEEPER_USER} ${ZOOKEEPER_HOME}/bin/zkServer.sh start-foreground'; \
 	} > /usr/local/bin/zk-start \
     && chmod +x /usr/local/bin/zk-start \
