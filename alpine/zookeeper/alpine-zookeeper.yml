@@ -1,0 +1,17 @@
+version: "2"
+
+services:
+  zookeeper:
+    image: 'flyceek/alpine-zookeeper:latest'
+    restart: always
+    container_name: "zookeeper"
+    expose:
+      - "2181"
+    ports:
+      - "2181:2181"
+    volumes:
+      - "/var/zookeeper/data:/var/zookeeper/data"
+      - "/var/zookeeper/datalog://var/zookeeper/datalog"
+    environment:
+      ZOOKEEPER_MY_ID: 0
+      ZOOKEEPER_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
