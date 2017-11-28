@@ -8,8 +8,8 @@ ARG ZOOKEEPER_FILE_NAME=${ZOOKEEPER_DISTRO_NAME}.tar.gz
 ARG ZOOKEEPER_FILE_ASC_NAME=${ZOOKEEPER_FILE_NAME}.asc
 
 ENV ZOOKEEPER_USER=zookeeper
-ENV ZOOKEEPR_WORK_HOME=/opt/zookeeper
-ENV ZOOKEEPER_HOME=${ZOOKEEPR_WORK_HOME}/${ZOOKEEPER_DISTRO_NAME}
+ENV ZOOKEEPER_WORK_HOME=/opt/zookeeper
+ENV ZOOKEEPER_HOME=${ZOOKEEPER_WORK_HOME}/${ZOOKEEPER_DISTRO_NAME}
 ENV ZOOKEEPER_CONF_DIR=${ZOOKEEPER_HOME}/conf
 ENV ZOOKEEPER_DATA_DIR=/var/zookeeper/data
 ENV ZOOKEEPER_DATA_LOG_DIR=/var/zookeeper/datalog
@@ -27,9 +27,9 @@ ENV ZOOCFGDIR=${ZOOKEEPER_CONF_DIR}
 RUN apk add --no-cache bash su-exec \
     && apk add --no-cache --virtual .build-deps ca-certificates gnupg libressl \
     && adduser -D "${ZOOKEEPER_USER}" \
-    && mkdir -p "${ZOOKEEPR_WORK_HOME}" "${ZOOKEEPER_DATA_LOG_DIR}" "${ZOOKEEPER_DATA_DIR}" "${ZOOKEEPER_CONF_DIR}" \
+    && mkdir -p "${ZOOKEEPER_WORK_HOME}" "${ZOOKEEPER_DATA_LOG_DIR}" "${ZOOKEEPER_DATA_DIR}" "${ZOOKEEPER_CONF_DIR}" \
     && chown -R "${ZOOKEEPER_USER}:${ZOOKEEPER_USER}" "${ZOOKEEPER_DATA_LOG_DIR}" "${ZOOKEEPER_DATA_DIR}" "${ZOOKEEPER_CONF_DIR}" \
-    && cd ${ZOOKEEPR_WORK_HOME} \
+    && cd ${ZOOKEEPER_WORK_HOME} \
     && wget -q "https://www.apache.org/dist/zookeeper/${ZOOKEEPER_DISTRO_NAME}/${ZOOKEEPER_FILE_NAME}" \
     && wget -q "https://www.apache.org/dist/zookeeper/${ZOOKEEPER_DISTRO_NAME}/${ZOOKEEPER_FILE_ASC_NAME}" \
     && export GNUPGHOME="$(mktemp -d)" \
