@@ -11,11 +11,8 @@ ENV PATH ${PATH}:${JAVA_HOME}/bin:${JAVA_HOME_DIR}/bin
 
 RUN { \
 		echo '#!/bin/sh'; \
-		echo 'set -e'; \
-		echo; \
 		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
 	} > /usr/local/bin/docker-java-home \
 	&& chmod +x /usr/local/bin/docker-java-home \
-    && set -x \
 	&& apk add --no-cache openjdk8-jre="$JAVA_ALPINE_VERSION" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
