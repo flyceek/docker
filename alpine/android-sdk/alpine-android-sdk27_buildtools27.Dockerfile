@@ -1,9 +1,9 @@
 FROM alpine:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
-ARG SDK_TOOLS_VERSION='4333796'
-ARG SDK_TOOLS_FILE_NAME=sdk-tools-linux-${SDK_TOOLS_VERSION}.zip
-ARG SDK_TOOLS_FILE_SHA1=8c7c28554a32318461802c1291d76fccfafde054
+ENV SDK_TOOLS_VERSION='r25.2.3'
+ARG SDK_TOOLS_FILE_NAME=tools_${SDK_TOOLS_VERSION}-linux.zip
+ARG SDK_TOOLS_FILE_SHA256=1b35bcb94e9a686dff6460c8bca903aa0281c6696001067f34ec00093145b560
 ARG SDK_TOOLS_FILE_URL=https://dl.google.com/android/repository/${SDK_TOOLS_FILE_NAME}
 
 ENV ANDROID_BUILD_TOOLS='build-tools-27.0.1'
@@ -29,7 +29,7 @@ RUN { \
     && mkdir -p ${ANDROID_HOME} \
     && cd ${ANDROID_HOME} \
     && wget --no-cookies --no-check-certificate ${SDK_TOOLS_FILE_URL} \
-    && echo "${SDK_TOOLS_FILE_SHA1}  ${SDK_TOOLS_FILE_NAME}" | sha1sum -c - \
+    && echo "${SDK_TOOLS_FILE_SHA256}  ${SDK_TOOLS_FILE_NAME}" | sha256sum -c - \
     && unzip ${SDK_TOOLS_FILE_NAME} \
     && rm -f ${SDK_TOOLS_FILE_NAME} \
     && cd ${ANDROID_HOME}/tools \
