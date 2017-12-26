@@ -8,10 +8,10 @@ ARG JENKINS_GROUP=jenkins
 ARG JENKINS_UID=1000
 ARG JENKINS_GID=1000
 
-ARG JENKINS_VERSION=2.9
+ARG JENKINS_VERSION=2.98
 ENV JENKINS_FILE_PATH='/opt/soft/jenkins'
 ENV JENKINS_FILE_NAME=jenkins-war-${JENKINS_VERSION}.war
-ARG JENKINS_FILE_SHA=1fd02a942cca991577ee9727dd3d67470e45c031
+ARG JENKINS_FILE_SHA256=bbbe38cab8e4183699ef472ff290c30635a2df6dfb720fb1d4a977a18990fddf
 ARG JENKINS_FILE_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/${JENKINS_FILE_NAME}
 
 ENV JENKINS_HTTP_PORT=8080
@@ -27,7 +27,7 @@ RUN mkdir -p ${JENKINS_FILE_PATH} \
     && echo "${JENKINS_USER}:${JENKINS_USER_PWD}" | chpasswd \
     && cd ${JENKINS_FILE_PATH} \
     && curl -O ${JENKINS_FILE_URL} \
-    && echo "${JENKINS_FILE_SHA}  ${JENKINS_FILE_NAME}" | sha1sum -c - \
+    && echo "${JENKINS_FILE_SHA}  ${JENKINS_FILE_NAME}" | sha256sum -c - \
     && { \
 		echo '#!/bin/sh'; \
 		echo 'java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_PATH}/${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}'; \
