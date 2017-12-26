@@ -1,4 +1,4 @@
-FROM centos:altest
+FROM centos:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG JDK_VER=8 

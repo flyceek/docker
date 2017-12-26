@@ -1,4 +1,4 @@
-FROM centos:altest
+FROM centos:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ENV JAVA_WORK_HOME=/opt/soft/java
