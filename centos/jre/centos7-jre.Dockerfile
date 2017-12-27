@@ -1,7 +1,7 @@
 FROM centos:latest
 MAINTAINER flyceek <flyceek@gmail.com>
 
-ENV JAVA_WORK_HOME=/opt/soft/java
+ENV JAVA_WORK_HOME=/opt/soft/java/jdk
 ENV JAVA_VERSION_MAJOR=8
 ENV JAVA_VERSION_MINOR=152
 ENV JAVA_VERSION_BUILD=16
@@ -16,12 +16,16 @@ ENV JRE_HOME=${JAVA_HOME}/jre
 ENV CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
 ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 
-RUN yum install -y curl tar \
+RUN yum update -y
+    && yum install -y tar wget \
     && yum clean all \
     && mkdir -p ${JAVA_WORK_HOME} \
-    && curl --location --retry 3 --header "Cookie: oraclelicense=accept-securebackup-cookie; " ${JAVA_JRE_FILE_URL} | gunzip | tar -x -C ${JAVA_WORK_HOME} \
+    && cd ${JAVA_WORK_HOME}
+    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JAVA_JRE_FILE_URL}
     && echo "${JAVA_JRE_SHA256} ${JAVA_JRE_FILE_NAME}" | sha256sum -c - \
+    && tar -xvf ${JAVA_JRE_FILE_NAME} -C ${JAVA_HOME} --strip-components=1 \
     && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \
     && alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1 \
     && alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1 \
+    && rm -f ${JAVA_JRE_FILE_NAME} 
     && echo "root:123321" | chpasswd
