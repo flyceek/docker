@@ -21,11 +21,11 @@ RUN yum update -y
     && yum clean all \
     && mkdir -p ${JAVA_WORK_HOME} \
     && cd ${JAVA_WORK_HOME}
-    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JAVA_JRE_FILE_URL}
+    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JAVA_JRE_FILE_URL} \
     && echo "${JAVA_JRE_SHA256} ${JAVA_JRE_FILE_NAME}" | sha256sum -c - \
     && tar -xvf ${JAVA_JRE_FILE_NAME} -C ${JAVA_HOME} --strip-components=1 \
     && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \
     && alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1 \
     && alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1 \
-    && rm -f ${JAVA_JRE_FILE_NAME} 
+    && rm -f ${JAVA_JRE_FILE_NAME} \
     && echo "root:123321" | chpasswd
