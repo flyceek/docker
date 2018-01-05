@@ -8,10 +8,13 @@ ARG JENKINS_USER_GROUP=jenkins
 ARG JENKINS_USER_UID=1069
 ARG JENKINS_USER_GID=1069
 
-ARG JENKINS_VERSION=2.9
-ARG JENKINS_FILE_NAME=jenkins-war-${JENKINS_VERSION}.war
-ARG JENKINS_FILE_SHA=1fd02a942cca991577ee9727dd3d67470e45c031
+ARG JENKINS_VERSION=2.99
+ENV JENKINS_FILE_PATH='/opt/soft/jenkins'
+ENV JENKINS_FILE_NAME=jenkins-war-${JENKINS_VERSION}.war
+ARG JENKINS_FILE_ASC_NAME=${JENKINS_FILE_NAME}.asc
 ARG JENKINS_FILE_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/${JENKINS_FILE_NAME}
+ARG JENKINS_FILE_ASC_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/${JENKINS_FILE_ASC_NAME}
+
 
 ENV JENKINS_HTTP_PORT=8080
 ENV JENKINS_OPTIONS='--httpPort=${JENKINS_HTTP_PORT}'
@@ -32,10 +35,12 @@ RUN yum update -y \
         chmod a-w /etc/sudoers; \
     } \
     && curl -O ${JENKINS_FILE_URL} \
-    && echo "${JENKINS_FILE_SHA} ${JENKINS_FILE_NAME}" | sha1sum -c - \
+    && curl -O ${JENKINS_FILE_ASC_URL} \
+    && gpg --verify "${JENKINS_FILE_ASC_NAME}" "${JENKINS_FILE_NAME}" \
+    && rm -rf "${JENKINS_FILE_ASC_NAME}" \
     && { \
 		echo '#!/bin/sh'; \
-		echo 'java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}'; \
+		echo 'java ${JENKINS_JAVA_OPTIONS} -jar ${JENKINS_FILE_PATH}/${JENKINS_FILE_NAME} ${JENKINS_OPTIONS}'; \
 	} > /usr/local/bin/jenkins-start \
     && chmod +x /usr/local/bin/jenkins-start
 
