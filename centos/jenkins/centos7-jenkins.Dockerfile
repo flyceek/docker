@@ -9,6 +9,7 @@ ARG JENKINS_USER_UID=1069
 ARG JENKINS_USER_GID=1069
 
 ARG JENKINS_VERSION=2.99
+ARG JENKINS_GPG_KEY="9B7D32F2D50582E6"
 ENV JENKINS_FILE_PATH='/opt/soft/jenkins'
 ENV JENKINS_FILE_NAME=jenkins-war-${JENKINS_VERSION}.war
 ARG JENKINS_FILE_ASC_NAME=${JENKINS_FILE_NAME}.asc
@@ -36,6 +37,7 @@ RUN yum update -y \
     } \
     && curl -O ${JENKINS_FILE_URL} \
     && curl -O ${JENKINS_FILE_ASC_URL} \
+    && gpg --keyserver ha.pool.sks-keyservers.net --recv-key "${JENKINS_GPG_KEY}" ||  gpg --keyserver pgp.mit.edu --recv-keys "${JENKINS_GPG_KEY}" ||  gpg --keyserver keyserver.pgp.com --recv-keys "${JENKINS_GPG_KEY}" \
     && gpg --verify "${JENKINS_FILE_ASC_NAME}" "${JENKINS_FILE_NAME}" \
     && rm -rf "${JENKINS_FILE_ASC_NAME}" \
     && { \
