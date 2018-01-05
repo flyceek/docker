@@ -1,4 +1,4 @@
-FROM flyceek/alpine-openjdk:jdk-8u121
+FROM flyceek/alpine-openjdk:jdk-8u151
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG JENKINS_USER=jenkins
