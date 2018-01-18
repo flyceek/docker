@@ -19,7 +19,7 @@ ENV PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin
 RUN yum update -y \
     && yum install -y tar.x86_64 wget \
     && yum clean all \
-    && mkdir -p ${JAVA_WORK_HOME} \
+    && mkdir -p ${JAVA_HOME} \
     && cd ${JAVA_WORK_HOME} \
     && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JAVA_JRE_FILE_URL} \
     && echo "${JAVA_JRE_SHA256} ${JAVA_JRE_FILE_NAME}" | sha256sum -c - \
