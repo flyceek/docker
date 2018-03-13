@@ -1,7 +1,5 @@
 FROM flyceek/centos7-jdk:latest
-MAINTAINER flyceek <flyceek@gmail.com>
 
-ARG TEST=TEST
 ARG MAVEN_VERSION=3.5.0
 ARG MAVEN_FILE_SAVE_PATH=/opt/soft/mvn
 ARG MAVEN_FILE_SHA=878b8b93a8f9685aefba5c21a17b46eb141b1122
