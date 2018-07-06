@@ -22,6 +22,8 @@ RUN apt-get update \
         git \
         apt-transport-https \
         ca-certificates \
+        vim \
+        iputils-ping \
     && mkdir -p ${WORK_DIR} \
     && cd ${WORK_DIR} \
     && groupadd --gid 1000 ${YAPI_GROUP} \
@@ -37,9 +39,9 @@ RUN apt-get update \
     && tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${YAPI_FILENAME} \
     && chown -R ${YAPI_USER}:${YAPI_GROUP} ${WORK_DIR} \
-    && cd ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
+    && cd ${WORK_DIR}/${NODEJS_FILE_EXTRACT_DIR} \
+    && npm install
 
 VOLUME ["${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}/log"]
 USER ${YAPI_USER}
 WORKDIR ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
-RUN npm install
