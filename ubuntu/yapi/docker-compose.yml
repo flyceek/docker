@@ -8,9 +8,9 @@ services:
         target: /data/db
     ports:
       - 27017:27017
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: sh.34211
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: sh.34211
   yapi-mongo-express:
     image: mongo-express
     restart: always
@@ -19,11 +19,11 @@ services:
     environment:
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_SERVER: yapi-mongodb
-      # ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      # ME_CONFIG_MONGODB_ADMINPASSWORD: sh.34211
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: sh.34211
   yapi-web:
     image: flyceek/ubuntu-yapi:1.3.17
-    command: /bin/bash -c "[ ! -e /opt/soft/yapi/yapi-v1.3.17/log/init.lock ] && npm install && npm run install-server && touch /opt/soft/yapi/yapi-v1.3.17/log/init.lock; npm run start"
+    command: /bin/bash -c "[ ! -e /opt/soft/yapi/yapi-v1.3.17/log/init.lock ] && npm run install-server && touch /opt/soft/yapi/yapi-v1.3.17/log/init.lock; npm run start"
     links:
       - yapi-mongodb:mongodb
     ports:
