@@ -22,9 +22,6 @@ RUN apt-get update \
         git \
         apt-transport-https \
         ca-certificates \
-        # vim \
-        # sudo \
-        # iputils-ping \
     && mkdir -p ${WORK_DIR} \
     && cd ${WORK_DIR} \
     && groupadd --gid 1000 ${YAPI_GROUP} \
