@@ -17,7 +17,7 @@ services:
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_SERVER: yapi-mongodb
   yapi-web:
-    image: flyceek/ubuntu-yapi:1.3.17
+    image: flyceek/ubuntu-yapi
     links:
       - yapi-mongodb:mongodb
     ports:
