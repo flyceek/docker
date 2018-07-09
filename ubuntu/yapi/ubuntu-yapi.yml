@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   mongodb:
-    image: mongo:4
+    image: mongo
     volumes:
       - type: bind
         source: /var/yapi/mongo/data/db

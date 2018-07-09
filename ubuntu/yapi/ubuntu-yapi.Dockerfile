@@ -22,9 +22,9 @@ RUN apt-get update \
         git \
         apt-transport-https \
         ca-certificates \
-        vim \
-        sudo \
-        iputils-ping \
+        # vim \
+        # sudo \
+        # iputils-ping \
     && mkdir -p ${WORK_DIR} \
     && cd ${WORK_DIR} \
     && groupadd --gid 1000 ${YAPI_GROUP} \
@@ -39,11 +39,15 @@ RUN apt-get update \
     && wget ${YAPI_FILEURL} \
     && tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${YAPI_FILENAME} \
-    && chmod -R 777 ${WORK_DIR} \
-    && cd ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR} \
-    # && sudo npm install \
-    && chown -R ${YAPI_USER}:${YAPI_GROUP} ${WORK_DIR}
+    && chown -R ${YAPI_USER}:${YAPI_GROUP} ${WORK_DIR} \
+    && { \
+		echo '#!/bin/sh'; \
+		echo 'npm install'; \
+        echo 'npm run install-server';\
+        echo 'npm run start'; \
+	} > /usr/local/bin/yapi-start \
+	&& chmod +x /usr/local/bin/yapi-start
 
-VOLUME ["${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}/log"]
 USER ${YAPI_USER}
 WORKDIR ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
+CMD ["yapi-start"] 
