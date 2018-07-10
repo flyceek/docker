@@ -41,9 +41,15 @@ RUN apt-get update \
 		echo 'npm install'; \
         echo 'npm run install-server';\
         echo 'npm run start'; \
+	} > /usr/local/bin/yapi-initdb-start \
+	&& chmod +x /usr/local/bin/yapi-initdb-start \
+    && { \
+		echo '#!/bin/sh'; \
+		echo 'npm install'; \
+        echo 'npm run start'; \
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start
 
 USER ${YAPI_USER}
 WORKDIR ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
-CMD ["yapi-start"] 
+CMD ["yapi-initdb-start"] 
