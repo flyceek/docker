@@ -1,23 +1,23 @@
 version: "3.3"
 services:
-  yapi-mongodb:
+  mongodb:
     image: mongo
     volumes:
       - type: bind
         source: /var/yapi/mongo/data/db
         target: /data/db
-  yapi-mongo-express:
+  mongo-express:
     image: mongo-express
     restart: always
     ports:
       - 18123:8081
     environment:
       ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_MONGODB_SERVER: yapi-mongodb
-  yapi-web:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+  web:
     image: flyceek/ubuntu-yapi
     links:
-      - yapi-mongodb:mongodb
+      - mongodb:mongodb
     ports:
       - 3003:3000
     extra_hosts:
