@@ -6,13 +6,11 @@ services:
       - type: bind
         source: /var/yapi/mongo/data/db
         target: /data/db
-    ports:
-      - 27017:27017
   yapi-mongo-express:
     image: mongo-express
     restart: always
     ports:
-      - 18081:8081
+      - 18123:8081
     environment:
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_SERVER: yapi-mongodb
@@ -22,6 +20,8 @@ services:
       - yapi-mongodb:mongodb
     ports:
       - 3003:3000
+    extra_hosts:
+      ldap.com.cn: 0.0.0.0
     volumes:
       - type: bind
         source: /var/yapi/config.json
