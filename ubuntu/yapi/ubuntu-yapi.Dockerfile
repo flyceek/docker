@@ -32,7 +32,6 @@ RUN apt-get update \
     && ln -s ${WORK_DIR}/${NODEJS_FILE_EXTRACT_DIR}/bin/node /usr/local/bin/node \
     && ln -s ${WORK_DIR}/${NODEJS_FILE_EXTRACT_DIR}/bin/npm /usr/local/bin/npm \
     && mkdir -p ${YAPI_FILE_EXTRACT_DIR} \
-    && mkdir -p ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}/log \
     && wget ${YAPI_FILEURL} \
     && tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${YAPI_FILENAME} \
