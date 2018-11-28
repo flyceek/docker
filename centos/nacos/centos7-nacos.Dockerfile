@@ -1,7 +1,7 @@
 FROM centos:latest
 MAINTAINER flyceek "flyceek@gmail.com"
 
-ARG NACOS_WORKDIR=/opt/soft/nacos/
+ARG NACOS_WORKDIR=/opt/soft/nacos
 ARG NACOS_VERSION=0.5.0
 ARG NACOS_FILE_NAME=nacos-server-${NACOS_VERSION}.tar.gz
 ARG NACOS_FILE_EXTRACT_DIR=nacos-server-${NACOS_VERSION}
@@ -17,13 +17,13 @@ ENV JAVA=/usr/lib/jvm/java-1.8.0-openjdk/bin/java
 
 RUN yum update -y \
     && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel wget iputils nc tzdata vim libcurl\
-    && mkdir -p ${NACOS_WORKDIR} \
+    && mkdir -p ${NACOS_HOME} \
     && cd ${NACOS_WORKDIR} \
     && wget ${NACOS_FILE_URL} \
     && tar -xzvf ${NACOS_FILE_NAME} -C ${NACOS_HOME} --strip-components=1 \
     && rm ${NACOS_FILE_NAME} \
-    && chmod -R 777 ${NACOS_FILE_EXTRACT_DIR} \
-    && cd ${NACOS_FILE_EXTRACT_DIR} \
+    && chmod -R 777 ${NACOS_HOME} \
+    && cd ${NACOS_HOME} \
     && mkdir -p logs \
 	&& cd logs \
 	&& touch start.out \
