@@ -20,7 +20,7 @@ RUN yum update -y \
     && mkdir -p ${NACOS_WORKDIR} \
     && cd ${NACOS_WORKDIR} \
     && wget ${NACOS_FILE_URL} \
-    && tar -xzvf ${NACOS_FILE_URL} \
+    && tar -xzvf ${NACOS_FILE_NAME} -C ${NACOS_HOME} --strip-components=1 \
     && rm ${NACOS_FILE_NAME} \
     && chmod -R 777 ${NACOS_FILE_EXTRACT_DIR} \
     && cd ${NACOS_FILE_EXTRACT_DIR} \
