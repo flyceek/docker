@@ -14,7 +14,8 @@ RUN yum update -y \
     && wget --no-check-certificate ${SS5_INSTALL_FILE_URL} -O ${SS5_INSTALL_FILE_NAME} \
     && { \
 		echo '#!/bin/sh'; \
-		echo 'sh ${SS5_INSTALL_PATH}'; \
+        echo 'cd /opt/soft/socks5'; \
+		echo 'bash install.sh'; \
 	} > /usr/local/bin/ss5-install \
     && chmod +x /usr/local/bin/ss5-install \
     && yum clean all \
