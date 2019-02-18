@@ -1,24 +1,23 @@
 FROM centos:latest
 MAINTAINER flyceek "flyceek@gmail.com"
 
-ARG WORKDIR=/opt/soft/socks5
-ARG INSTALL_FILE_NAME=install.sh
-ARG INSTALL_FILE_URL=https://raw.github.com/Lozy/danted/master/${INSTALL_FILE_NAME}
+ARG SS5_WORKDIR=/opt/soft/socks5
+ARG SS5_INSTALL_FILE_NAME=install.sh
+ARG SS5_INSTALL_FILE_URL=https://raw.github.com/Lozy/danted/master/${SS5_INSTALL_FILE_NAME}
 
+ENV SS5_INSTALL_PATH=${SS5_WORKDIR}/${SS5_INSTALL_FILE_NAME}
 
 RUN yum update -y \
     && yum install -y wget \
-    && mkdir -p ${WORKDIR} \
-    && cd ${WORKDIR} \
-    && wget --no-check-certificate ${INSTALL_FILE_URL} -O ${INSTALL_FILE_NAME} \
+    && mkdir -p ${SS5_WORKDIR} \
+    && cd ${SS5_WORKDIR} \
+    && wget --no-check-certificate ${SS5_INSTALL_FILE_URL} -O ${SS5_INSTALL_FILE_NAME} \
     && { \
 		echo '#!/bin/sh'; \
-		echo 'sh ${WORKDIR}/${INSTALL_FILE_NAME}'; \
+		echo 'sh ${SS5_INSTALL_PATH}'; \
 	} > /usr/local/bin/ss5-install \
     && chmod +x /usr/local/bin/ss5-install \
     && yum clean all \
     && echo "root:123321" | chpasswd
-
-WORKDIR ${WORKDIR}
 
 ENTRYPOINT ["ss5-install"]
