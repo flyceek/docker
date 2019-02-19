@@ -11,9 +11,3 @@ RUN apk update; apk upgrade; \
     git checkout ${GOPROXY_VERSION}; \
     CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -a -installsuffix cgo -o proxy; \
     chmod 0777 proxy
-
-FROM debian:stable-slim
-COPY --from=builder /go/src/github.com/snail007/goproxy/proxy /usr/local/bin/
-# RUN chmod 0777 /usr/local/bin/proxy
-EXPOSE 80 443
-CMD /usr/local/bin/proxy http -t tcp -p :80,:443git 
