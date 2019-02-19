@@ -5,10 +5,11 @@ ARG SS5_WORKDIR=/opt/soft/ss5
 ARG SS5_SRC_DIR=${SS5_WORKDIR}/src
 ARG SS5_VERSION=3.8.9-8
 ARG SS5_FILE_NAME=ss5-${SS5_VERSION}.tar.gz
-ARG SS5_FILE_URL=http://jaist.dl.sourceforge.net/project/ss5/ss5/${SS5_VERSION}/${SS5_FILE_NAME}
+ARG SS5_FILE_URL=http://nchc.dl.sourceforge.net/project/ss5/ss5/${SS5_VERSION}/${SS5_FILE_NAME}
 
 ENV SS5_USER=paranora
 ENV SS5_PASSWD=123321
+ENV SS5_OPTS='-u root -b 0.0.0.0:1080'
 
 RUN yum update -y \
     && yum install -y gcc automake make openldap-devel pam-devel cyrus-sasl-devel openssl-devel wget \
@@ -29,7 +30,7 @@ RUN yum update -y \
     && { \
 		echo '#!/bin/sh'; \
 		echo 'echo ${SS5_USER} ${SS5_PASSWD} > /etc/opt/ss5/ss5.passwd'; \
-        echo 'ss5 -t -u root'; \
+        echo 'ss5 -t ${SS5_OPTS}'; \
         echo 'tail -f /var/log/ss5/ss5.log'; \
 	} > /usr/local/bin/ss5-start \
     && chmod +x /usr/local/bin/ss5-start \
