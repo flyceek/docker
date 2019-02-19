@@ -20,4 +20,5 @@ RUN yum update -y \
     && yum clean all \
     && echo "root:123321" | chpasswd
 
+WORKDIR ${SS5_WORKDIR}
 ENTRYPOINT ["ss5-install"]
