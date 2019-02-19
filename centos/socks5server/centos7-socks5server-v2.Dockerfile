@@ -28,13 +28,13 @@ RUN yum update -y \
     && touch /var/log/ss5/ss5.log \
     && { \
 		echo '#!/bin/sh'; \
-		echo 'echo ''${SS5_USER} ${SS5_PASSWD}'' > /etc/opt/ss5/ss5.passwd'; \
+		echo 'echo ${SS5_USER} ${SS5_PASSWD} > /etc/opt/ss5/ss5.passwd'; \
         echo 'ss5 -t -u root'; \
         echo 'tail -f /var/log/ss5/ss5.log'; \
 	} > /usr/local/bin/ss5-start \
     && chmod +x /usr/local/bin/ss5-start \
     && echo "root:123321" | chpasswd
 
-EXPOSE 3080
+EXPOSE 1080
 WORKDIR ${SS5_WORKDIR}
 ENTRYPOINT ["ss5-start"]
