@@ -65,7 +65,7 @@ tblib \
     && wget -O ${PYSPIDER_FILE_NAME} ${PYSPIDER_FILE_URL} \
     && tar xavf ${PYSPIDER_FILE_NAME} -C ${PYSPIDER_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${PYSPIDER_FILE_NAME} \
-    # run test
+# run test
     && cd ${PYSPIDER_FILE_SRC_DIR} \
     && pip install -e .[all]
 
