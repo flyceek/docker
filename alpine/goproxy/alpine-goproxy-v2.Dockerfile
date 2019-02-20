@@ -13,7 +13,7 @@ RUN apk update \
     && mkdir -p ${GOPROXY_FILE_EXTRACT_DIR} \
     && cd ${GOPROXY_WORKDIR} \
     && wget -O ${GOPROXY_FILE_NAME} ${GOPROXY_FILE_URL} \
-    && tar -xzf ${GOPROXY_FILE_NAME} -C ${GOPROXY_FILE_EXTRACT_DIR} --strip-components=1 \
+    && tar -xzf ${GOPROXY_FILE_NAME} -C ${GOPROXY_FILE_EXTRACT_DIR} \
     && rm ${GOPROXY_FILE_NAME} \
     && chmod -R 0777 ${GOPROXY_FILE_EXTRACT_DIR} \
     && echo "root:123321" | chpasswd
