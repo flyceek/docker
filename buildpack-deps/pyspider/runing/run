@@ -47,4 +47,6 @@ scheduler \
 --inqueue-limit 10000 \
 --delete-time 3600
 
-
+mongo -u flyceek -p 123321 --authenticationDatabase admin
+use admin
+db.createUser({ user:'flyceek', pwd: '123321', roles: [ { role: "root",db: "admin" }]})
