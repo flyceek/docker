@@ -10,6 +10,7 @@ ARG PHANTONJS_FILE_URL=https://bitbucket.org/ariya/phantomjs/downloads/${PHANTON
 ARG MYSQL_WORK_DIR=/opt/soft/mysql
 ARG MYSQL_CONNECTOR_PYTHON_VERSION=8.0.15
 ARG MYSQL_CONNECTOR_PYTHON_FILE_NAME=mysql-connector-python-${MYSQL_CONNECTOR_PYTHON_VERSION}.zip
+ARG MYSQL_CONNECTOR_PYTHON_FILE_EXTRACT_DIR=${MYSQL_WORK_DIR}/mysql-connector-python-${MYSQL_CONNECTOR_PYTHON_VERSION}
 ARG MYSQL_CONNECTOR_PYTHON_FILE_URL=https://dev.mysql.com/get/Downloads/Connector-Python/${MYSQL_CONNECTOR_PYTHON_FILE_NAME}
 ARG MYSQL_CONNECTOR_PYTHON_FILE_MD5=d8d385202f83d12a371593cbe00a60ba
 
@@ -28,11 +29,14 @@ RUN mkdir -p ${PHANTONJS_FILE_EXTRACT_DIR} \
     && ln -s ${PHANTONJS_FILE_EXTRACT_DIR}/bin/phantomjs /usr/local/bin/phantomjs \
     && rm ${PHANTONJS_FILE_NAME} \
 # install mysql connector python
-    && mkdir -p ${MYSQL_WORK_DIR} \
+    && mkdir -p ${MYSQL_CONNECTOR_PYTHON_FILE_EXTRACT_DIR} \
     && cd ${MYSQL_WORK_DIR} \
     && wget -O ${MYSQL_CONNECTOR_PYTHON_FILE_NAME} ${MYSQL_CONNECTOR_PYTHON_FILE_URL} \
     && echo "${MYSQL_CONNECTOR_PYTHON_FILE_MD5} ${MYSQL_CONNECTOR_PYTHON_FILE_NAME}" | md5sum -c - \
-    && pip install --egg ${MYSQL_CONNECTOR_PYTHON_FILE_NAME} \
+    && tar xavf ${MYSQL_CONNECTOR_PYTHON_FILE_NAME} -C ${MYSQL_CONNECTOR_PYTHON_FILE_EXTRACT_DIR} --strip-components 1 \
+    && rm ${MYSQL_CONNECTOR_PYTHON_FILE_NAME} \
+    && cd ${MYSQL_CONNECTOR_PYTHON_FILE_EXTRACT_DIR} \
+    && python setup.py install \
 # install requirements
     && pip install -r Flask>=0.10 \
 Jinja2>=2.7 \
