@@ -19,4 +19,4 @@ RUN apk update \
     && echo "root:123321" | chpasswd
 
 WORKDIR ${GOPROXY_FILE_EXTRACT_DIR}
-ENTRYPOINT ["./proxy"]
+# ENTRYPOINT ["./proxy"]
