@@ -11,8 +11,10 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${CODE_PUSH_WEB_HOME}/code-push-web' \
-		echo 'npm install'; \
-        echo 'npm run start'; \
+		echo 'npm run build'; \
+        echo 'cd ./build'; \
+        echo 'npm install'; \
+        echo 'node ./server.js'; \
 	} > /usr/local/bin/code-push-web-start \
     && chmod +x /usr/local/bin/code-push-web-start \
     && echo "root:123321" | chpasswd
