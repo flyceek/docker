@@ -19,6 +19,6 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && chmod +x /usr/local/bin/code-push-web-start \
     && echo "root:123321" | chpasswd
 
-EXPOSE 3000
+EXPOSE 3001
 WORKDIR ${CODE_PUSH_WEB_HOME}
 CMD ["code-push-web-start"] 
