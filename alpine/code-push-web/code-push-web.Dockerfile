@@ -10,7 +10,7 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && git clone --depth=1 --single-branch --branch=master ${CODE_PUSH_WEB_GITURL} ${CODE_PUSH_WEB_HOME} \
     && { \
 		echo '#!/bin/sh'; \
-        echo 'cd ${CODE_PUSH_WEB_HOME}' \
+        echo 'cd ${CODE_PUSH_WEB_HOME}'; \
 		echo 'npm run build'; \
         echo 'cd ./build'; \
         echo 'npm install'; \
