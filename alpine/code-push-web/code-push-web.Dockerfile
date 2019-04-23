@@ -1,4 +1,4 @@
-FROM node:8.16.0-alpine
+FROM node:10.6-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ENV CODE_PUSH_WEB_HOME=/opt/code-push-web
