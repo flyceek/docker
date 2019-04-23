@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  yapi-web:
+    image: flyceek/alpine-yapi:latest
+    volumes:
+      - /var/yapi/config.json:/opt/soft/yapi/config.json
+    environment:
+      YAPI_VERSION: "1.5.14"
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3003:3000"
+    networks:
+      - yapiweb-net
+    depends_on:
+      - mongodb
+      - mongo-express
+  mongodb:
+    image: mongo
+    volumes:
+      - data-mongodb:/var/yapi/mongo/data/db
+    ports:
+      - "3308:3306"
+    environment:
+      MONGODB_VERSION: "null"
+    networks:
+      - mongodb-net
+  mongo-express:
+    image: mongo-express
+    volumes:
+      - data-redis:/data
+    ports:
+      - "18123:8081"
+    networks:
+      - mongodb-net
+networks:
+  yapiweb-net:
+  mongodb-net:
+volumes:
+  data-mongodb:
