@@ -41,5 +41,6 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && echo "root:123321" | chpasswd
 
 USER ${YAPI_USER}
+EXPOSE 3000
 WORKDIR ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
 CMD ["yapi-initdb-start"] 
