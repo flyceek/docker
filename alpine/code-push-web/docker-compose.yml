@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  code-push-web:
+    image: flyceek/code-push-web:latest
+    volumes:
+      - /var/code-push-web/config.js:/opt/code-push-web/src/config.js
+    environment:
+      CODE_PUSH_WEB_VERSION: "1.5.14"
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3001:3001"
+    networks:
+      - code-push-web-net
+networks:
+  code-push-web-net:

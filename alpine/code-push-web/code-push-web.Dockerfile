@@ -1,16 +1,16 @@
 FROM node:8.16.0-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
-ENV CODE_PUSH_WEB_HOME=/var/code-push-web-home
+ENV CODE_PUSH_WEB_HOME=/opt/code-push-web
 ARG CODE_PUSH_WEB_GITURL=https://github.com/lisong/code-push-web.git
 
 RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && mkdir -p ${CODE_PUSH_WEB_HOME} \
     && cd ${CODE_PUSH_WEB_HOME} \
-    && git clone --depth=1 --single-branch --branch=master ${CODE_PUSH_WEB_GITURL} code-push-web \
+    && git clone --depth=1 --single-branch --branch=master ${CODE_PUSH_WEB_GITURL} ${CODE_PUSH_WEB_HOME} \
     && { \
 		echo '#!/bin/sh'; \
-        echo 'cd ${CODE_PUSH_WEB_HOME}/code-push-web' \
+        echo 'cd ${CODE_PUSH_WEB_HOME}' \
 		echo 'npm run build'; \
         echo 'cd ./build'; \
         echo 'npm install'; \
