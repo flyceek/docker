@@ -8,7 +8,6 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && mkdir -p ${CODE_PUSH_WEB_HOME} \
     && cd ${CODE_PUSH_WEB_HOME} \
     && git clone --depth=1 --single-branch --branch=master ${CODE_PUSH_WEB_GITURL} ${CODE_PUSH_WEB_HOME} \
-    && chmod -$ 777 ${CODE_PUSH_WEB_HOME} \
     && npm install --registry https://registry.npm.taobao.org \
     && npm run build -- --release \
     && cd ./build \
@@ -19,6 +18,7 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
         echo 'node server.js'; \
     } > /usr/local/bin/code-push-web-start \
     && chmod +x /usr/local/bin/code-push-web-start \
+    && chmod -$ 777 ${CODE_PUSH_WEB_HOME} \
     && echo "root:123321" | chpasswd
 
 EXPOSE 3001
