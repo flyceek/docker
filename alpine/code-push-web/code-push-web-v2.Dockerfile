@@ -7,7 +7,7 @@ ARG CODE_PUSH_WEB_USER=codepushweb
 ARG CODE_PUSH_WEB_GROUP=codepushweb
 ARG CODE_PUSH_WEB_GITURL=https://github.com/lisong/code-push-web.git
 
-COPY config.js /
+COPY config.js /config.js
 
 RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && addgroup -g 1090 ${CODE_PUSH_WEB_GROUP} \
