@@ -14,7 +14,7 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && mkdir -p ${CODE_PUSH_WEB_HOME} \
     && cd ${CODE_PUSH_WEB_HOME} \
     && git clone --depth=1 --single-branch --branch=master ${CODE_PUSH_WEB_GITURL} ${CODE_PUSH_WEB_HOME} \
-    && copy /config.js src/config.js \
+    && cp /config.js src/config.js \
     && npm install --registry https://registry.npm.taobao.org \
     && npm run build -- --release \
     && cd ./build \

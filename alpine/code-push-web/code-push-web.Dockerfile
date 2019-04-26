@@ -10,6 +10,7 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && mkdir -p ${CODE_PUSH_WEB_HOME} \
     && cd ${CODE_PUSH_WEB_HOME} \
     && git clone --depth=1 --single-branch --branch=master ${CODE_PUSH_WEB_GITURL} ${CODE_PUSH_WEB_HOME} \
+    && cp /config.js src/config.js \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${CODE_PUSH_WEB_HOME}'; \
