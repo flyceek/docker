@@ -4,6 +4,8 @@ MAINTAINER flyceek <flyceek@gmail.com>
 ENV CODE_PUSH_WEB_HOME=/opt/code-push-web
 ARG CODE_PUSH_WEB_GITURL=https://github.com/lisong/code-push-web.git
 
+COPY config.js /
+
 RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && mkdir -p ${CODE_PUSH_WEB_HOME} \
     && cd ${CODE_PUSH_WEB_HOME} \
