@@ -25,7 +25,7 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${YAPI_FILENAME} \
     && chown -R ${YAPI_USER}:${YAPI_GROUP} ${WORK_DIR} \
-    && npm install --registry https://registry.npm.taobao.org \
+    && npm install --production --registry https://registry.npm.taobao.org \
     && { \
 		echo '#!/bin/sh'; \
         echo 'npm run install-server';\
