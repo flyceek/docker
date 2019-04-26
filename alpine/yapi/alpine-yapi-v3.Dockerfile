@@ -5,11 +5,10 @@ ARG YAPI_WORK_DIR=/opt/soft/yapi
 ARG YAPI_USER=yapi
 ARG YAPI_GROUP=yapi
 ARG YAPI_VER=1.5.14
-ARG YAPI_FILENAME=v${YAPI_VER}.tar.gz
-ARG YAPI_FILE_EXTRACT_DIR=yapi-v${YAPI_VER}
-ARG YAPI_FILE_URL=https://github.com/YMFE/yapi/archive/${YAPI_FILENAME}
+ARG YAPI_SRC_DIR=yapi-v${YAPI_VER}
+ARG YAPI_GIT_URL=https://github.com/YMFE/yapi.git
 
-ENV YAPI_SRC_PATH=${YAPI_WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
+ENV YAPI_FILE_SRC_PATH=${YAPI_WORK_DIR}/${YAPI_SRC_DIR}
 
 RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         git \
@@ -22,21 +21,19 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && cd ${YAPI_WORK_DIR} \
     && addgroup -g 1090 ${YAPI_GROUP} \
     && adduser -h /home/${YAPI_USER} -u 1090 -G ${YAPI_GROUP} -s /bin/bash -D ${YAPI_USER} \
-    && mkdir -p ${YAPI_FILE_EXTRACT_DIR} \
-    && wget ${YAPI_FILE_URL} \
-    && tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
-    && rm ${YAPI_FILENAME} \
+    && git clone --depth=1 --single-branch --branch=master ${YAPI_GIT_URL} ${YAPI_SRC_DIR} \
+    && rm ${YAPI_SRC_DIR} \
     && npm install --production --registry https://registry.npm.taobao.org \
     && { \
 		echo '#!/bin/sh'; \
-        echo 'cd ${YAPI_SRC_PATH}'; \
+        echo 'cd ${YAPI_FILE_SRC_PATH}'; \
         echo 'npm run install-server';\
         echo 'node server/app.js'; \
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
-        echo 'cd ${YAPI_SRC_PATH}'; \
+        echo 'cd ${YAPI_FILE_SRC_PATH}'; \
         echo 'node server/app.js'; \
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start \
@@ -45,5 +42,5 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
 
 USER ${YAPI_USER}
 EXPOSE 3000
-WORKDIR ${YAPI_SRC_PATH}
+WORKDIR ${YAPI_FILE_SRC_PATH}
 CMD ["yapi-initdb-start"] 
