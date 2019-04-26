@@ -1,0 +1,18 @@
+{
+    "port": "3000",
+    "adminAccount": "paranora@abc.com",
+    "db": {
+            "servername": "mongodb",
+            "DATABASE": "yapi",
+            "port": 27017
+    },
+    "ldapLogin": {
+            "enable": true,
+            "server": "ldap://ldap.centaline.com.cn:389",
+            "baseDn": "ldapshdev@centaline.com.cn",
+            "bindPassword": "ladap.good5533",
+            "searchDn": "OU=中原地产,DC=centaline,DC=com,DC=cn",
+            "searchStandard": "mail",
+    "emailPostfix": "@centaline.com.cn"
+    }
+}

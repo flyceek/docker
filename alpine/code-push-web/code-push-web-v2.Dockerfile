@@ -2,6 +2,7 @@ FROM node:6.17.1-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ENV CODE_PUSH_WEB_HOME=/opt/code-push-web
+ARG CODE_PUSH_WEB_VERSION=0.3
 ARG CODE_PUSH_WEB_USER=codepushweb
 ARG CODE_PUSH_WEB_GROUP=codepushweb
 ARG CODE_PUSH_WEB_GITURL=https://github.com/lisong/code-push-web.git
@@ -21,7 +22,7 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
     && npm install --registry https://registry.npm.taobao.org \
     && { \
         echo '#!/bin/sh'; \
-        echo 'cd ${CODE_PUSH_WEB_HOME}/build' \
+        echo 'cd ${CODE_PUSH_WEB_HOME}/build'; \
         echo 'node server.js'; \
     } > /usr/local/bin/code-push-web-start \
     && chmod +x /usr/local/bin/code-push-web-start \
