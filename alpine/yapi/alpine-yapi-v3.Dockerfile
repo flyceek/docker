@@ -1,14 +1,14 @@
 FROM node:10.6-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
-ARG YAPI_WORK_DIR=/opt/soft/yapi
+ARG YAPI_WORK_DIR=/opt/yapi
 ARG YAPI_USER=yapi
 ARG YAPI_GROUP=yapi
 ARG YAPI_VER=1.5.14
 ARG YAPI_SRC_DIR=yapi-v${YAPI_VER}
 ARG YAPI_GIT_URL=https://github.com/YMFE/yapi.git
 
-ENV YAPI_FILE_SRC_PATH=${YAPI_WORK_DIR}/${YAPI_SRC_DIR}
+ENV YAPI_SRC_PATH=${YAPI_WORK_DIR}/${YAPI_SRC_DIR}
 
 RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         git \
@@ -18,24 +18,26 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         tar \
         xz \
         make \
-    && mkdir -p ${YAPI_WORK_DIR} \
-    && cd ${YAPI_WORK_DIR} \
+    && npm config set registry https://registry.npm.taobao.org/ \
+    && npm i -g pm2@latest --no-optional \
     && addgroup -g 1090 ${YAPI_GROUP} \
     && adduser -h /home/${YAPI_USER} -u 1090 -G ${YAPI_GROUP} -s /bin/bash -D ${YAPI_USER} \
+    && mkdir -p ${YAPI_SRC_PATH} \
+    && cd ${YAPI_WORK_DIR} \
     && git clone --depth=1 --single-branch --branch=master ${YAPI_GIT_URL} ${YAPI_SRC_DIR} \
     && rm ${YAPI_SRC_DIR} \
-    && npm install --production --registry https://registry.npm.taobao.org \
+    && npm install --production \
     && { \
 		echo '#!/bin/sh'; \
-        echo 'cd ${YAPI_FILE_SRC_PATH}'; \
+        echo 'cd ${YAPI_SRC_PATH}'; \
         echo 'npm run install-server'; \
-        echo 'node server/app.js'; \
+        echo 'pm2 start server/app.js --watch'
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
-        echo 'cd ${YAPI_FILE_SRC_PATH}'; \
-        echo 'node server/app.js'; \
+        echo 'cd ${YAPI_SRC_PATH}'; \
+        echo 'pm2 start server/app.js --watch'
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start \
     && chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_DIR} \
@@ -43,5 +45,5 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
 
 USER ${YAPI_USER}
 EXPOSE 3000
-WORKDIR ${YAPI_FILE_SRC_PATH}
+WORKDIR ${YAPI_SRC_PATH}
 CMD ["yapi-initdb-start"] 

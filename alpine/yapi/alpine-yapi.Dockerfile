@@ -1,13 +1,15 @@
 FROM node:10.6-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
-ARG WORK_DIR=/opt/soft/yapi
+ARG YAPI_WORK_HOME=/opt/yapi
 ARG YAPI_USER=yapi
 ARG YAPI_GROUP=yapi
 ARG YAPI_VER=1.5.14
 ARG YAPI_FILENAME=v${YAPI_VER}.tar.gz
 ARG YAPI_FILE_EXTRACT_DIR=yapi-v${YAPI_VER}
 ARG YAPI_FILEURL=https://github.com/YMFE/yapi/archive/${YAPI_FILENAME}
+
+ENV YAPI_SRC_PATH=${YAPI_WORK_HOME}/${YAPI_FILE_EXTRACT_DIR}
 
 RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         git \
@@ -16,31 +18,34 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         tar \
         xz \
         make \
-    && mkdir -p ${WORK_DIR} \
-    && cd ${WORK_DIR} \
+    && npm config set registry https://registry.npm.taobao.org/ \
+    && npm i -g pm2@latest --no-optional \
     && addgroup -g 1090 ${YAPI_GROUP} \
     && adduser -h /home/${YAPI_USER} -u 1090 -G ${YAPI_GROUP} -s /bin/bash -D ${YAPI_USER} \
-    && mkdir -p ${YAPI_FILE_EXTRACT_DIR} \
+    && mkdir -p ${YAPI_SRC_PATH} \
+    && cd ${YAPI_WORK_HOME} \
     && wget ${YAPI_FILEURL} \
     && tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${YAPI_FILENAME} \
-    && chown -R ${YAPI_USER}:${YAPI_GROUP} ${WORK_DIR} \
+    && chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_HOME} \
     && { \
 		echo '#!/bin/sh'; \
-		echo 'npm install'; \
+        echo 'cd ${YAPI_SRC_PATH}'; \
+		echo 'npm install --production'; \
         echo 'npm run install-server';\
-        echo 'npm run start'; \
+        echo 'pm2 start server/app.js --watch'
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
-		echo 'npm install'; \
-        echo 'npm run start'; \
+        echo 'cd ${YAPI_SRC_PATH}'; \
+		echo 'npm install --production'; \
+        echo 'pm2 start server/app.js --watch'
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start \
     && echo "root:123321" | chpasswd
 
 USER ${YAPI_USER}
 EXPOSE 3000
-WORKDIR ${WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
+WORKDIR ${YAPI_SRC_PATH}
 CMD ["yapi-initdb-start"] 

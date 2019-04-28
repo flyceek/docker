@@ -1,18 +1,18 @@
 {
-    "port": "3000",
-    "adminAccount": "paranora@abc.com",
+    "port": process.env.PORT || "3000",
+    "adminAccount": process.env.ADMIN_ACCOUNT,
     "db": {
-            "servername": "mongodb",
-            "DATABASE": "yapi",
-            "port": 27017
+        "servername": process.env.DB_SERVERNAME,
+        "DATABASE": process.env.DB_DATABASE,
+        "port": process.env.DB_PORT || 27017
     },
     "ldapLogin": {
-            "enable": true,
-            "server": "ldap://ldap.centaline.com.cn:389",
-            "baseDn": "ldapshdev@centaline.com.cn",
-            "bindPassword": "ladap.good5533",
-            "searchDn": "OU=中原地产,DC=centaline,DC=com,DC=cn",
-            "searchStandard": "mail",
-    "emailPostfix": "@centaline.com.cn"
+        "enable": process.env.LDAP_ENABLE || false,
+        "server": process.env.LDAP_SERVER,
+        "baseDn": process.env.LDAP_BASE_DN,
+        "bindPassword": process.env.LDAP_BIND_PWD,
+        "searchDn": process.env.LDAP_SEARCH_DN,
+        "searchStandard": process.env.LDAP_SEARCH_STANDARD,
+        "emailPostfix": process.env.LDAP_EMAIL_POSTFIX
     }
 }

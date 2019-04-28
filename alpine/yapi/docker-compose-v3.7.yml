@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   yapi-web:
-    image: flyceek/alpine-yapi:latest
+    image: flyceek/alpine-yapi:1.5.14-source
     volumes:
       - /var/yapi/config.json:/opt/soft/yapi/config.json
     environment:
@@ -19,7 +19,6 @@ services:
       - yapiweb-net
     depends_on:
       - mongodb
-      - mongo-express
   mongodb:
     image: mongo
     volumes:
@@ -38,6 +37,8 @@ services:
       - "18123:8081"
     networks:
       - mongodb-net
+    depends_on:
+      - mongodb
 networks:
   yapiweb-net:
   mongodb-net:
