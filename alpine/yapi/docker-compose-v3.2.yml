@@ -1,0 +1,51 @@
+version: "3.2"
+services:
+  yapi-web:
+    image: flyceek/alpine-yapi:1.5.14
+    extra_hosts:
+      - ldap.centaline.com.cn: 1.1.1.1
+    volumes:
+      - type: bind
+        source: /var/yapi/config.json
+        target: /opt/yapi/config.json
+    environment:
+      YAPI_VERSION: "1.5.14"
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3003:3000"
+    networks:
+      - yapiweb-net
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    volumes:
+      - type: bind
+        source: data-mongodb
+        target: /data/db
+    ports:
+      - "3308:3306"
+    networks:
+      - mongodb-net
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "18123:8081"
+    environment:
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    networks:
+      - mongodb-net
+    depends_on:
+      - mongodb
+networks:
+  yapiweb-net:
+  mongodb-net:
+volumes:
+  data-mongodb:

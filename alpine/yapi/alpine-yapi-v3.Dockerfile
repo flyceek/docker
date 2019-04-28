@@ -25,19 +25,19 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && mkdir -p ${YAPI_SRC_PATH} \
     && cd ${YAPI_WORK_DIR} \
     && git clone --depth=1 --single-branch --branch=master ${YAPI_GIT_URL} ${YAPI_SRC_DIR} \
-    && rm ${YAPI_SRC_DIR} \
+    && rm ${YAPI_SRC_PATH} \
     && npm install --production \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${YAPI_SRC_PATH}'; \
         echo 'npm run install-server'; \
-        echo 'pm2 start server/app.js --watch'
+        echo 'pm2 start server/app.js'
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${YAPI_SRC_PATH}'; \
-        echo 'pm2 start server/app.js --watch'
+        echo 'pm2 start server/app.js'
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start \
     && chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_DIR} \

@@ -11,7 +11,7 @@ ARG JDK_FILE_SAVE_PATH=/opt/soft/java/jdk
 ARG JDK_FILE_NAME=jdk-${JDK_ED}-linux-x64.tar.gz
 ARG JDK_FILE_SHA256=28a00b9400b6913563553e09e8024c286b506d8523334c93ddec6c9ec7e9d346
 ARG JDK_FILE_EXTRACT_DIR=jdk1.${JDK_VER}.0_${JDK_UPDATE}
-ARG JDK_FILE_URL=http://download.oracle.com/otn/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URL_ID}/${JDK_FILE_NAME}
+ARG JDK_FILE_URL=http://download.oracle.com/otn-pub/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URL_ID}/${JDK_FILE_NAME}
 
 ENV JAVA_HOME=${JDK_FILE_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}
 ENV JRE_HOME=${JAVA_HOME}/jre
@@ -23,7 +23,7 @@ RUN yum update -y \
     && yum clean all \
     && mkdir -p ${JAVA_HOME} \
     && cd ${JDK_FILE_SAVE_PATH} \
-    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
+    && wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JDK_FILE_URL} \ 
     && echo "${JDK_FILE_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - \
     && tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1 \
     && alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1 \

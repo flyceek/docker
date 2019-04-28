@@ -42,6 +42,7 @@ RUN apt-get update \
     && chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_HOME} \
     && { \
 		echo '#!/bin/sh'; \
+        echo 'cd ${YAPI_SRC_PATH}'; \
 		echo 'npm install --production'; \
         echo 'npm run install-server';\
         #echo 'npm run start'; \
@@ -50,6 +51,7 @@ RUN apt-get update \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
+        echo 'cd ${YAPI_SRC_PATH}'; \
 		echo 'npm install --production'; \
         #echo 'npm run start'; \
         echo 'pm2 start server/app.js --watch'

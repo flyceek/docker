@@ -33,14 +33,14 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         echo 'cd ${YAPI_SRC_PATH}'; \
 		echo 'npm install --production'; \
         echo 'npm run install-server';\
-        echo 'pm2 start server/app.js --watch'
+        echo 'pm2 start server/app.js'
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${YAPI_SRC_PATH}'; \
 		echo 'npm install --production'; \
-        echo 'pm2 start server/app.js --watch'
+        echo 'pm2 start server/app.js'
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start \
     && echo "root:123321" | chpasswd
