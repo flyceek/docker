@@ -13,6 +13,7 @@ ENV YAPI_FILE_SRC_PATH=${YAPI_WORK_DIR}/${YAPI_SRC_DIR}
 RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         git \
         wget \
+        gcc \
         python \
         tar \
         xz \
@@ -27,7 +28,7 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${YAPI_FILE_SRC_PATH}'; \
-        echo 'npm run install-server';\
+        echo 'npm run install-server'; \
         echo 'node server/app.js'; \
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
