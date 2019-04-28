@@ -28,7 +28,7 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && wget ${YAPI_FILE_URL} \
     && tar -xzvf ${YAPI_FILE_NAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${YAPI_FILE_NAME} \
-    && cd ${YAPI_SRC_PATH}
+    && cd ${YAPI_SRC_PATH} \
     && npm install --production \
     && { \
 		echo '#!/bin/sh'; \
