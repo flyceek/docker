@@ -26,7 +26,7 @@ RUN apk add --update --no-cache --virtual=.update-dependencies git \
         echo 'node server.js'; \
     } > /usr/local/bin/code-push-web-start \
     && chmod +x /usr/local/bin/code-push-web-start \
-    && chown -R 777 ${CODE_PUSH_WEB_USER}:${CODE_PUSH_WEB_GROUP} ${CODE_PUSH_WEB_HOME} \
+    && chown -R ${CODE_PUSH_WEB_USER}:${CODE_PUSH_WEB_GROUP} ${CODE_PUSH_WEB_HOME} \
     && echo "root:123321" | chpasswd
 
 USER ${CODE_PUSH_WEB_USER}

@@ -14,6 +14,7 @@ ENV YAPI_SRC_PATH=${YAPI_WORK_DIR}/${YAPI_FILE_EXTRACT_DIR}
 RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         git \
         wget \
+        gcc \
         python \
         tar \
         xz \
