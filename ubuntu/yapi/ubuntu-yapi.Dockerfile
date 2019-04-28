@@ -46,7 +46,7 @@ RUN apt-get update \
 		echo 'npm install --production'; \
         echo 'npm run install-server';\
         #echo 'npm run start'; \
-        echo 'pm2 start server/app.js --watch'
+        echo 'pm2 start server/app.js'; \
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
@@ -54,7 +54,7 @@ RUN apt-get update \
         echo 'cd ${YAPI_SRC_PATH}'; \
 		echo 'npm install --production'; \
         #echo 'npm run start'; \
-        echo 'pm2 start server/app.js --watch'
+        echo 'pm2 start server/app.js --watch'; \
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start
 
