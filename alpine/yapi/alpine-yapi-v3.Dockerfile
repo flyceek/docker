@@ -25,7 +25,7 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && mkdir -p ${YAPI_SRC_PATH} \
     && cd ${YAPI_WORK_DIR} \
     && git clone --depth=1 --single-branch --branch=master ${YAPI_GIT_URL} ${YAPI_SRC_DIR} \
-    && rm ${YAPI_SRC_PATH} \
+    && cd ${YAPI_SRC_PATH} \
     && npm install --production \
     && { \
 		echo '#!/bin/sh'; \
