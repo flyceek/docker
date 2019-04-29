@@ -27,22 +27,22 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
     && wget ${YAPI_FILEURL} \
     && tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${YAPI_FILENAME} \
-    && chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_HOME} \
+    && cd ${YAPI_SRC_PATH} \
+    && npm install --production \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${YAPI_SRC_PATH}'; \
-		echo 'npm install --production'; \
         echo 'npm run install-server';\
-        echo 'pm2 start server/app.js'; \
+        echo 'pm2 start server/app.js --watch'; \
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${YAPI_SRC_PATH}'; \
-		echo 'npm install --production'; \
-        echo 'pm2 start server/app.js'; \
+        echo 'pm2 start server/app.js --watch'; \
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start \
+    && chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_HOME} \
     && echo "root:123321" | chpasswd
 
 USER ${YAPI_USER}
