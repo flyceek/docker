@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  scheduler:
+    image: binux/pyspider:latest
+    ports:
+      - '23333:23333'
+    command: '--taskdb "mongodb+taskdb://paranora:123321@10.28.19.196:27017/taskdb?authSource=admin"  --projectdb "mongodb+projectdb://paranora:123321@10.28.19.196:27017/projectdb?authSource=admin" --message-queue "amqp://paranora:123321@10.28.19.196:5672/%2F" scheduler --inqueue-limit 10000 --delete-time 3600'
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+  

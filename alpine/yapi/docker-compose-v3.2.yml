@@ -1,17 +1,15 @@
-version: "3.2"
+version: "3.6"
 services:
   yapi-web:
-    image: registry.cn-shanghai.aliyuncs.com/paranora/yapi:1.5.14
+    image: flyceek/alpine-yapi:1.5.14
     extra_hosts:
-      - "ldap.centaline.com.cn: 10.4.19.13"
+      - "ldap.centaline.com.cn:10.4.19.13"
     volumes:
-      - type: bind
-        source: /var/yapi/config.json
-        target: /opt/yapi/config.json
-    links:
-       - "mongodb: mongodb"
+      - /var/yapi/config.json: /opt/yapi/config.json
     environment:
-      YAPI_VERSION: 1.5.14
+      YAPI_VERSION: "1.5.14"
+    links:
+      - mongodb
     deploy:
       resources:
         limits:
@@ -25,29 +23,29 @@ services:
       - yapiweb-net
     depends_on:
       - mongodb
+      - mongo-express
   mongodb:
     image: mongo
     volumes:
-      - type: bind
-        source: data-mongodb
-        target: /data/db
+      - data-mongodb: /data/db
+    ports:
+      - "3308:3306"
     networks:
-      - mongodb-net
+      - yapiweb-net
   mongo-express:
     image: mongo-express
     links:
-       - "mongodb: mongodb"
+      - mongodb
     ports:
       - "18123:8081"
     environment:
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_SERVER: mongodb
     networks:
-      - mongodb-net
+      - yapiweb-net
     depends_on:
       - mongodb
 networks:
   yapiweb-net:
-  mongodb-net:
 volumes:
   data-mongodb:

@@ -8,6 +8,8 @@ services:
       - /var/yapi/config.json: /opt/yapi/config.json
     environment:
       YAPI_VERSION: "1.5.14"
+    links:
+      - mongodb
     deploy:
       resources:
         limits:
@@ -21,6 +23,7 @@ services:
       - yapiweb-net
     depends_on:
       - mongodb
+      - mongo-express
   mongodb:
     image: mongo
     volumes:
@@ -28,20 +31,21 @@ services:
     ports:
       - "3308:3306"
     networks:
-      - mongodb-net
+      - yapiweb-net
   mongo-express:
     image: mongo-express
+    links:
+      - mongodb
     ports:
       - "18123:8081"
     environment:
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_SERVER: mongodb
     networks:
-      - mongodb-net
+      - yapiweb-net
     depends_on:
       - mongodb
 networks:
   yapiweb-net:
-  mongodb-net:
 volumes:
   data-mongodb:

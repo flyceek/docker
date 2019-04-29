@@ -1,0 +1,83 @@
+version: '2'
+
+services:
+  phantomjs:
+    image: 'binux/pyspider:latest'
+    command: phantomjs
+    cpu_shares: 256    
+    environment:
+      - 'EXCLUDE_PORTS=5000,23333,24444'
+    expose:
+      - '25555'
+    mem_limit: 256m
+    restart: always
+
+  phantomjs-lb:
+    image: 'dockercloud/haproxy:latest'
+    links:
+      - phantomjs
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+    restart: always
+
+  fetcher:
+    image: 'binux/pyspider:latest'
+    command: '--message-queue "amqp://paranora:123321@10.28.19.196:5672/%2F" --phantomjs-proxy "phantomjs:80" fetcher --xmlrpc'
+    cpu_shares: 256   
+    environment:
+      - 'EXCLUDE_PORTS=5000,23333,25555'
+    links:
+      - 'phantomjs-lb:phantomjs'
+    mem_limit: 256m
+    restart: always
+
+  fetcher-lb:
+    image: 'dockercloud/haproxy:latest'
+    links:
+      - fetcher
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  processor:
+    image: 'binux/pyspider:latest'
+    command: '--projectdb "mongodb+projectdb://paranora:123321@10.28.19.196:27017/projectdb?authSource=admin" --message-queue "amqp://paranora:123321@10.28.19.196:5672/%2F" processor'
+    cpu_shares: 256
+    mem_limit: 256m
+    restart: always
+
+  result_worker:
+    image: 'binux/pyspider:latest'
+    command: '--taskdb "mongodb+taskdb://paranora:123321@10.28.19.196:27017/taskdb?authSource=admin"  --projectdb "mongodb+projectdb://paranora:123321@10.28.19.196:27017/projectdb?authSource=admin" --resultdb "mongodb+resultdb://paranora:123321@10.28.19.196:27017/resultdb?authSource=admin" --message-queue "amqp://paranora:123321@10.28.19.196:5672/%2F" result_worker'
+    cpu_shares: 256
+    mem_limit: 256m
+    restart: always
+
+  scheduler:
+    image: binux/pyspider:latest
+    ports:
+      - '23333:23333'
+    external_links:
+      - mysql
+      - rabbitmq
+    command: '--taskdb "mongodb+taskdb://flyceek:123321@10.28.19.196:27017/taskdb?authSource=admin" --resultdb "mongodb+resultdb://flyceek:123321@10.28.19.196:27017/resultdb?authSource=admin" --projectdb "mongodb+projectdb://flyceek:123321@10.28.19.196:27017/projectdb?authSource=admin" --message-queue "amqp://flyceek:123321@10.28.19.196:5672/%2F" scheduler --inqueue-limit 10000 --delete-time 3600'
+    cpu_shares: 256
+    mem_limit: 256m
+    restart: always
+
+  webui:
+    image: 'binux/pyspider:latest'
+    command: '--taskdb "mongodb+taskdb://paranora:123321@10.28.19.196:27017/taskdb?authSource=admin" --projectdb "mongodb+projectdb://paranora:123321@10.28.19.196:27017/projectdb?authSource=admin" --resultdb "mongodb+resultdb://paranora:123321@10.28.19.196:27017/resultdb?authSource=admin" --message-queue "amqp://paranora:123321@10.28.19.196:5672/%2F" webui  --scheduler-rpc "http://10.28.19.196:23333/" --fetcher-rpc "http://fetcher/"'
+    cpu_shares: 256    
+    environment:
+      - 'EXCLUDE_PORTS=23333,24444,25555'
+    ports:
+      - '5050:5000'
+    links:
+      - 'fetcher-lb:fetcher'
+    mem_limit: 256m
+
+networks:
+  default:
+    external:
+      name: pyspider
