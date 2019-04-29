@@ -32,12 +32,14 @@ RUN apk add --update --no-cache --virtual=.yapi-dependencies \
         echo 'cd ${YAPI_SRC_PATH}'; \
         echo 'npm run install-server'; \
         echo 'pm2 start server/app.js'; \
+        echo 'pm2 logs'; \
 	} > /usr/local/bin/yapi-initdb-start \
 	&& chmod +x /usr/local/bin/yapi-initdb-start \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd ${YAPI_SRC_PATH}'; \
         echo 'pm2 start server/app.js'; \
+        echo 'pm2 logs'; \
 	} > /usr/local/bin/yapi-start \
 	&& chmod +x /usr/local/bin/yapi-start \
     && chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_DIR} \
