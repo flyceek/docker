@@ -4,7 +4,7 @@ MAINTAINER flyceek <flyceek@gmail.com>
 ARG YAPI_WORK_HOME=/opt/yapi
 ARG YAPI_USER=yapi
 ARG YAPI_GROUP=yapi
-ARG YAPI_VER=1.5.14
+ARG YAPI_VER=1.7.0
 ARG YAPI_FILENAME=v${YAPI_VER}.tar.gz
 ARG YAPI_FILE_EXTRACT_DIR=yapi-v${YAPI_VER}
 ARG YAPI_FILEURL=https://github.com/YMFE/yapi/archive/${YAPI_FILENAME}
