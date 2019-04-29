@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   yapi-web:
-    image: flyceek/alpine-yapi:1.5.14
+    image: registry.cn-shanghai.aliyuncs.com/paranora/yapi:latest
     ports:
       - "3003:3000"
     extra_hosts:
