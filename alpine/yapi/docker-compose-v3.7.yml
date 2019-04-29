@@ -23,7 +23,6 @@ services:
       - yapi-net
     depends_on:
       - mongodb
-    restart: always
   mongodb:
     image: mongo
     ports:
@@ -39,7 +38,6 @@ services:
           memory: 512M
       restart_policy:
         condition: on-failure
-    restart: always
   mongo-express:
     image: mongo-express
     links:
