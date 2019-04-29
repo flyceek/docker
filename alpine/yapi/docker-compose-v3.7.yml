@@ -24,6 +24,7 @@ services:
     depends_on:
       - mongodb
       - mongo-express
+    restart: always
   mongodb:
     image: mongo
     ports:
