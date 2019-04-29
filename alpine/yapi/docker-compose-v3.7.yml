@@ -23,6 +23,7 @@ services:
       - yapi-net
     depends_on:
       - mongodb
+      - mongo-express
   mongodb:
     image: mongo
     ports:
