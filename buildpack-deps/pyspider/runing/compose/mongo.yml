@@ -10,7 +10,7 @@ services:
     networks:
       - pyspider-mongodb-net
     volumes:
-      - pyspider-mongodb:/data/
+      - pyspider-mongodb:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: paranora
       MONGO_INITDB_ROOT_PASSWORD: 123321
