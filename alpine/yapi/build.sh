@@ -18,12 +18,13 @@ function installNpmDependencies() {
 }
 
 function createUserGroup(){
-    local yuser=$1
-    if [ -z "$yuser" ]; then
+    if [ -z "$1" ]; then
         echo 'yapi user is empty!'
         exit 1
     fi
+    local yuser=$1
     local ygroup=yuser
+    echo 'begin crate user :'$yuser ', group :'$ygroup'.'
     addgroup -g 1090 ${ygroup}
     adduser -h /home/${yuser} -u 1090 -G ${ygroup} -s /bin/bash -D ${yuser}
 }
@@ -64,6 +65,7 @@ function installYapiByReleaseCode(){
     tar -xzvf ${fileName} -C ${srcPath} --strip-components 1
     rm ${fileName}
     cd ${srcPath}
+    echo 'begin npm install in :'$srcPath' .'
     npm install --production
     YAPI_PATH=${srcPath}
     if [ $? -ne 0 ]; then
@@ -79,6 +81,7 @@ function installYapiBySourceCode(){
     cd ${YAPI_WORK_HOME}
     git clone --depth=1 --single-branch --branch=master ${gitUrl} ${srcPath}
     cd ${srcPath}
+    echo 'begin npm install in :'$srcPath' .'
     npm install --production
     YAPI_PATH=${srcPath}
     if [ $? -ne 0 ]; then
