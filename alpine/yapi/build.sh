@@ -5,15 +5,19 @@ if [ -n "$1" ]; then
     YAPI_VERSION=$1
 fi
 
+YAPI_USER=yapi
+if [ -n "$2" ]; then
+    echo 'input yapi user is :'$2
+    YAPI_USER=2
+fi
+YAPI_GROUP=${YAPI_USER}
+
 YAPI_FILENAME=v${YAPI_VERSION}.tar.gz
 YAPI_FILE_EXTRACT_DIR=yapi-v${YAPI_VERSION}
 YAPI_FILEURL=https://github.com/YMFE/yapi/archive/${YAPI_FILENAME}
 
 YAPI_WORK_HOME=/opt/yapi
 YAPI_SRC_PATH=${YAPI_WORK_HOME}/${YAPI_FILE_EXTRACT_DIR}
-
-YAPI_USER=yapi
-YAPI_GROUP=yapi
 
 apk add --update --no-cache --virtual=.yapi-dependencies git wget python tar xz make
 
@@ -31,8 +35,17 @@ rm ${YAPI_FILENAME}
 cd ${YAPI_SRC_PATH}
 npm install --production
 
-echo '#!/bin/sh\ncd ${YAPI_SRC_PATH}\nnpm run install-server\npm2 start server/app.js\npm2 logs'>/usr/local/bin/yapi-initdb-start
-echo '#!/bin/sh\ncd ${YAPI_SRC_PATH}\npm2 start server/app.js\npm2 logs'>/usr/local/bin/yapi-initdb-start
+echo -e '#!/bin/sh
+cd '${YAPI_SRC_PATH}'
+npm run install-server
+pm2 start server/app.js
+pm2 logs'>/usr/local/bin/yapi-initdb-start
+
+echo -e '#!/bin/sh
+cd '${YAPI_SRC_PATH}'
+pm2 start server/app.js
+pm2 logs'>/usr/local/bin/yapi-initdb-start
+
 chmod +x /usr/local/bin/yapi-initdb-start 
 chmod +x /usr/local/bin/yapi-start
 chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_HOME}
