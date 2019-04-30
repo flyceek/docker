@@ -29,8 +29,8 @@ function createUserGroup(){
 }
 
 function createYapiStartShell(){
-    if [ -d "$YAPI_PATH" ]; then
-        echo 'yapi source path is not found !'
+    if [ !-d "$YAPI_PATH" ]; then
+        echo 'yapi source path : '$YAPI_PATH' is not found !'
         exit 1
     fi
 
