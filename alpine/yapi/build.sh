@@ -77,7 +77,7 @@ function installYapiBySourceCode(){
 
 function installYapi(){
     if [ -n "$YAPI_VERSION" ]; then
-        echo 'input version is :'$1
+        echo 'input version is :'$YAPI_VERSION
         echo 'install yapi use release code!'
         installYapiByReleaseCode
     else
