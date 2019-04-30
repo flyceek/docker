@@ -1,52 +1,101 @@
 #!/bin/sh
-YAPI_VERSION=1.7.0
-if [ -n "$1" ]; then
-    echo 'input version is :'$1
-    YAPI_VERSION=$1
-fi
-
-YAPI_USER=yapi
-if [ -n "$2" ]; then
-    echo 'input yapi user is :'$2
-    YAPI_USER=2
-fi
-YAPI_GROUP=${YAPI_USER}
-
-YAPI_FILENAME=v${YAPI_VERSION}.tar.gz
-YAPI_FILE_EXTRACT_DIR=yapi-v${YAPI_VERSION}
-YAPI_FILEURL=https://github.com/YMFE/yapi/archive/${YAPI_FILENAME}
-
 YAPI_WORK_HOME=/opt/yapi
-YAPI_SRC_PATH=${YAPI_WORK_HOME}/${YAPI_FILE_EXTRACT_DIR}
+YAPI_VERSION=$1
+YAPI_PATH=''
 
-apk add --update --no-cache --virtual=.yapi-dependencies git wget python tar xz make
+YAPI_USER=$2
 
-npm config set registry https://registry.npm.taobao.org
-npm i -g pm2@latest --no-optional
+function installSystemDependencies(){
+    apk add --update --no-cache --virtual=.yapi-dependencies git wget python tar xz make
+}
 
-addgroup -g 1090 ${YAPI_GROUP}
-adduser -h /home/${YAPI_USER} -u 1090 -G ${YAPI_GROUP} -s /bin/bash -D ${YAPI_USER}
+function setNpm(){
+    npm config set registry https://registry.npm.taobao.org
+}
 
-mkdir -p ${YAPI_SRC_PATH}
-cd ${YAPI_WORK_HOME}
-wget ${YAPI_FILEURL}
-tar -xzvf ${YAPI_FILENAME} -C ${YAPI_FILE_EXTRACT_DIR} --strip-components 1
-rm ${YAPI_FILENAME}
-cd ${YAPI_SRC_PATH}
-npm install --production
+function installNpmDependencies() {
+    npm i -g pm2@latest --no-optional
+}
 
-echo -e '#!/bin/sh
-cd '${YAPI_SRC_PATH}'
+function createUserGroup(){
+    local yuser=$1
+    if [ -z "$yuser" ]; then
+        echo 'yapi user is empty!'
+        exit 0
+    fi
+    local ygroup=yuser
+    addgroup -g 1090 ${ygroup}
+    adduser -h /home/${yuser} -u 1090 -G ${ygroup} -s /bin/bash -D ${yuser}
+}
+
+function createYapiStartShell(){
+    if [ -d "$YAPI_PATH" ]; then
+        echo 'yapi source path is not found !'
+        exit 0
+    fi
+
+    echo -e '#!/bin/sh
+cd '${YAPI_PATH}'
 npm run install-server
 pm2 start server/app.js
 pm2 logs'>/usr/local/bin/yapi-initdb-start
 
-echo -e '#!/bin/sh
-cd '${YAPI_SRC_PATH}'
+    echo -e '#!/bin/sh
+cd '${YAPI_PATH}'
 pm2 start server/app.js
 pm2 logs'>/usr/local/bin/yapi-initdb-start
 
-chmod +x /usr/local/bin/yapi-initdb-start 
-chmod +x /usr/local/bin/yapi-start
-chown -R ${YAPI_USER}:${YAPI_GROUP} ${YAPI_WORK_HOME}
-echo "root:123321" | chpasswd
+    chmod +x /usr/local/bin/yapi-initdb-start 
+    chmod +x /usr/local/bin/yapi-start
+}
+
+function installYapiByReleaseCode(){
+    local fileName=v${YAPI_VERSION}.tar.gz
+    local fileUrl=https://github.com/YMFE/yapi/archive/${YAPI_FILENAME}
+    local srcPath=${YAPI_WORK_HOME}/yapi-v${YAPI_VERSION}
+    
+    mkdir -p ${srcPath}
+    cd ${YAPI_WORK_HOME}
+    wget ${fileUrl}
+    tar -xzvf ${fileName} -C ${srcPath} --strip-components 1
+    rm ${fileName}
+    cd ${srcPath}
+    npm install --production
+    YAPI_PATH=${srcPath}
+}
+
+function installYapiBySourceCode(){
+    local gitUrl=https://github.com/YMFE/yapi.git
+    local srcPath=${YAPI_WORK_HOME}/yapi-source-master
+    mkdir -p ${srcPath}
+    cd ${YAPI_WORK_HOME}
+    git clone --depth=1 --single-branch --branch=master ${gitUrl} ${srcPath}
+    cd ${srcPath}
+    npm install --production
+    YAPI_PATH=${srcPath}
+}
+
+function installYapi(){
+    if [ -n "$YAPI_VERSION" ]; then
+        echo 'input version is :'$1
+        echo 'install yapi use release code!'
+        installYapiByReleaseCode
+    else
+        echo 'install yapi use source code!'
+        installYapiBySourceCode
+    fi
+}
+
+function setSystem(){
+    echo "root:123321" | chpasswd
+    chown -R ${YAPI_USER}:${YAPI_USER} ${YAPI_WORK_HOME}
+}
+
+
+installSystemDependencies
+setNpm
+installNpmDependencies
+createUserGroup ${YAPI_USER}
+installYapi
+createYapiStartShell
+setSystem
