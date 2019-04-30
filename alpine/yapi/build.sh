@@ -21,7 +21,7 @@ function createUserGroup(){
     local yuser=$1
     if [ -z "$yuser" ]; then
         echo 'yapi user is empty!'
-        exit 0
+        exit 1
     fi
     local ygroup=yuser
     addgroup -g 1090 ${ygroup}
@@ -31,7 +31,7 @@ function createUserGroup(){
 function createYapiStartShell(){
     if [ -d "$YAPI_PATH" ]; then
         echo 'yapi source path is not found !'
-        exit 0
+        exit 1
     fi
 
     echo -e '#!/bin/sh
@@ -51,17 +51,25 @@ pm2 logs'>/usr/local/bin/yapi-initdb-start
 
 function installYapiByReleaseCode(){
     local fileName=v${YAPI_VERSION}.tar.gz
-    local fileUrl=https://github.com/YMFE/yapi/archive/${YAPI_FILENAME}
+    local fileUrl=https://github.com/YMFE/yapi/archive/${fileName}
     local srcPath=${YAPI_WORK_HOME}/yapi-v${YAPI_VERSION}
     
     mkdir -p ${srcPath}
     cd ${YAPI_WORK_HOME}
     wget ${fileUrl}
+    if [ -f "$fileName" ]
+        echo 'down file '$fileName' is error !'
+        exit 1
+    fi
     tar -xzvf ${fileName} -C ${srcPath} --strip-components 1
     rm ${fileName}
     cd ${srcPath}
     npm install --production
     YAPI_PATH=${srcPath}
+    if [ $? -ne 0 ]; then
+        echo 'something wrong happened !'
+        exit 1
+    fi
 }
 
 function installYapiBySourceCode(){
@@ -73,6 +81,10 @@ function installYapiBySourceCode(){
     cd ${srcPath}
     npm install --production
     YAPI_PATH=${srcPath}
+    if [ $? -ne 0 ]; then
+        echo 'something wrong happened !'
+        exit 1
+    fi
 }
 
 function installYapi(){
