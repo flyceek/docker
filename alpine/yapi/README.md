@@ -1,3 +1,10 @@
+# How to use this image?
+## following step if use **docker compose** .
+----
+### 1. Prepare your own **config.json** file .
+### 2. Code **compose** file like this:
+
+```
 version: "3.2"
 services:
   yapi-web:
@@ -40,3 +47,11 @@ networks:
   yapi-net:
 volumes:
   yapi-mongodb:
+``` 
+### warning
+   - **config.json** file mount.
+   - **port** settings.
+
+### 3. Start or Stop.
+   1.  input **docker-compose -f**  *COMPOSE-FILE-PATH*  **up -d** cmd to start up.
+   2.  input **docker-compose -f**  *COMPOSE-FILE-PATH* **down** cmd to stop
