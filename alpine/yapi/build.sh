@@ -23,10 +23,12 @@ function createUserGroup(){
         exit 1
     fi
     local yuser=$1
-    local ygroup=yuser
+    local yuserId=1090
+    local ygroup=$yuser
+    local ygroupId=1090
     echo 'begin crate user :'$yuser ', group :'$ygroup'.'
-    addgroup -g 1090 ${ygroup}
-    adduser -h /home/${yuser} -u 1090 -G ${ygroup} -s /bin/bash -D ${yuser}
+    addgroup -g ${ygroupId} ${ygroup}
+    adduser -h /home/${yuser} -u ${yuserId} -G ${ygroup} -s /bin/bash -D ${yuser}
 }
 
 function createYapiStartShell(){
