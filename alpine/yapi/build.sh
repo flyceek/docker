@@ -57,7 +57,7 @@ function installYapiByReleaseCode(){
     mkdir -p ${srcPath}
     cd ${YAPI_WORK_HOME}
     wget ${fileUrl}
-    if [ !-f "$fileName" ] then
+    if [ !-f "$fileName" ]; then
         echo 'down file '$fileName' is error !'
         exit 1
     fi
