@@ -57,7 +57,7 @@ function installYapiByReleaseCode(){
     mkdir -p ${srcPath}
     cd ${YAPI_WORK_HOME}
     wget ${fileUrl}
-    if [ -f "$fileName" ]
+    if [ !-f "$fileName" ] then
         echo 'down file '$fileName' is error !'
         exit 1
     fi
@@ -89,7 +89,7 @@ function installYapiBySourceCode(){
 
 function installYapi(){
     if [ -n "$YAPI_VERSION" ]; then
-        echo 'input version is :'$YAPI_VERSION
+        echo 'input version is :'$YAPI_VERSION' .'
         echo 'install yapi use release code!'
         installYapiByReleaseCode
     else
