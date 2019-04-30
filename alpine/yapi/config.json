@@ -1,18 +1,18 @@
 {
-    "port": process.env.PORT || "3000",
-    "adminAccount": process.env.ADMIN_ACCOUNT,
+    "port": "3000",
+    "adminAccount": "",
     "db": {
-        "servername": process.env.DB_SERVERNAME,
-        "DATABASE": process.env.DB_DATABASE,
-        "port": process.env.DB_PORT || 27017
+        "servername": "",
+        "DATABASE": "",
+        "port": 27017
     },
     "ldapLogin": {
-        "enable": process.env.LDAP_ENABLE || false,
-        "server": process.env.LDAP_SERVER,
-        "baseDn": process.env.LDAP_BASE_DN,
-        "bindPassword": process.env.LDAP_BIND_PWD,
-        "searchDn": process.env.LDAP_SEARCH_DN,
-        "searchStandard": process.env.LDAP_SEARCH_STANDARD,
-        "emailPostfix": process.env.LDAP_EMAIL_POSTFIX
+        "enable": false,
+        "server": "",
+        "baseDn": "",
+        "bindPassword": "",
+        "searchDn": "",
+        "searchStandard": "",
+        "emailPostfix": ""
     }
 }
