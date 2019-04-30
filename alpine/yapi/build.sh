@@ -46,7 +46,7 @@ pm2 logs'>/usr/local/bin/yapi-initdb-start
     echo -e '#!/bin/sh
 cd '${YAPI_PATH}'
 pm2 start server/app.js
-pm2 logs'>/usr/local/bin/yapi-initdb-start
+pm2 logs'>/usr/local/bin/yapi-start
 
     chmod +x /usr/local/bin/yapi-initdb-start 
     chmod +x /usr/local/bin/yapi-start
