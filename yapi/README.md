@@ -8,7 +8,7 @@
 version: "3.2"
 services:
   yapi-web:
-    image: flyceek/alpine-yapi:latest
+    image: flyceek/yapi:latest
     ports:
       - "3003:3000"
     volumes:

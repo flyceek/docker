@@ -1,3 +1,9 @@
+mkdir -p /var/yapi/mongo/data/db
+touch /var/yapi/config.json
+chmod -R 777 /var/yapi
+docker-compose up -d
+
+
 docker run -itd \
 --rm \
 --name yapi-web-1 \
