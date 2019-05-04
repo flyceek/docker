@@ -120,11 +120,11 @@ function doAction(){
     fi
     case "$SYSTEM" in
     "alpine")
-        echo "set alpine system."
+        echo "begin install jdk by alpine system."
         installAlpine
         ;;
     "centos")
-        echo "set centos system."
+        echo "begin install jdk by centos system."
         installCentaOS
         ;;
     *)
