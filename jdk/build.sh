@@ -12,7 +12,7 @@ JDK_ED=${JDK_VER}u${JDK_UPDATE}
 JDK_FILE_NAME=jdk-${JDK_ED}-linux-x64.tar.gz
 JDK_FILE_EXTRACT_DIR=jdk1.${JDK_VER}.0_${JDK_UPDATE}
 JAVA_HOME=${JDK_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}
-JDK_URL=http://download.oracle.com/otn-pub/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URL_ID}/${JDK_FILE_NAME}?AuthParam=${AUTH_PARAM}
+JDK_URL=https://download.oracle.com/otn/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URL_ID}/${JDK_FILE_NAME}?AuthParam=${AUTH_PARAM}
 
 if [ -z "$AUTH_PARAM" ]; then
     echo 'auth param is empty!'
