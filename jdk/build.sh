@@ -113,12 +113,11 @@ function installCentaOS(){
 }
 
 function doAction(){
-    local system=$1
-    if [ -z "$system" ]; then
+    if [ -z "$SYSTEM" ]; then
         echo 'system is empty!'
         exit 1
     fi
-    case "$system" in
+    case "$SYSTEM" in
     "alpine")
         echo "set alpine system."
         installAlpine
