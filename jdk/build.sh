@@ -43,6 +43,7 @@ function setSystemUser(){
 function installJdk(){
     mkdir -p ${JAVA_HOME}
     cd ${JDK_SAVE_PATH}
+    echo 'begin download jdk , url :'${JDK_URL}'.'
     wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_URL} && echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
     tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1
     if [ $? -ne 0 ]; then
