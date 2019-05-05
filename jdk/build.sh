@@ -45,8 +45,8 @@ function installJdk(){
     cd ${JDK_SAVE_PATH}
     local path=$(pwd)
     echo 'begin download jdk in path :'${path}', url :'${JDK_URL}'.'
-    #curl -L -H "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_URL} && echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
-    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie;" ${JDK_URL}
+    #curl -O ${JDK_FILE_NAME} -L -H "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_URL} 
+    wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie;" ${JDK_URL}
     pwd
     ls -alsh
     echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
