@@ -101,16 +101,16 @@ function clearAlpineSystem(){
 }
 
 function installAlpine(){
+    setAlpineSystem
     installAlpineJdk
     setJdk
-    setAlpineSystem
     clearAlpineSystem
 }
 
 function installCentaOS(){
+    setCentaOSSystem
     installJdk
     setCentosJdk
-    setCentaOSSystem
     clearSystem
 }
 
