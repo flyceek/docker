@@ -12,7 +12,7 @@ JDK_ED=${JDK_VER}u${JDK_UPDATE}
 JDK_FILE_NAME=jdk-${JDK_ED}-linux-x64.tar.gz
 JDK_FILE_EXTRACT_DIR=jdk1.${JDK_VER}.0_${JDK_UPDATE}
 JAVA_HOME=${JDK_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}
-JDK_URL=http://download.oracle.com/otn/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URL_ID}/${JDK_FILE_NAME}?AuthParam=${AUTH_PARAM}
+JDK_URL=http://download.oracle.com/otn/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_URLID}/${JDK_FILE_NAME}?AuthParam=${AUTH_PARAM}
 
 if [ -z "$AUTH_PARAM" ]; then
     echo 'auth param is empty!'
@@ -44,8 +44,8 @@ function installJdk(){
     mkdir -p ${JAVA_HOME}
     cd ${JDK_SAVE_PATH}
     echo 'begin download jdk , url :'${JDK_URL}'.'
-    curl -L -H "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_URL} && echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
-    # wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_URL} && echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
+    #curl -L -H "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${JDK_URL} && echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
+    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie;" ${JDK_URL} && echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
     tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
