@@ -16,7 +16,7 @@ JDK_URL=https://download.oracle.com/otn/java/jdk/${JDK_ED}-${JDK_BUILD}/${JDK_UR
 
 if [ -z "$AUTH_PARAM" ]; then
     echo 'auth param is empty!'
-    exit 1
+    exit 1001
 fi
 
 function installCentaOSDependencies(){
@@ -50,12 +50,12 @@ function installJdk(){
     echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
     if [ $? -ne 0 ]; then
         echo 'file :'${JDK_FILE_NAME}', sha256 :'${JDK_SHA256}', is does not match!'
-        exit 1
+        exit 1002
     fi
     tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
-        exit 1
+        exit 1003
     fi
 }
 
@@ -76,7 +76,6 @@ function installAlpineJdk(){
     apk add --no-cache ${GLIBC_FILE_NAME} ${GLIBC_BIN_FILE_NAME} ${GLIBC_I18N_FILE_NAME}
 
     installJdk
-    
 }
 
 function setCentosJdk(){
@@ -91,10 +90,18 @@ function setJdk(){
     ln -s ${JAVA_HOME}/bin/jar /usr/bin/jar
 }
 
+function setAlpineJdk(){
+    setJdk
+}
+
 function clearSystem(){
     cd ${JDK_SAVE_PATH}
     rm -f ${JDK_FILE_NAME}
     rm -f ${JAVA_HOME}/*.zip
+}
+
+function clearCentosSystem(){
+    clearSystem
 }
 
 function clearAlpineSystem(){
@@ -107,9 +114,9 @@ function clearAlpineSystem(){
 }
 
 function installAlpine(){
-    setAlpineSystem
     installAlpineJdk
-    setJdk
+    setAlpineJdk
+    setAlpineSystem
     clearAlpineSystem
 }
 
@@ -117,13 +124,13 @@ function installCentaOS(){
     installJdk
     setCentosJdk
     setCentaOSSystem
-    clearSystem
+    clearCentosSystem
 }
 
 function doAction(){
     if [ -z "$SYSTEM" ]; then
         echo 'system is empty!'
-        exit 1
+        exit 1004
     fi
     case "$SYSTEM" in
     "alpine")
@@ -136,7 +143,7 @@ function doAction(){
         ;;
     *)
         echo "system error,please enter!"
-        exit 1
+        exit 1005
         ;;
     esac
 }
