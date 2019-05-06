@@ -7,6 +7,8 @@ JDK_URLID=$5
 JDK_SHA256=$6
 AUTH_PARAM=$7
 
+JDK_DOWNLOAD_HEAES=""
+
 JDK_SAVE_PATH=/opt/soft/java/jdk
 JDK_ED=${JDK_VER}u${JDK_UPDATE}
 JDK_FILE_NAME=jdk-${JDK_ED}-linux-x64.tar.gz
@@ -42,20 +44,20 @@ function setSystemUser(){
 
 function downloadCentOSJdk(){
     local heads=$1
-    curl -o ${JDK_FILE_NAME} -L -H "${heads}" ${JDK_URL} 
+    curl -o ${JDK_FILE_NAME} -L -H "${JDK_DOWNLOAD_HEAES}" ${JDK_URL} 
 }
 
 function downloadAlpineJdk(){
     local heads=$1
     # wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "${heads}" ${JDK_URL}
-    wget -O ${JDK_FILE_NAME} --header "${heads}" ${JDK_URL}
+    wget -O ${JDK_FILE_NAME} --header "${JDK_DOWNLOAD_HEAES}" ${JDK_URL}
 }
 
 function prepareInstallJdk(){
     mkdir -p ${JAVA_HOME}
     cd ${JDK_SAVE_PATH}
     local path=$(pwd)
-    local heads="Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie"
+    JDK_DOWNLOAD_HEAES="Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie"
     echo 'begin download jdk in path :'${path}', url :'${JDK_URL}'.'
 }
 
