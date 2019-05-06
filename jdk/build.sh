@@ -54,11 +54,11 @@ function installJdk(){
     case "$cmd" in
         "curl")
             echo "begin down jdk use curl."
-            curl -o ${JDK_FILE_NAME} -L -H ${heads} ${JDK_URL} 
+            curl -o ${JDK_FILE_NAME} -L -H "${heads}" ${JDK_URL} 
             ;;
         "wget")
             echo "begin down jdk use wget."
-            wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header ${heads} ${JDK_URL}
+            wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "${heads}" ${JDK_URL}
             ;;
         *)
             echo "download type error,please enter (curl or wget)!"
