@@ -41,12 +41,30 @@ function setSystemUser(){
 }
 
 function installJdk(){
+    local cmd=$1;
+    if [ -z "$cmd" ]; then
+        echo 'download cmd is empty , please enter (curl or wget)!'
+        exit 1008
+    fi
+    local path=$(pwd)
+    local heads="Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie"
     mkdir -p ${JAVA_HOME}
     cd ${JDK_SAVE_PATH}
-    local path=$(pwd)
     echo 'begin download jdk in path :'${path}', url :'${JDK_URL}'.'
-    curl -o ${JDK_FILE_NAME} -L -H "Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie" ${JDK_URL} 
-    # wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie;" ${JDK_URL}
+    case "$cmd" in
+        "curl")
+            echo "begin down jdk use curl."
+            curl -o ${JDK_FILE_NAME} -L -H ${heads} ${JDK_URL} 
+            ;;
+        "wget")
+            echo "begin down jdk use wget."
+            wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header ${heads} ${JDK_URL}
+            ;;
+        *)
+            echo "download type error,please enter (curl or wget)!"
+            exit 1009
+            ;;
+    esac
     echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
     if [ $? -ne 0 ]; then
         echo 'file :'${JDK_FILE_NAME}', sha256 :'${JDK_SHA256}', is does not match!'
@@ -60,6 +78,8 @@ function installJdk(){
 }
 
 function installAlpineJdk(){
+    installJdk 'wget'
+
     mkdir /tmp
     cd /tmp
     local GLIBC_VERSION='2.25-r0'
@@ -74,8 +94,10 @@ function installAlpineJdk(){
     wget ${GLIBC_SGERRAND_URL} -O /etc/apk/keys/sgerrand.rsa.pub
     wget ${GLIBC_FILE_URL} ${GLIBC_BIN_FILE_URL} ${GLIBC_I18N_FILE_URL}
     apk add --no-cache ${GLIBC_FILE_NAME} ${GLIBC_BIN_FILE_NAME} ${GLIBC_I18N_FILE_NAME}
+}
 
-    installJdk
+function installCentosJdk(){
+    installJdk 'curl'
 }
 
 function setCentosJdk(){
@@ -121,7 +143,7 @@ function installAlpine(){
 }
 
 function installCentaOS(){
-    installJdk
+    installCentosJdk
     setCentosJdk
     setCentaOSSystem
     clearCentosSystem
@@ -133,18 +155,18 @@ function doAction(){
         exit 1004
     fi
     case "$SYSTEM" in
-    "alpine")
-        echo "begin install jdk by alpine system."
-        installAlpine
-        ;;
-    "centos")
-        echo "begin install jdk by centos system."
-        installCentaOS
-        ;;
-    *)
-        echo "system error,please enter!"
-        exit 1005
-        ;;
+        "alpine")
+            echo "begin install jdk by alpine system."
+            installAlpine
+            ;;
+        "centos")
+            echo "begin install jdk by centos system."
+            installCentaOS
+            ;;
+        *)
+            echo "system error,please enter!"
+            exit 1005
+            ;;
     esac
 }
 
