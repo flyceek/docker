@@ -51,6 +51,7 @@ function downloadAlpineJdk(){
     local heads=$1
     # wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "${heads}" ${JDK_URL}
     wget -O ${JDK_FILE_NAME} --header "${JDK_DOWNLOAD_HEAES}" ${JDK_URL}
+    sleep 100
 }
 
 function prepareInstallJdk(){
