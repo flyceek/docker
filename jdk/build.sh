@@ -79,14 +79,14 @@ function storeJdk(){
 
 function installCentOSJdk(){
     prepareInstallJdk
-    downloadAlpineJdk
+    downloadCentOSJdk
     checkJdk
     storeJdk
 }
 
 function installAlpineJdk(){
     prepareInstallJdk
-    downloadCentOSJdk
+    downloadAlpineJdk
     checkJdk
     storeJdk
 
