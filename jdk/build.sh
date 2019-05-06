@@ -46,22 +46,22 @@ function installJdk(){
         echo 'download cmd is empty , please enter (curl or wget)!'
         exit 1008
     fi
-    local path=$(pwd)
-    local heads="Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie"
     mkdir -p ${JAVA_HOME}
     cd ${JDK_SAVE_PATH}
+    local path=$(pwd)
+    local heads="Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie"
     echo 'begin download jdk in path :'${path}', url :'${JDK_URL}'.'
     case "$cmd" in
         "curl")
-            echo "begin down jdk use curl."
+            echo "begin download jdk use curl."
             curl -o ${JDK_FILE_NAME} -L -H "${heads}" ${JDK_URL} 
             ;;
         "wget")
-            echo "begin down jdk use wget."
+            echo "begin download jdk use wget."
             wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "${heads}" ${JDK_URL}
             ;;
         *)
-            echo "download type error,please enter (curl or wget)!"
+            echo "download cmd error,please enter (curl or wget)!"
             exit 1009
             ;;
     esac
