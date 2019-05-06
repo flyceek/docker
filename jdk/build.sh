@@ -40,36 +40,34 @@ function setSystemUser(){
     echo "root:123321" | chpasswd
 }
 
-function installJdk(){
-    local cmd=$1;
-    if [ -z "$cmd" ]; then
-        echo 'download cmd is empty , please enter (curl or wget)!'
-        exit 1008
-    fi
+function downloadCentOSJdk(){
+    local heads=$1
+    curl -o ${JDK_FILE_NAME} -L -H "${heads}" ${JDK_URL} 
+}
+
+function downloadAlpineJdk(){
+    local heads=$1
+    # wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "${heads}" ${JDK_URL}
+    wget -O ${JDK_FILE_NAME} --header "${heads}" ${JDK_URL}
+}
+
+function prepareInstallJdk(){
     mkdir -p ${JAVA_HOME}
     cd ${JDK_SAVE_PATH}
     local path=$(pwd)
     local heads="Cookie: gpw_e24=https%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk8-downloads-2133151.html; oraclelicense=accept-securebackup-cookie"
     echo 'begin download jdk in path :'${path}', url :'${JDK_URL}'.'
-    case "$cmd" in
-        "curl")
-            echo "begin download jdk use curl."
-            curl -o ${JDK_FILE_NAME} -L -H "${heads}" ${JDK_URL} 
-            ;;
-        "wget")
-            echo "begin download jdk use wget."
-            wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "${heads}" ${JDK_URL}
-            ;;
-        *)
-            echo "download cmd error,please enter (curl or wget)!"
-            exit 1009
-            ;;
-    esac
+}
+
+function checkJdk(){
     echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
     if [ $? -ne 0 ]; then
         echo 'file :'${JDK_FILE_NAME}', sha256 :'${JDK_SHA256}', is does not match!'
         exit 1002
     fi
+}
+
+function storeJdk(){
     tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
@@ -77,8 +75,18 @@ function installJdk(){
     fi
 }
 
+function installCentOSJdk(){
+    prepareInstallJdk
+    downloadAlpineJdk
+    checkJdk
+    storeJdk
+}
+
 function installAlpineJdk(){
-    installJdk 'wget'
+    prepareInstallJdk
+    downloadCentOSJdk
+    checkJdk
+    storeJdk
 
     mkdir /tmp
     cd /tmp
@@ -96,11 +104,7 @@ function installAlpineJdk(){
     apk add --no-cache ${GLIBC_FILE_NAME} ${GLIBC_BIN_FILE_NAME} ${GLIBC_I18N_FILE_NAME}
 }
 
-function installCentosJdk(){
-    installJdk 'curl'
-}
-
-function setCentosJdk(){
+function setCentOSJdk(){
     alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 1
     alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 1
     alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 1
@@ -122,7 +126,7 @@ function clearSystem(){
     rm -f ${JAVA_HOME}/*.zip
 }
 
-function clearCentosSystem(){
+function clearCentOSSystem(){
     clearSystem
 }
 
@@ -143,10 +147,10 @@ function installAlpine(){
 }
 
 function installCentaOS(){
-    installCentosJdk
-    setCentosJdk
+    installCentOSJdk
+    setCentOSJdk
     setCentaOSSystem
-    clearCentosSystem
+    clearCentOSSystem
 }
 
 function doAction(){
@@ -159,8 +163,8 @@ function doAction(){
             echo "begin install jdk by alpine system."
             installAlpine
             ;;
-        "centos")
-            echo "begin install jdk by centos system."
+        "CentOS")
+            echo "begin install jdk by CentOS system."
             installCentaOS
             ;;
         *)
