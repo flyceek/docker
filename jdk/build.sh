@@ -195,7 +195,7 @@ function doAction(){
             echo "begin install jdk by alpine system."
             installAlpine
             ;;
-        "CentOS")
+        "centos")
             echo "begin install jdk by CentOS system."
             installCentaOS
             ;;
