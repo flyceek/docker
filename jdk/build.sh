@@ -155,6 +155,7 @@ function clearSystem(){
     cd ${JDK_SAVE_PATH}
     rm -f ${JDK_FILE_NAME}
     rm -f ${JAVA_HOME}/*.zip
+    rm /build.sh
 }
 
 function clearCentOSSystem(){

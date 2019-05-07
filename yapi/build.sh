@@ -108,6 +108,9 @@ function setSystem(){
     chown -R ${YAPI_USER}:${YAPI_USER} ${YAPI_WORK_HOME}
 }
 
+function clearSystem(){
+    rm /build.sh
+}
 
 installSystemDependencies
 setNpm
@@ -116,3 +119,4 @@ createUserGroup ${YAPI_USER}
 installYapi
 createYapiStartShell
 setSystem
+clearSystem
