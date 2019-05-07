@@ -51,7 +51,6 @@ function downloadAlpineJdk(){
     local heads=$1
     # wget -O ${JDK_FILE_NAME} --no-cookies --no-check-certificate --header "${heads}" ${JDK_URL}
     wget -O ${JDK_FILE_NAME} --header "${JDK_DOWNLOAD_HEAES}" ${JDK_URL}
-    sleep 100
 }
 
 function prepareInstallJdk(){
@@ -71,6 +70,29 @@ function checkJdk(){
 }
 
 function storeJdk(){
+    if [ !-f ${JDK_FILE_NAME} ]; then
+        echo 'jdk file :'${JDK_FILE_NAME}' not found!'
+        exit 1010
+    fi
+    local readJdkFIleSizeShell="ls -l ${JDK_FILE_NAME} | awk '{print "'$5'"}'"
+    let waitTimes=5
+    let currentWaitTimes=0
+    let waitTimeInterval =500
+    let lastJdkFIleSize=`eval ${readJdkFIleSizeShell}`
+    let jdkFileSize=0
+    echo 'begin wait jdk file write finish! , waitTimes :'${waitTimes}', waitTimeInterval:'${waitTimeInterval}'.'
+    while [ ${currentWaitTimes} -lt ${waitTimes} ]
+    do
+        echo 'wait jdk file write finish , index :'${currentWaitTimes}'.'
+        sleep ${waitTimeInterval}
+        let jdkFileSize=`eval ${readJdkFIleSizeShell}`
+        if [ ${jdkFileSize} -ne ${lastJdkFIleSize} ]; then
+            echo 'jdk file :'${JDK_FILE_NAME}' , last file size :'${lastJdkFIleSize}', now is :'${jdkFileSize}', size is modify ,wait time add 3.'
+            let waitTimes=${waitTimes}+3
+        fi
+        let lastJdkFIleSize=${jdkFileSize}
+        let currentWaitTimes=${currentWaitTimes}+1
+    done
     tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
