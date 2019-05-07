@@ -87,7 +87,7 @@ function checkJdk(){
     done
     echo 'end wait jdk file write finish! , waitTimes :'${waitTimes}', waitTimeInterval:'${waitTimeInterval}'.'
     echo 'begin check jdk file sha256sum! , file :'${JDK_FILE_NAME}', sha256sum:'${JDK_SHA256}'.'
-    echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
+    echo "${JDK_SHA256}  ${JDK_FILE_NAME}" | sha256sum -c -
     if [ $? -ne 0 ]; then
         echo 'file :'${JDK_FILE_NAME}', sha256 :'${JDK_SHA256}', is does not match!'
         exit 1002
