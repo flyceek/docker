@@ -119,20 +119,20 @@ function installAlpineJdk(){
     checkJdk
     storeJdk
 
-    mkdir /tmp
-    cd /tmp
-    local GLIBC_VERSION='2.25-r0'
-    local GLIBC_DOWNLOAD_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}
-    local GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
-    local GLIBC_FILE_URL=${GLIBC_DOWNLOAD_URL}/${GLIBC_FILE_NAME}
-    local GLIBC_BIN_FILE_NAME=glibc-bin-${GLIBC_VERSION}.apk
-    local GLIBC_BIN_FILE_URL=${GLIBC_DOWNLOAD_URL}/${GLIBC_BIN_FILE_NAME}
-    local GLIBC_I18N_FILE_NAME=glibc-i18n-${GLIBC_VERSION}.apk
-    local GLIBC_I18N_FILE_URL=${GLIBC_DOWNLOAD_URL}/${GLIBC_I18N_FILE_NAME}
-    local GLIBC_SGERRAND_URL=https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
-    wget ${GLIBC_SGERRAND_URL} -O /etc/apk/keys/sgerrand.rsa.pub
-    wget ${GLIBC_FILE_URL} ${GLIBC_BIN_FILE_URL} ${GLIBC_I18N_FILE_URL}
-    apk add --no-cache ${GLIBC_FILE_NAME} ${GLIBC_BIN_FILE_NAME} ${GLIBC_I18N_FILE_NAME}
+    # mkdir /tmp
+    # cd /tmp
+    # local GLIBC_VERSION='2.25-r0'
+    # local GLIBC_DOWNLOAD_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}
+    # local GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
+    # local GLIBC_FILE_URL=${GLIBC_DOWNLOAD_URL}/${GLIBC_FILE_NAME}
+    # local GLIBC_BIN_FILE_NAME=glibc-bin-${GLIBC_VERSION}.apk
+    # local GLIBC_BIN_FILE_URL=${GLIBC_DOWNLOAD_URL}/${GLIBC_BIN_FILE_NAME}
+    # local GLIBC_I18N_FILE_NAME=glibc-i18n-${GLIBC_VERSION}.apk
+    # local GLIBC_I18N_FILE_URL=${GLIBC_DOWNLOAD_URL}/${GLIBC_I18N_FILE_NAME}
+    # local GLIBC_SGERRAND_URL=https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
+    # wget ${GLIBC_SGERRAND_URL} -O /etc/apk/keys/sgerrand.rsa.pub
+    # wget ${GLIBC_FILE_URL} ${GLIBC_BIN_FILE_URL} ${GLIBC_I18N_FILE_URL}
+    # apk add --no-cache ${GLIBC_FILE_NAME} ${GLIBC_BIN_FILE_NAME} ${GLIBC_I18N_FILE_NAME}
 }
 
 function setCentOSJdk(){
@@ -164,10 +164,10 @@ function clearCentOSSystem(){
 function clearAlpineSystem(){
     clearSystem
     rm -fr /tmp
-    rm -fr /var/cache/apk/*
+    # rm -fr /var/cache/apk/*
     # rm /etc/apk/keys/sgerrand.rsa.pub
     # /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true
-    apk --update del glibc-i18n .build-dependencies
+    # apk --update del glibc-i18n .build-dependencies
 }
 
 function installAlpine(){
