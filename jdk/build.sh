@@ -62,7 +62,7 @@ function prepareInstallJdk(){
 }
 
 function checkJdk(){
-    if [ !-f ${JDK_FILE_NAME} ]; then
+    if [ !-f "${JDK_FILE_NAME}" ]; then
         echo 'jdk file :'${JDK_FILE_NAME}' not found!'
         exit 1010
     fi
@@ -95,7 +95,7 @@ function checkJdk(){
 }
 
 function storeJdk(){
-    if [ !-f ${JDK_FILE_NAME} ]; then
+    if [ !-f "${JDK_FILE_NAME}" ]; then
         echo 'jdk file :'${JDK_FILE_NAME}' not found!'
         exit 1010
     fi
