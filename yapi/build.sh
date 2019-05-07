@@ -32,7 +32,7 @@ function createUserGroup(){
 }
 
 function createYapiStartShell(){
-    if [ !-d "$YAPI_PATH" ]; then
+    if [ ! -d "$YAPI_PATH" ]; then
         echo 'yapi source path : '$YAPI_PATH' is not found !'
         exit 1
     fi
@@ -60,7 +60,7 @@ function installYapiByReleaseCode(){
     mkdir -p ${srcPath}
     cd ${YAPI_WORK_HOME}
     wget ${fileUrl}
-    if [ !-f "$fileName" ]; then
+    if [ ! -f "$fileName" ]; then
         echo 'down file '$fileName' is error !'
         exit 1
     fi
