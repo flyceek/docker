@@ -62,14 +62,6 @@ function prepareInstallJdk(){
 }
 
 function checkJdk(){
-    echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
-    if [ $? -ne 0 ]; then
-        echo 'file :'${JDK_FILE_NAME}', sha256 :'${JDK_SHA256}', is does not match!'
-        exit 1002
-    fi
-}
-
-function storeJdk(){
     if [ !-f ${JDK_FILE_NAME} ]; then
         echo 'jdk file :'${JDK_FILE_NAME}' not found!'
         exit 1010
@@ -93,6 +85,18 @@ function storeJdk(){
         let lastJdkFIleSize=${jdkFileSize}
         let currentWaitTimes=${currentWaitTimes}+1
     done
+    echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
+    if [ $? -ne 0 ]; then
+        echo 'file :'${JDK_FILE_NAME}', sha256 :'${JDK_SHA256}', is does not match!'
+        exit 1002
+    fi
+}
+
+function storeJdk(){
+    if [ !-f ${JDK_FILE_NAME} ]; then
+        echo 'jdk file :'${JDK_FILE_NAME}' not found!'
+        exit 1010
+    fi
     tar -xvf ${JDK_FILE_NAME} -C ${JAVA_HOME} --strip-components=1
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
