@@ -69,13 +69,13 @@ function checkJdk(){
     local readJdkFIleSizeShell="ls -l ${JDK_FILE_NAME} | awk '{print "'$5'"}'"
     let waitTimes=5
     let currentWaitTimes=0
-    let waitTimeInterval =500
+    let waitTimeInterval=500
     let lastJdkFIleSize=`eval ${readJdkFIleSizeShell}`
     let jdkFileSize=0
     echo 'begin wait jdk file write finish! , waitTimes :'${waitTimes}', waitTimeInterval:'${waitTimeInterval}'.'
     while [ ${currentWaitTimes} -lt ${waitTimes} ]
     do
-        echo 'wait jdk file write finish , index :'${currentWaitTimes}'.'
+        echo 'wait jdk file write finish , last file :'${JDK_FILE_NAME}', size:'${lastJdkFIleSize}', index :'${currentWaitTimes}'.'
         sleep ${waitTimeInterval}
         let jdkFileSize=`eval ${readJdkFIleSizeShell}`
         if [ ${jdkFileSize} -ne ${lastJdkFIleSize} ]; then
@@ -85,6 +85,8 @@ function checkJdk(){
         let lastJdkFIleSize=${jdkFileSize}
         let currentWaitTimes=${currentWaitTimes}+1
     done
+    echo 'end wait jdk file write finish! , waitTimes :'${waitTimes}', waitTimeInterval:'${waitTimeInterval}'.'
+    echo 'begin check jdk file sha256sum! , file :'${JDK_FILE_NAME}', sha256sum:'${JDK_SHA256}'.'
     echo "${JDK_SHA256} ${JDK_FILE_NAME}" | sha256sum -c - 
     if [ $? -ne 0 ]; then
         echo 'file :'${JDK_FILE_NAME}', sha256 :'${JDK_SHA256}', is does not match!'
