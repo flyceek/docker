@@ -69,7 +69,7 @@ function checkJdk(){
     local readJdkFIleSizeShell="ls -l ${JDK_FILE_NAME} | awk '{print "'$5'"}'"
     let waitTimes=5
     let currentWaitTimes=0
-    let waitTimeInterval=500
+    let waitTimeInterval=1
     let lastJdkFIleSize=`eval ${readJdkFIleSizeShell}`
     let jdkFileSize=0
     echo 'begin wait jdk file write finish! , waitTimes :'${waitTimes}', waitTimeInterval:'${waitTimeInterval}'.'
