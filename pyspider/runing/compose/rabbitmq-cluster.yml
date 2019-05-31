@@ -1,0 +1,28 @@
+version: '3.2'
+
+services:
+  redis:
+    image: rabbitmq:3.7.8-management
+    ports:
+      - '5671:5671'
+      - '5672:5672'
+      - '15672:15672'
+      - '15671:15671'
+      - '25672:25672'
+    extra_hosts:
+      - 'rabbitmq-1:127.0.0.1'
+      - 'rabbitmq-2:127.0.0.2'
+    environment:
+      RABBITMQ_DEFAULT_USER: flyceek
+      RABBITMQ_DEFAULT_PASS: 123321
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 0.5
+      RABBITMQ_ERLANG_COOKIE: 'rabbitcookie'
+      RABBITMQ_NODENAME: 'rabbit-node-1'
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 256m
+      restart_policy:
+        condition: on-failure
+  

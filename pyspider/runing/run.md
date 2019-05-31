@@ -35,6 +35,26 @@ docker run -d --rm \
 -e RABBITMQ_VM_MEMORY_HIGH_WATERMARK=0.5 \
 rabbitmq:3.7.8-management
 
+/*demon*/
+docker run -d --hostname rabbit2.onlymin.com \
+--add-host="rabbit2.onlymin.com rabbit2":172.18.1.152 \
+--add-host="rabbit3.onlymin.com rabbit3":172.18.1.153 \
+--add-host="rabbit4.onlymin.com rabbit4":172.18.1.154 \
+--name rabbit2 \           
+--log-opt max-size=10m \            
+--log-opt max-file=3 \           
+-p "4369:4369" \            
+-p "5671:5671" \           
+-p "5672:5672" \            
+-p "15671:15671" \            
+-p "15672:15672" \            
+-p "25672:25672" \           
+ -v /data/rabbitmq:/var/lib/rabbitmq:z \            
+-e RABBITMQ_DEFAULT_USER=user01 \            
+-e RABBITMQ_DEFAULT_PASS=password01 \            
+-e RABBITMQ_ERLANG_COOKIE='secret cookie here' \            
+rabbitmq:3.7.8-management
+
 docker run -d --rm \
 --name pyspider_scheduler_test1 \
 -p 23333:23333 \
