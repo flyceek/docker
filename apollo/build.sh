@@ -47,7 +47,7 @@ function installApolloByReleaseCode(){
     local fileName=apollo-${APOLLO_COMP}-${APOLLO_VERSION}-github.zip
     local fileUrl=https://github.com/ctripcorp/apollo/releases/download/v${APOLLO_VERSION}/${fileName}
     local srcPath=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}
-    
+    echo 'begin download file:'${fileUrl}
     mkdir -p ${srcPath}
     cd ${APOLLO_WORK_HOME}
     wget ${fileUrl}
