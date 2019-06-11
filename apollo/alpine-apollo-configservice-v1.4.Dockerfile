@@ -3,7 +3,7 @@ MAINTAINER flyceek <flyceek@gmail.com>
 
 COPY build.sh /build.sh
 
-RUN ["sh","/build.sh","1.4","apollo","configservice"]
+RUN ["sh","/build.sh","1.4.0","apollo","configservice"]
 
 USER apollo
 EXPOSE 8080
