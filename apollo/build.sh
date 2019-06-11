@@ -10,7 +10,7 @@ function installSystemDependencies(){
     echo "http://mirrors.aliyun.com/alpine/v3.8/main" > /etc/apk/repositories \
     && echo "http://mirrors.aliyun.com/alpine/v3.8/community" >> /etc/apk/repositories \
     && apk update upgrade \
-    && apk add --no-cache --virtual=.apollo-dependencies procps unzip wget bash tar tzdata \
+    && apk add --no-cache --virtual=.apollo-dependencies procps unzip wget curl bash tar tzdata \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
 }
