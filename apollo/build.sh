@@ -85,7 +85,7 @@ function installApollo(){
 
 function setSystem(){
     echo "root:123321" | chpasswd
-    chown -R ${APOLLO_USER}:${APOLLO_USER} ${APOLLO_WORK_HOME}
+    chown -R ${APOLLO_USER}:${APOLLO_USER} /opt
 }
 
 function clearSystem(){
