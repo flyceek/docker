@@ -92,13 +92,61 @@ function clearSystem(){
     rm /build.sh
 }
 
-if [ -z "$APOLLO_COMP" ]; then
-    echo 'apollo component is empty!'
-    exit 119
-fi
+function install(){
+    installSystemDependencies
+    createUserGroup ${APOLLO_USER}
+    installApollo
+    setSystem
+    clearSystem
+}
 
-installSystemDependencies
-createUserGroup ${APOLLO_USER}
-installApollo
-setSystem
-clearSystem
+function installAdminservice(){
+    install
+}
+
+function installConfigservice(){
+    install
+}
+
+function installPortal(){
+    install
+    local portalEnvFile=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/config/apollo-env.properties
+    if [ ! -f "$portalEnvFile" ]; then
+        echo 'apollo portal env file '$fileName' is not found !'
+        exit 10092
+    fi
+    echo -e 'local.meta=${local_meta}
+dev.meta=${dev_meta}
+fat.meta=${fat_meta}
+uat.meta=${uat_meta}
+lpt.meta=${lpt_meta}
+pro.meta=${pro_meta}'>${portalEnvFile}
+}
+
+function doAction(){
+    if [ -z "$APOLLO_COMP" ]; then
+        echo 'apollo component is empty!'
+        exit 119
+    fi
+    case "$APOLLO_COMP" in
+        "adminservice")
+            echo "begin install apollo adminservice."
+            installAdminservice
+            ;;
+        "configservice")
+            echo "begin install apollo configservice."
+            installConfigservice
+            ;;
+        "portal")
+            echo "begin install apollo portal."
+            installPortal
+            ;;
+        *)
+            echo "component error,please enter!"
+            exit 1006
+            ;;
+    esac
+
+}
+
+doAction
