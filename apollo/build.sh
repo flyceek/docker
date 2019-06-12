@@ -35,9 +35,9 @@ function createApolloStartShell(){
         exit 1
     fi
 
-    echo -e '#!/bin/sh
+    echo -e '#!/bin/bash
 cd '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'
-sh scripts/startup.sh
+bash scripts/startup.sh
 '>/usr/local/bin/apollo-${APOLLO_COMP}-start
 
     chmod +x /usr/local/bin/apollo-${APOLLO_COMP}-start 
