@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+  configservice:
+    image: flyceek/apollo:alpine-apollo-configservice-v1.4
+    ports:
+      - 18086:8080
+    restart: always
+    environment:
+      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.4.99.4:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.4.99.4 -Deureka.instance.nonSecurePort=18086 -Deureka.instance.instance-id=10.4.99.4:apollo-conf-test:18086 -Deureka.server.enable-self-preservation=true -Deureka.instance.hostname=10.4.99.4 -Deureka.client.serviceUrl.defaultZone=http://10.4.99.4:18086
+  adminservice:
+    image: flyceek/apollo:alpine-apollo-adminservice-v1.4
+    ports:
+      - 18096:8090
+    restart: always
+    environment:
+      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.4.99.4:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.4.99.46 -Deureka.instance.nonSecurePort=18096 -Deureka.instance.instance-id=10.4.99.4:apollo-admin-test:18096 -Deureka.instance.hostname=10.4.99.4 -Deureka.client.serviceUrl.defaultZone=http://10.4.99.4:18086
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123321
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    ports:
+      - 18336:3306
+    volumes:
+      - mysql-apollo-db:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 18080:8080
+volumes:
+  mysql-apollo-db:

@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  portal:
+    image: flyceek/apollo:alpine-apollo-portal-v1.4
+    ports:
+      - 18076:8070
+    restart: always
+    environment:
+      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.28.19.196:3306/ApolloPortalDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Ddev_meta=http://10.28.19.196:18086
+    # volumes:
+    #   - mysql-db:/var/lib/mysql
