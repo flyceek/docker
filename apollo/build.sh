@@ -122,7 +122,7 @@ function createApolloPortalStartShell(){
     echo -e '#!/bin/bash
 cd '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'
 echo '' > '${envFile}'
-if [ -n ${LOCAL_META} ]; then echo local.meta='${LOCAL_META}'>>'${envFile}'; fi
+if [ -n ${LOCAL_META} ]; then echo local.meta=${LOCAL_META}>>'${envFile}'; fi
 if [ -n ${DEV_META} ]; then echo dev.meta=${DEV_META}>>'${envFile}'; fi
 if [ -n ${FAT_META} ]; then echo fat.meta=${FAT_META}>>'${envFile}'; fi
 if [ -n ${UAT_META} ]; then echo uat.meta=${UAT_META}>>'${envFile}'; fi
