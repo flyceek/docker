@@ -34,13 +34,11 @@ function createApolloStartShell(){
         echo 'apollo source path : '$APOLLO_PATH' is not found !'
         exit 1
     fi
-
+    local startFile=/usr/local/bin/apollo-${APOLLO_COMP}-start
     echo -e '#!/bin/bash
-cd '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'
-bash scripts/startup.sh
-'>/usr/local/bin/apollo-${APOLLO_COMP}-start
-
-    chmod +x /usr/local/bin/apollo-${APOLLO_COMP}-start 
+echo "begin start '${APOLLO_COMP}'."
+bash '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'/scripts/startup.sh'>${startFile}
+    chmod +x ${startFile}
 }
 
 function installApolloByReleaseCode(){
@@ -110,6 +108,7 @@ function installConfigservice(){
 
 function createApolloPortalStartShell(){
     local envFile=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/config/apollo-env.properties
+    local startFile=/usr/local/bin/apollo-${APOLLO_COMP}-start
     if [ ! -f "$envFile" ]; then
         echo 'apollo portal env file '$envFile' is not found !'
         exit 10092
@@ -120,16 +119,24 @@ function createApolloPortalStartShell(){
     fi
 
     echo -e '#!/bin/bash
-cd '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'
-echo '' > '${envFile}'
-if [ -n "${LOCAL_META}" ]; then echo local.meta=${LOCAL_META}>>'${envFile}'; fi
-if [ -n "${DEV_META}" ]; then echo dev.meta=${DEV_META}>>'${envFile}'; fi
-if [ -n "${FAT_META}" ]; then echo fat.meta=${FAT_META}>>'${envFile}'; fi
-if [ -n "${UAT_META}" ]; then echo uat.meta=${UAT_META}>>'${envFile}'; fi
-if [ -n "${LPT_META}" ]; then echo lpt.meta=${LPT_META}>>'${envFile}'; fi
-if [ -n "${POR_META}" ]; then echo pro.meta=${POR_META}>>'${envFile}'; fi
-bash scripts/startup.sh'>/usr/local/bin/apollo-${APOLLO_COMP}-start
-    chmod +x /usr/local/bin/apollo-${APOLLO_COMP}-start
+echo "begin start '${APOLLO_COMP}'."
+echo "" > '${envFile}'
+OLD_IFS="$IFS" 
+IFS="," 
+meta_opts=(${META_OPTS})
+IFS="$OLD_IFS"
+for meta in ${meta_opts[@]}
+do 
+    echo $meta>>'$envFile'
+done
+#if [ -n "${LOCAL_META}" ]; then echo local.meta=${LOCAL_META}>>'${envFile}'; fi
+#if [ -n "${DEV_META}" ]; then echo dev.meta=${DEV_META}>>'${envFile}'; fi
+#if [ -n "${FAT_META}" ]; then echo fat.meta=${FAT_META}>>'${envFile}'; fi
+#if [ -n "${UAT_META}" ]; then echo uat.meta=${UAT_META}>>'${envFile}'; fi
+#if [ -n "${LPT_META}" ]; then echo lpt.meta=${LPT_META}>>'${envFile}'; fi
+#if [ -n "${POR_META}" ]; then echo pro.meta=${POR_META}>>'${envFile}'; fi
+bash '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/'scripts/startup.sh'>${startFile}
+    chmod +x ${startFile}
 }
 
 function installPortal(){
