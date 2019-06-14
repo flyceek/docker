@@ -111,8 +111,8 @@ function installConfigservice(){
 function createApolloPortalStartShell(){
     local envFile=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/config/apollo-env.properties
     local start=/usr/local/bin/apollo-${APOLLO_COMP}-start
-    if [ ! -f "$portalEnvFile" ]; then
-        echo 'apollo portal env file '$fileName' is not found !'
+    if [ ! -f "$envFile" ]; then
+        echo 'apollo portal env file '$envFile' is not found !'
         exit 10092
     fi
     if [ ! -d "$APOLLO_PATH" ]; then
