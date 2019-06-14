@@ -123,11 +123,11 @@ echo "begin start '${APOLLO_COMP}'."
 echo "" > '${envFile}'
 OLD_IFS="$IFS" 
 IFS="," 
-meta_opts=(${META_OPTS})
+meta_servers=(${META_SERVERS_OPTS})
 IFS="$OLD_IFS"
-for meta in ${meta_opts[@]}
+for meta_server in ${meta_servers[@]}
 do 
-    echo $meta>>'$envFile'
+    echo $meta_server>>'$envFile'
 done
 #if [ -n "${LOCAL_META}" ]; then echo local.meta=${LOCAL_META}>>'${envFile}'; fi
 #if [ -n "${DEV_META}" ]; then echo dev.meta=${DEV_META}>>'${envFile}'; fi
