@@ -111,16 +111,17 @@ function installConfigservice(){
 function installPortal(){
     install
     local portalEnvFile=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/config/apollo-env.properties
-    if [ ! -f "$portalEnvFile" ]; then
-        echo 'apollo portal env file '$fileName' is not found !'
-        exit 10092
-    fi
-    echo -e 'local.meta=${local_meta}
-dev.meta=${dev_meta}
-fat.meta=${fat_meta}
-uat.meta=${uat_meta}
-lpt.meta=${lpt_meta}
-pro.meta=${pro_meta}'>${portalEnvFile}
+    rm -fr ${portalEnvFile}
+#     if [ ! -f "$portalEnvFile" ]; then
+#         echo 'apollo portal env file '$fileName' is not found !'
+#         exit 10092
+#     fi
+#     echo -e 'local.meta=${local_meta}
+# dev.meta=${dev_meta}
+# fat.meta=${fat_meta}
+# uat.meta=${uat_meta}
+# lpt.meta=${lpt_meta}
+# pro.meta=${pro_meta}'>${portalEnvFile}
 }
 
 function doAction(){
