@@ -122,12 +122,12 @@ function createApolloPortalStartShell(){
     echo -e '#!/bin/bash
 cd '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'
 echo '' > '${envFile}'
-if [ -n ${LOCAL_META} ]; then echo local.meta=${LOCAL_META}>>'${envFile}'; fi
-if [ -n ${DEV_META} ]; then echo dev.meta=${DEV_META}>>'${envFile}'; fi
-if [ -n ${FAT_META} ]; then echo fat.meta=${FAT_META}>>'${envFile}'; fi
-if [ -n ${UAT_META} ]; then echo uat.meta=${UAT_META}>>'${envFile}'; fi
-if [ -n ${LPT_META} ]; then echo lpt.meta=${LPT_META}>>'${envFile}'; fi
-if [ -n ${POR_META} ]; then echo pro.meta=${POR_META}>>'${envFile}'; fi
+if [ -n "${LOCAL_META}" ]; then echo local.meta=${LOCAL_META}>>'${envFile}'; fi
+if [ -n "${DEV_META}" ]; then echo dev.meta=${DEV_META}>>'${envFile}'; fi
+if [ -n "${FAT_META}" ]; then echo fat.meta=${FAT_META}>>'${envFile}'; fi
+if [ -n "${UAT_META}" ]; then echo uat.meta=${UAT_META}>>'${envFile}'; fi
+if [ -n "${LPT_META}" ]; then echo lpt.meta=${LPT_META}>>'${envFile}'; fi
+if [ -n "${POR_META}" ]; then echo pro.meta=${POR_META}>>'${envFile}'; fi
 bash scripts/startup.sh'>/usr/local/bin/apollo-${APOLLO_COMP}-start
     chmod +x /usr/local/bin/apollo-${APOLLO_COMP}-start
 }
