@@ -110,7 +110,6 @@ function installConfigservice(){
 
 function createApolloPortalStartShell(){
     local envFile=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/config/apollo-env.properties
-    local start=/usr/local/bin/apollo-${APOLLO_COMP}-start
     if [ ! -f "$envFile" ]; then
         echo 'apollo portal env file '$envFile' is not found !'
         exit 10092
@@ -130,8 +129,8 @@ if [ -n '${UAT_META}']; then echo uat.meta='${UAT_META}'>>'${envFile}'; fi
 if [ -n '${LPT_META}']; then echo lpt.meta='${LPT_META}'>>'${envFile}'; fi
 if [ -n '${POR_META}']; then echo pro.meta='${POR_META}'>>'${envFile}'; fi
 bash scripts/startup.sh'
->${start}
-    chmod +x ${start}
+>/usr/local/bin/apollo-${APOLLO_COMP}-start
+    chmod +x /usr/local/bin/apollo-${APOLLO_COMP}-start
 }
 
 function installPortal(){
