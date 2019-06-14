@@ -80,7 +80,6 @@ function installApollo(){
         echo 'install apollo use source code!'
         installApolloBySourceCode
     fi
-    createApolloStartShell
 }
 
 function setSystem(){
@@ -89,13 +88,14 @@ function setSystem(){
 }
 
 function clearSystem(){
-    rm /build.sh
+    rm -fr /build.sh
 }
 
 function install(){
     installSystemDependencies
     createUserGroup ${APOLLO_USER}
     installApollo
+    createApolloStartShell
     setSystem
     clearSystem
 }
@@ -108,20 +108,39 @@ function installConfigservice(){
     install
 }
 
+function createApolloPortalStartShell(){
+    local envFile=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/config/apollo-env.properties
+    local start=/usr/local/bin/apollo-${APOLLO_COMP}-start
+    if [ ! -f "$portalEnvFile" ]; then
+        echo 'apollo portal env file '$fileName' is not found !'
+        exit 10092
+    fi
+    if [ ! -d "$APOLLO_PATH" ]; then
+        echo 'apollo source path : '$APOLLO_PATH' is not found !'
+        exit 1
+    fi
+
+    echo -e '#!/bin/bash
+cd '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'
+echo '' > '${envFile}'
+if [ -n '${LOCAL_META}']; then echo local.meta='${LOCAL_META}'>>'${envFile}'; fi
+if [ -n '${DEV_META}']; then echo dev.meta='${DEV_META}'>>'${envFile}'; fi
+if [ -n '${FAT_META}']; then echo fat.meta='${FAT_META}'>>'${envFile}'; fi
+if [ -n '${UAT_META}']; then echo uat.meta='${UAT_META}'>>'${envFile}'; fi
+if [ -n '${LPT_META}']; then echo lpt.meta='${LPT_META}'>>'${envFile}'; fi
+if [ -n '${POR_META}']; then echo pro.meta='${POR_META}'>>'${envFile}'; fi
+bash scripts/startup.sh'
+>${start}
+    chmod +x ${start}
+}
+
 function installPortal(){
-    install
-    local portalEnvFile=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/config/apollo-env.properties
-    rm -fr ${portalEnvFile}
-#     if [ ! -f "$portalEnvFile" ]; then
-#         echo 'apollo portal env file '$fileName' is not found !'
-#         exit 10092
-#     fi
-#     echo -e 'local.meta=${local_meta}
-# dev.meta=${dev_meta}
-# fat.meta=${fat_meta}
-# uat.meta=${uat_meta}
-# lpt.meta=${lpt_meta}
-# pro.meta=${pro_meta}'>${portalEnvFile}
+    installSystemDependencies
+    createUserGroup ${APOLLO_USER}
+    installApollo
+    createApolloPortalStartShell
+    setSystem
+    clearSystem
 }
 
 function doAction(){

@@ -7,8 +7,9 @@ services:
       - 18076:8070
     restart: always
     environment:
-      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.28.19.196:3306/ApolloPortalDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Dspring.profiles.active=github,ldap -Ddev_meta=http://10.28.19.196:18086
+      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.28.19.196:3306/ApolloPortalDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Dspring.profiles.active=github,ldap
     extra_hosts:
       ldap.com.cn: 10.4.19.13
     volumes:
       - ./application-ldap.yml:/opt/apollo/apollo-portal-v1.4.0/config/application-ldap.yml
+      - ./apollo-env.properties:/opt/apollo/apollo-portal-v1.4.0/config/apollo-env.properties
