@@ -121,10 +121,13 @@ function createApolloPortalStartShell(){
     echo -e '#!/bin/bash
 echo "begin start '${APOLLO_COMP}'."
 echo "" > '${envFile}'
-local meta_servers=(${meta.servers})
-for meta_server in ${meta_servers[@]}
+OLD_IFS="$IFS"
+IFS="${META_SERVERS_SEP}"
+metaServers=(${META_SERVERS})
+IFS="$OLD_IFS"
+for metaServer in ${metaServers[@]}
 do 
-    echo $meta_server>>'$envFile'
+    echo $metaServer>>'$envFile'
 done
 bash '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}/'scripts/startup.sh'>${startFile}
     chmod +x ${startFile}

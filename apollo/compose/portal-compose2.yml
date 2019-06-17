@@ -7,12 +7,9 @@ services:
       - 18076:8070
     restart: always
     environment:
-      - spring.datasource.url=jdbc:mysql://10.28.19.196:18336/ApolloConfigDB?characterEncoding=utf8
-      - spring.datasource.username=root
-      - spring.datasource.password=123321
-      - spring.profiles.active=ldap
-      - meta.servers=dev.meta=http://10.28.19.196:18086,http://10.4.99.4:18086
-      - IFS=;
+      - JAVA_OPTS=-Dspring.datasource.url=jdbc:mysql://10.28.19.196:3306/ApolloPortalDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Dspring.profiles.active=ldap
+      - META_SERVERS=dev.meta=http://10.28.19.196:18086,http://10.4.99.4:18086
+      - META_SERVERS_SEP=;
     extra_hosts:
       ldap.centaline.com.cn: 10.4.19.13
     volumes:
