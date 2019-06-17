@@ -7,7 +7,7 @@ services:
       - 18086:8080
     restart: always
     environment:
-      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.4.99.4:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.4.99.4 -Deureka.instance.nonSecurePort=18086 -Deureka.instance.instance-id=10.4.99.4:apollo-conf-test:18086 -Deureka.server.enable-self-preservation=true -Deureka.instance.hostname=10.4.99.4 -Deureka.client.serviceUrl.defaultZone=http://10.4.99.4:18086
+      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.4.99.4 -Deureka.instance.nonSecurePort=18086 -Deureka.instance.instance-id=10.4.99.4:apollo-conf-test:18086 -Deureka.server.enable-self-preservation=true -Deureka.instance.hostname=10.4.99.4 -Deureka.client.serviceUrl.defaultZone=http://10.4.99.4:18086
   adminservice:
     image: flyceek/apollo:alpine-apollo-adminservice-v1.4
     ports:
