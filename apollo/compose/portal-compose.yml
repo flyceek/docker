@@ -11,5 +11,5 @@ services:
       DEV_META: http://10.28.19.196:18086
     extra_hosts:
       ldap.com.cn: 10.4.19.13
-    volumes:
-      - ./apollo-env.properties:/opt/apollo/apollo-portal-v1.4.0/config/apollo-env.properties
+    # volumes:
+    #   - ./apollo-env.properties:/opt/apollo/apollo-portal-v1.4.0/config/apollo-env.properties
