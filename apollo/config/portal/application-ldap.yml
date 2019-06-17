@@ -1,16 +1,17 @@
 
 spring:
   ldap:
-    base: "\u004f\u0055\u003d\u4e2d\u539f\u5730\u4ea7\u002c\u0044\u0043\u003d\u0063\u0065\u006e\u0074\u0061\u006c\u0069\u006e\u0065\u002c\u0044\u0043\u003d\u0063\u006f\u006d\u002c\u0044\u0043\u003d\u0063\u006e"
+    base: "OU=中原地产,DC=centaline,DC=com,DC=cn"
     username: "ldapshdev@centaline.com.cn" # 配置管理员账号，用于搜索、匹配用户
-    password: "password"
-    searchFilter: "ladap.good5533"  # 用户过滤器，登录的时候用这个过滤器来搜索用户
+    password: "123321"
+    searchFilter: "(sAMAccountName={0})"  # 用户过滤器，登录的时候用这个过滤器来搜索用户
     urls:
-    - "ldap://ldap.centaline.com.cn:389"
-
+    - "ldap://10.4.19.13:389"
 ldap:
   mapping: # 配置 ldap 属性
-    objectClass: "inetOrgPerson" # ldap 用户 objectClass 配置
-    loginId: "uid" # ldap 用户惟一 id，用来作为登录的 id
+    objectClass: "user" # ldap 用户 objectClass 配置
+    loginId: "sAMAccountName" # ldap 用户惟一 id，用来作为登录的 id
     userDisplayName: "cn" # ldap 用户名，用来作为显示名
-    email: "mail" # ldap 邮箱属性
+    email: "userPrincipalName" # ldap 邮箱属性
+  # filter: # 可选项，配置过滤，目前只支持 memberOf
+  #   memberOf: "OU=中原地产,DC=centaline,DC=com,DC=cn" # 只允许 memberOf 属性为 ServiceDEV 和 WebDEV 的用户访问
