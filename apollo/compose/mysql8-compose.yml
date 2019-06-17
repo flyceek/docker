@@ -13,7 +13,7 @@ services:
       --explicit_defaults_for_timestamp=true
       --lower_case_table_names=1
     ports:
-      - 3306:3306
+      - 18336:3306
     volumes:
       - mysql-db:/var/lib/mysql
 
@@ -21,6 +21,6 @@ services:
     image: adminer
     restart: always
     ports:
-      - 18080:8080
+      - 18001:8080
 volumes:
   mysql-db:

@@ -14,7 +14,7 @@ services:
       - 18096:8090
     restart: always
     environment:
-      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.4.99.4:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.4.99.46 -Deureka.instance.nonSecurePort=18096 -Deureka.instance.instance-id=10.4.99.4:apollo-admin-test:18096 -Deureka.instance.hostname=10.4.99.4 -Deureka.client.serviceUrl.defaultZone=http://10.4.99.4:18086
+      JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.4.99.4:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.4.99.4 -Deureka.instance.nonSecurePort=18096 -Deureka.instance.instance-id=10.4.99.4:apollo-admin-test:18096 -Deureka.instance.hostname=10.4.99.4 -Deureka.client.serviceUrl.defaultZone=http://10.4.99.4:18086
   mysql:
     image: mysql
     restart: always
