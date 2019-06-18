@@ -108,7 +108,7 @@ function clearSystem(){
 installSystemDependencies
 setNpm
 installNpmDependencies
-createUserGroup ${YAPI_USER}
+createUserGroup ${USER}
 installCodePushServer
 createCodePushServerStartShell
 setSystem
