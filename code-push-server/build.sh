@@ -47,7 +47,8 @@ function installCodePushServerByReleaseCode(){
     rm ${fileName}
     cd ${srcPath}
     echo 'begin npm install in :'${srcPath}' .'
-    npm install
+    npm cache clean --force
+    npm install --no-package-lock
     APP_PATH=${srcPath}
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
@@ -63,7 +64,8 @@ function installCodePushServerBySourceCode(){
     git clone --depth=1 --single-branch --branch=master ${gitUrl} ${srcPath}
     cd ${srcPath}
     echo 'begin npm install in :'${srcPath}' .'
-    npm install
+    npm cache clean --force
+    npm install --no-package-lock
     APP_PATH=${srcPath}
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
