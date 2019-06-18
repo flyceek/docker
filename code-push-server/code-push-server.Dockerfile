@@ -4,9 +4,7 @@ MAINTAINER flyceek <flyceek@gmail.com>
 # COPY ./config/process.json /process.json
 COPY ./build.sh /build.sh
 
-RUN ["sh","/build.sh","","codepushserver"]
+RUN ["sh","/build.sh",""]
 
-
-USER codepushserver
 EXPOSE 3000
 CMD ["code-push-server-start"] 

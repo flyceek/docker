@@ -100,7 +100,7 @@ pm2 logs'>/usr/local/bin/code-push-server-start
 
 function setSystem(){
     echo "root:123321" | chpasswd
-    chown -R ${USER}:${USER} ${WORK_HOME}
+    # chown -R ${USER}:${USER} ${WORK_HOME}
 }
 
 function clearSystem(){
@@ -110,7 +110,7 @@ function clearSystem(){
 installSystemDependencies
 setNpm
 installNpmDependencies
-createUserGroup ${USER}
+#createUserGroup ${USER}
 installCodePushServer
 createCodePushServerStartShell
 setSystem
