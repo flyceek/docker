@@ -1,7 +1,7 @@
 FROM node:8.11.4-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
-COPY ./config/process.json /process.json
+# COPY ./config/process.json /process.json
 COPY ./build.sh /build.sh
 
 RUN ["sh","/build.sh","","codepushserver"]
