@@ -1,9 +1,9 @@
 #!/bin/sh
 WORK_HOME=/opt/code-push-server
 VERSION=$1
-APP_PATH=''
-
 USER=$2
+
+APP_PATH=''
 
 function installSystemDependencies(){
     apk add --update --no-cache --virtual=.yapi-dependencies git wget
