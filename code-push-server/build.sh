@@ -74,10 +74,10 @@ function installCodePushServerBySourceCode(){
 function installCodePushServer(){
     if [ -n "${VERSION}" ]; then
         echo 'input version is :'${VERSION}' .'
-        echo 'install yapi use release code!'
+        echo 'install CodePushServer use release code!'
         installCodePushServerByReleaseCode
     else
-        echo 'install yapi use source code!'
+        echo 'install CodePushServer use source code!'
         installCodePushServerBySourceCode
     fi
 }
