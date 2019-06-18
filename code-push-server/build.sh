@@ -47,7 +47,7 @@ function installCodePushServerByReleaseCode(){
     rm ${fileName}
     cd ${srcPath}
     echo 'begin npm install in :'${srcPath}' .'
-    npm install --production
+    npm install
     APP_PATH=${srcPath}
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
