@@ -6,7 +6,7 @@ USER=$2
 APP_PATH=''
 
 function installSystemDependencies(){
-    apk add --update --no-cache --virtual=.yapi-dependencies git wget
+    apk add --update --no-cache --virtual=.yapi-dependencies git wget tar
 }
 
 function setNpm(){
@@ -63,7 +63,7 @@ function installCodePushServerBySourceCode(){
     git clone --depth=1 --single-branch --branch=master ${gitUrl} ${srcPath}
     cd ${srcPath}
     echo 'begin npm install in :'${srcPath}' .'
-    npm install --production
+    npm install
     APP_PATH=${srcPath}
     if [ $? -ne 0 ]; then
         echo 'something wrong happened !'
@@ -90,7 +90,7 @@ function createCodePushServerStartShell(){
 
     echo -e '#!/bin/sh
 cd '${APP_PATH}'
-pm2 start app.js
+pm2 start bin/www
 pm2 logs'>/usr/local/bin/code-push-server-start
 
     chmod +x /usr/local/bin/code-push-server-start
