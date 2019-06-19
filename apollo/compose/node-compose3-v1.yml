@@ -1,0 +1,38 @@
+version: '3'
+services:
+  apollo-configservice:
+    image: flyceek/apollo:alpine-apollo-configservice-v1.4
+    container_name: apollo-configservice
+    network_mode: "host"
+    ports:
+      - 18086:8080
+    restart: always
+    environment:
+      SERVER_PORT: 8080
+      DS_URL: "jdbc:mysql://10.28.19.196:3306/ApolloConfigDB?characterEncoding=utf8"
+      DS_USERNAME: "root"
+      DS_PASSWORD: "123321"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  apollo-adminservice:
+    image: flyceek/apollo:alpine-apollo-adminservice-v1.4
+    container_name: apollo-adminservice
+    network_mode: "host"
+    ports:
+      - 18096:8090
+    restart: always
+    environment:
+      SERVER_PORT: 8090
+      DS_URL: "jdbc:mysql://10.28.19.196:3306/ApolloConfigDB?characterEncoding=utf8"
+      DS_USERNAME: "root"
+      DS_PASSWORD: "123321"
+    depends_on:
+      - apollo-configservice
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
