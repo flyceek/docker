@@ -1,8 +1,16 @@
 FROM debian:jessie-slim
 MAINTAINER flyceek <flyceek@gmail.com>
 
+ARG WORK_HOME=/opt/soft/xtrabackup
+ARG XTRABACKUP_VERSION=8.0.4
+ARG XTRABACKUP_FILE_NAME=percona-xtrabackup-80_${XTRABACKUP_VERSION}-1.stretch_amd64.deb
+ARG XTRABACKUP_FILE_URL=https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-${XTRABACKUP_VERSION}/binary/debian/stretch/x86_64/￥{XTRABACKUP_FILE_NAME}
+
 RUN apt-get -qq update \
     && apt-get install -y wget base-files lsb-release lsb-base \
-    && wget https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.4/binary/debian/jessie/x86_64/percona-xtrabackup-24_2.4.4-1.jessie_amd64.deb \
-    && sudo dpkg -i percona-xtrabackup-24_2.4.4-1.jessie_amd64.deb
+    && mkdir -p ${WORK_HOME} \
+    && cd ${WORK_HOME} \
+    && wget ${XTRABACKUP_FILE_NAME} \
+    && sudo dpkg -i ${XTRABACKUP_FILE_NAME} \
+    && rm -fr ${XTRABACKUP_FILE_NAME}
     
