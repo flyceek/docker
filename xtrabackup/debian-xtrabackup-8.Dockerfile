@@ -7,7 +7,7 @@ ARG XTRABACKUP_FILE_NAME=percona-xtrabackup-80_${XTRABACKUP_VERSION}-1.stretch_a
 ARG XTRABACKUP_FILE_URL=https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-${XTRABACKUP_VERSION}/binary/debian/stretch/x86_64/${XTRABACKUP_FILE_NAME}
 
 RUN apt-get update \
-    && apt-get install -y wget base-files lsb-release lsb-base \
+    && apt-get install -y wget vim base-files lsb-release lsb-base \
     && mkdir -p ${WORK_HOME} \
     && cd ${WORK_HOME} \
     && wget ${XTRABACKUP_FILE_URL} 
