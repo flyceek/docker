@@ -13,8 +13,8 @@ RUN apt-get update \
     && wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb \
     && dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb \
     && apt-get update\
-    && apt-get install percona-xtrabackup-80 \
-    && wget ${XTRABACKUP_FILE_URL} 
-    #&& dpkg -i ${XTRABACKUP_FILE_NAME} \
-    #&& rm -fr ${XTRABACKUP_FILE_NAME}
+    && apt-get install percona-xtrabackup-80
+    # && wget ${XTRABACKUP_FILE_URL} 
+    # && dpkg -i ${XTRABACKUP_FILE_NAME} \
+    # && rm -fr ${XTRABACKUP_FILE_NAME}
     
