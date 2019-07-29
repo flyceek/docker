@@ -11,6 +11,6 @@ RUN apt-get update \
     && mkdir -p ${WORK_HOME} \
     && cd ${WORK_HOME} \
     && wget ${XTRABACKUP_FILE_URL} \
-    && sudo dpkg -i ${XTRABACKUP_FILE_NAME} \
+    && dpkg -i ${XTRABACKUP_FILE_NAME} \
     && rm -fr ${XTRABACKUP_FILE_NAME}
     
