@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt-get install -y wget base-files lsb-release lsb-base \
     && mkdir -p ${WORK_HOME} \
     && cd ${WORK_HOME} \
-    && wget ${XTRABACKUP_FILE_NAME} \
+    && wget ${XTRABACKUP_FILE_URL} \
     && sudo dpkg -i ${XTRABACKUP_FILE_NAME} \
     && rm -fr ${XTRABACKUP_FILE_NAME}
     
