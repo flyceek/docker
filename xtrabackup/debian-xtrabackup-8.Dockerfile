@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:stretch
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG WORK_HOME=/opt/soft/xtrabackup
@@ -15,5 +15,5 @@ RUN apt-get update \
     && percona-release enable-only tools release \
     && percona-release enable-only tools \
     && apt-get update \
-    && apt-get install percona-xtrabackup-80
+    && apt-get install -y percona-xtrabackup-80
     
