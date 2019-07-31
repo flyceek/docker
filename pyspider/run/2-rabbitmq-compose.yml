@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  redis:
+    image: rabbitmq:3.7.8-management
+    ports:
+      - '5671:5671'
+      - '5672:5672'
+      - '15672:15672'
+      - '15671:15671'
+      - '25672:25672'
+    environment:
+      RABBITMQ_DEFAULT_USER: flyceek
+      RABBITMQ_DEFAULT_PASS: 123321
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 0.5
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 256m
+      restart_policy:
+        condition: on-failure
+  

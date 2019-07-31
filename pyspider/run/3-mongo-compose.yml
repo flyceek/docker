@@ -1,0 +1,48 @@
+version: "3.1"
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    command: '--auth'
+    ports:
+      - "27017:27017"
+    networks:
+      - pyspider-mongodb-net
+    volumes:
+      - pyspider-mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: paranora
+      MONGO_INITDB_ROOT_PASSWORD: 123321
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+  mongo-express:
+    image: mongo-express
+    restart: always
+    networks:
+      - pyspider-mongodb-net
+    ports:
+      - "3333:8081"
+    links:
+      - "mongodb:mongo"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: paranora
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 123321
+    depends_on:
+      - mongodb
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+networks:
+  pyspider-mongodb-net:
+volumes:
+  pyspider-mongodb:

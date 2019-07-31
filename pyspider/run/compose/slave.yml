@@ -53,21 +53,9 @@ services:
     mem_limit: 256m
     restart: always
 
-  webui:
-    image: 'flyceek/pyspider:latest'
-    command: '--taskdb "mongodb+taskdb://flyceek:123321@10.28.19.196:27017/taskdb?authSource=admin"  --projectdb "mongodb+projectdb://flyceek:123321@10.28.19.196:27017/projectdb?authSource=admin" --resultdb "mongodb+resultdb://flyceek:123321@10.28.19.196:27017/resultdb?authSource=admin" --message-queue "amqp://flyceek:123321@10.28.19.196:5672/%2F" webui  --scheduler-rpc "http://10.28.19.196:23333/" --fetcher-rpc "http://fetcher/"'
-    cpu_shares: 256    
-    environment:
-      - 'EXCLUDE_PORTS=23333,24444,25555'
-    ports:
-      - '5050:5000'
-    links:
-      - 'fetcher-lb:fetcher'
-    mem_limit: 256m
-
-
 networks:
   default:
     external:
       name: pyspider
+
 

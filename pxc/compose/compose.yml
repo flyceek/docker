@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  pxc-node0:
+    image: perconalab/percona-xtradb-cluster:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 123321
+      DISCOVERY_SERVICE: 10.20.2.4:2379
+      CLUSTER_NAME: pxc-cluster0 
+    networks:
+      - pxc-net0
+    ports:
+      - 18336:3306
+    volumes:
+      # create volumes for use
+      - pxc-db:/var/lib/mysql
+      # bind mount my local my.cnf
+      # - $PWD/my.cnf:/etc/my.cnf
+    #command:
+volumes:
+  pxc-db:
+
+networks:
+  pxc-net0:
+    driver: overlay
