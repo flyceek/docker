@@ -26,6 +26,7 @@ docker network rm pxc-net1
 docker network create -d overlay --attachable pxc-net1
 
 docker run --rm \
+-d \
 -p 17331:3306 \
 --name=pxc-node1 \
 --net=pxc-net1 \
