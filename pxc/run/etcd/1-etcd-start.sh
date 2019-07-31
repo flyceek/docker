@@ -9,7 +9,7 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380
  -initial-cluster-token etcd-cluster-1 \
  -initial-cluster etcd0=http://${ETCD_HOST}:2380 \
  -initial-cluster-state new
- 
+
 ### stand-alone ###
 rm -rf /tmp/etcd-data.tmp 
 mkdir -p /tmp/etcd-data.tmp
@@ -63,6 +63,7 @@ rm -rf /tmp/etcd-data.tmp
 mkdir -p /tmp/etcd-data.tmp
 
 docker run \
+-d \
 --rm \
 -p 2379:2379 \
 -p 2380:2380 \
@@ -85,3 +86,5 @@ flyceek/etcd \
 curl -L http://10.4.99.4:2479/v2/keys/message -XPUT -d value="Hello zhenyuyaodidiao"
 
 curl -L http://10.4.99.4:2479/v2/keys/message
+
+http://10.4.99.4:2379/v2/members
