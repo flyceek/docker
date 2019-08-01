@@ -1,3 +1,4 @@
+############### coustom network ###############
 ### node0 ###
 docker network rm pxc-net0
 docker volume rm pxc-v0
@@ -49,7 +50,7 @@ docker run \
 -v pxc-v1:/var/lib/mysql \
 --net=pxc-net0 \
 -e MYSQL_ROOT_PASSWORD=123321 \
--e CLUSTER_JOIN=10.0.0.13 \
+-e CLUSTER_JOIN=10.4.99.4 \
 -e CLUSTER_NAME=pxc-cluster0 \
 -e XTRABACKUP_PASSWORD=123321 \
 --privileged \
@@ -64,3 +65,45 @@ docker run -it \
 --name=pxc-node-test \
 percona/percona-xtradb-cluster \
 sh
+
+
+############### host network ###############
+
+### node0 ###
+docker volume rm pxc-v0
+docker volume create pxc-v0
+
+docker run -d \
+--rm \
+-p 4567:4567 \
+-p 17331:3306 \
+--name=pxc-node0 \
+-v pxc-v0:/var/lib/mysql \
+--net=host \
+-e MYSQL_ROOT_PASSWORD=123321 \
+-e CLUSTER_NAME=pxc-cluster0 \
+-e XTRABACKUP_PASSWORD=123321 \
+--privileged \
+percona/percona-xtradb-cluster
+
+docker logs -f pxc-node0
+
+### node1 ###
+docker volume rm pxc-v1
+docker volume create pxc-v1
+
+docker run -d \
+--rm \
+-p 4567:4567 \
+-p 17331:3306 \
+--name=pxc-node1 \
+-v pxc-v1:/var/lib/mysql \
+--net=host \
+-e MYSQL_ROOT_PASSWORD=123321 \
+-e CLUSTER_JOIN=10.4.99.4 \
+-e CLUSTER_NAME=pxc-cluster0 \
+-e XTRABACKUP_PASSWORD=123321 \
+--privileged \
+percona/percona-xtradb-cluster
+
+docker logs -f pxc-node1
