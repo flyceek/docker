@@ -26,10 +26,10 @@ flyceek/etcd \
 --name etcd-node0 \
 --data-dir /etcd-data \
 --listen-client-urls http://0.0.0.0:2379 \
---advertise-client-urls http://10.4.99.4:2379 \
+--advertise-client-urls http://10.4.19.105:2379 \
 --listen-peer-urls http://0.0.0.0:2380 \
---initial-advertise-peer-urls http://10.4.99.4:2380 \
---initial-cluster "etcd-node0=http://10.4.99.4:2380" \
+--initial-advertise-peer-urls http://10.4.19.105:2380 \
+--initial-cluster "etcd-node0=http://10.4.19.105:2380" \
 --initial-cluster-token tkn \
 --initial-cluster-state new
 
@@ -57,6 +57,8 @@ flyceek/etcd \
 --initial-cluster "etcd-node0=http://10.4.99.4:2380,etcd-node1=http://10.28.19.196:2380" \
 --initial-cluster-token etcd-cluster \
 --initial-cluster-state new
+
+docker logs -f etcd-node0
 
 #node1
 rm -rf /tmp/etcd-data.tmp 
