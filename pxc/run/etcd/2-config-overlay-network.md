@@ -16,18 +16,20 @@ sudo /usr/bin/docker daemon -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock
 ### node0 ###
 vi /lib/systemd/system/docker.service
 
-ExecStart:
--H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://10.4.99.4:2379 --cluster-advertise=10.4.99.4:2375
+[Service]
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://10.4.10.105:2379 --cluster-advertise=10.4.99.4:2375
 
 systemctl daemon-reload 
 systemctl restart docker
+systemctl status docker.service
 
 ### node1 ###
 vi /lib/systemd/system/docker.service
 
-ExecStart:
--H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://10.28.19.196:2379 --cluster-advertise=10.28.19.196:2375
+[Service]
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://10.4.10.105:2379 --cluster-advertise=10.28.19.196:2375
 
 systemctl daemon-reload 
 systemctl restart docker
+systemctl status docker.service
 
