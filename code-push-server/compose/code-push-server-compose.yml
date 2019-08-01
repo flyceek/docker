@@ -1,10 +1,10 @@
 version: "3.1"
 services:
-  server:
+  codepush-server:
     image: flyceek/code-push-server
     volumes:
-      - data-storage:/data/storage
-      - data-tmp:/data/tmp
+      - codepush-server-storage:/data/storage
+      - codepush-server-tmp:/data/tmp
       - ./config.js:/config.js
     environment:
       DOWNLOAD_URL: "http://10.4.99.4:3000/download"
@@ -23,35 +23,33 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - servernet
+      - codepush-server-net
     depends_on:
-      - db
-      - redis
-  db:
+      - codepush-server-mysql
+      - codepush-server-redis
+  codepush-server-mysql:
     image: mysql:5.7.23
     volumes:
-      - data-mysql:/var/lib/mysql
+      - codepush-server-mysql:/var/lib/mysql
       - ./codepush-all.sql:/docker-entrypoint-initdb.d/codepush-all.sql
     ports:
       - "3308:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "On"
     networks:
-      - dbnet
-  redis:
+      - codepush-server-net
+  codepush-server-redis:
     image: redis:4.0.11-alpine
     volumes:
-      - data-redis:/data
+      - codepush-server-redis:/data
     ports:
       - "6388:6379"
     networks:
-      - redisnet
+      - codepush-server-net
 networks:
-  servernet:
-  dbnet:
-  redisnet:
+  codepush-server-net:
 volumes:
-  data-storage:
-  data-tmp:
-  data-mysql:
-  data-redis:
+  codepush-server-storage:
+  codepush-server-tmp:
+  codepush-server-mysql:
+  codepush-server-redis:
