@@ -7,8 +7,8 @@ services:
       - data-tmp:/data/tmp
       - ./config.js:/config.js
     environment:
-      DOWNLOAD_URL: "http://YOU_MACHINE_IP:3000/download"
-      MYSQL_HOST: "YOU_MACHINE_IP"
+      DOWNLOAD_URL: "http://10.4.99.4:3000/download"
+      MYSQL_HOST: "10.4.99.4"
       MYSQL_PORT: "3308"
       MYSQL_USERNAME: "codepush"
       MYSQL_PASSWORD: "123456"
@@ -17,9 +17,9 @@ services:
       DATA_DIR: "/data/tmp"
       NODE_ENV: "production"
       CONFIG_FILE: "/config.js"
-      REDIS_HOST: "YOU_MACHINE_IP"
+      REDIS_HOST: "10.4.99.4"
       REDIS_PORT: "6388"
-      NODE_ENV: development
+      NODE_ENV: "development"
     deploy:
       resources:
         limits:
@@ -32,9 +32,9 @@ services:
     networks:
       - servernet
     depends_on:
-      - codepush-server-mysql
-      - redis
-  codepush-server-mysql:
+      - codepush-mysql
+      - codepush-redis
+  codepush-mysql:
     image: mysql:5.7.23
     volumes:
       - data-mysql:/var/lib/mysql
@@ -45,7 +45,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "On"
     networks:
       - dbnet
-  codepush-server-redis:
+  codepush-redis:
     image: redis:4.0.11-alpine
     volumes:
       - data-redis:/data
@@ -58,7 +58,7 @@ networks:
   dbnet:
   redisnet:
 volumes:
-  codepush-server-storage:
+  data-storage:
   data-tmp:
   data-mysql:
   data-redis:
