@@ -1,6 +1,9 @@
 ### slave & master ###
 vi /lib/systemd/system/docker.service
 
+systemctl disable firewalld.service
+systemctl stop firewalld.service
+
 [Service]
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock 
 
@@ -18,3 +21,4 @@ docker swarm join-token manager
 
 ### slave ###
 docker swarm join --token
+docker swarm leave --force

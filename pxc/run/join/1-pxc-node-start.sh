@@ -1,4 +1,4 @@
-############### coustom network ###############
+############### overylay network ###############
 ### node0 ###
 docker network rm pxc-net0
 docker volume rm pxc-v0
@@ -75,7 +75,6 @@ sh
 
 
 ############### host network ###############
-
 ### node0 ###
 docker volume rm pxc-v0
 docker volume create pxc-v0
