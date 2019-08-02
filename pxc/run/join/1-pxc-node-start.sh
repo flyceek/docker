@@ -3,8 +3,16 @@
 docker network rm pxc-net0
 docker volume rm pxc-v0
 docker network create -d overlay --attachable pxc-net0
-# docker network create -d bridge pxc-net0
 docker volume create pxc-v0
+
+# docker network create -d overlay \
+# --subnet=10.10.0.0/16 \
+# --gateway=10.10.0.254 \
+# --attachable=true \
+# pxc-net0
+
+# docker network create -d bridge pxc-net0
+
 
 docker run -d \
 --rm \
@@ -17,7 +25,6 @@ docker run -d \
 -e CLUSTER_NAME=pxc-cluster0 \
 -e XTRABACKUP_PASSWORD=123321 \
 --privileged \
---ip 10.0.0.13 \
 percona/percona-xtradb-cluster
 
 docker logs -f pxc-node0
@@ -36,11 +43,12 @@ docker logs -f pxc-node0
 # my.cnf:/etc/my.cnf
 
 ### node1 ###
-docker network rm pxc-net1
 docker volume rm pxc-v1
+docker volume create pxc-v1
+# docker network rm pxc-net1
 # docker network create -d overlay --attachable pxc-net1
 # docker network create -d bridge pxc-net1
-docker volume create pxc-v1
+
 
 docker run \
 --rm \
@@ -54,7 +62,6 @@ docker run \
 -e CLUSTER_NAME=pxc-cluster0 \
 -e XTRABACKUP_PASSWORD=123321 \
 --privileged \
---ip 10.0.0.14 \
 percona/percona-xtradb-cluster
 
 docker logs -f pxc-node1
