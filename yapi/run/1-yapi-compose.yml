@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   yapi-web:
-    image: flyceek/yapi:latest
+    image: flyceek/yapi:1.7.0
     ports:
       - "3003:3000"
     volumes:
