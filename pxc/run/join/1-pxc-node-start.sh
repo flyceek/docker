@@ -52,7 +52,7 @@ docker volume create pxc-v1
 # docker network create -d bridge pxc-net1
 
 
-docker run \
+docker run -d \
 --rm \
 -p 4567:4567 \
 -p 17331:3306 \
