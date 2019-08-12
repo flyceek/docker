@@ -1,8 +1,8 @@
 ############### overylay network ###############
 ### node0 ###
 docker network rm pxc-net0
-docker volume rm pxc-v0
 docker network create -d overlay --attachable pxc-net0
+docker volume rm pxc-v0
 docker volume create pxc-v0
 
 # docker network create -d overlay \
