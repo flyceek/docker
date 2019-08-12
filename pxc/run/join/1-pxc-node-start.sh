@@ -2,6 +2,7 @@
 ### node0 ###
 docker network rm pxc-net0
 docker network create -d overlay --attachable pxc-net0
+docker network inspect pxc-node0
 docker volume rm pxc-v0
 docker volume create pxc-v0
 
@@ -25,6 +26,7 @@ docker run -d \
 -e CLUSTER_NAME=pxc-cluster0 \
 -e XTRABACKUP_PASSWORD=123321 \
 --privileged \
+--ip 10.0.0.101 \
 percona/percona-xtradb-cluster
 
 docker logs -f pxc-node0
@@ -58,10 +60,11 @@ docker run \
 -v pxc-v1:/var/lib/mysql \
 --net=pxc-net0 \
 -e MYSQL_ROOT_PASSWORD=123321 \
--e CLUSTER_JOIN=10.4.99.4 \
+-e CLUSTER_JOIN=10.0.0.101 \
 -e CLUSTER_NAME=pxc-cluster0 \
 -e XTRABACKUP_PASSWORD=123321 \
 --privileged \
+--ip 10.0.0.102 \
 percona/percona-xtradb-cluster
 
 docker logs -f pxc-node1
