@@ -4,7 +4,8 @@ mkdir -p /data/backup/full-20190813-01
 xtrabackup --backup -uroot -p123321 --target-dir=/data/backup/full-20190813-01
 
 ### restore full ###
-
+docker volume rm pxc-v2
+docker volume create pxc-v2
 # 启动容器 bash
 docker run -it \
 --rm \
