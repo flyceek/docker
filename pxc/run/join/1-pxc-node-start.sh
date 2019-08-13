@@ -6,6 +6,9 @@ docker network inspect pxc-node0
 docker volume rm pxc-v0
 docker volume create pxc-v0
 
+docker volume rm pxc-backup0
+docker volume create pxc-backup0
+
 # docker network create -d overlay \
 # --subnet=10.10.0.0/16 \
 # --gateway=10.10.0.254 \
@@ -21,6 +24,7 @@ docker run -d \
 -p 17331:3306 \
 --name=pxc-node0 \
 -v pxc-v0:/var/lib/mysql \
+-v pxc-backup0:/data \
 --net=pxc-net0 \
 -e MYSQL_ROOT_PASSWORD=123321 \
 -e CLUSTER_NAME=pxc-cluster0 \
@@ -47,6 +51,9 @@ docker logs -f pxc-node0
 ### node1 ###
 docker volume rm pxc-v1
 docker volume create pxc-v1
+
+docker volume rm pxc-backup1
+docker volume create pxc-backup1
 # docker network rm pxc-net1
 # docker network create -d overlay --attachable pxc-net1
 # docker network create -d bridge pxc-net1
@@ -58,6 +65,7 @@ docker run -d \
 -p 17331:3306 \
 --name=pxc-node1 \
 -v pxc-v1:/var/lib/mysql \
+-v pxc-backup1:/data \
 --net=pxc-net0 \
 -e MYSQL_ROOT_PASSWORD=123321 \
 -e CLUSTER_JOIN=10.0.0.101 \
