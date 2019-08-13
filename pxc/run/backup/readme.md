@@ -1,5 +1,7 @@
-docker exec -it -uroot node1 bash
 ### backup full ###
+# 进入窗口
+docker exec -it -u root node1 bash
+# 备份
 mkdir -p /data/backup/full-20190813-01
 xtrabackup --backup -uroot -p123321 --target-dir=/data/backup/full-20190813-01
 
