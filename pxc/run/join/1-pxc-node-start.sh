@@ -24,7 +24,7 @@ docker run -d \
 -p 17331:3306 \
 --name=pxc-node0 \
 -v pxc-v0:/var/lib/mysql \
--v pxc-backup0:/data \
+-v pxc-backup0:/data \ 
 --net=pxc-net0 \
 -e MYSQL_ROOT_PASSWORD=123321 \
 -e CLUSTER_NAME=pxc-cluster0 \
