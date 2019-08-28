@@ -21,9 +21,13 @@ RUN apk update upgrade \
     && git clone --depth=1 --single-branch --branch=master https://github.com/peinhu/AetherUpload-Laravel.git \
     && chmod -R 777 ${WORK_HOME} \
     && cd AetherUpload-Laravel \
-    && su paranora \
-    && composer update
+    && { \
+		echo '#!/bin/sh'; \
+		echo 'cd /opt/soft/AetherUpload-Laravel'; \
+        echo 'composer update'; \
+	} > /usr/local/bin/start \
+    && chmod +x /usr/local/bin/start 
 
 USER paranora
 EXPOSE 8080
-
+CMD ["start"] 
