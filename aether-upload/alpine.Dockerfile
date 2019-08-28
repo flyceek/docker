@@ -1,10 +1,10 @@
 FROM php:7.4-rc-fpm-alpine3.10
 MAINTAINER flyceek <flyceek@gmail.com>
 
-ARG USER=paranora
-ARG USERID=1090
-ARG GROUP=paranora
-ARG GROUPID=1090
+ENV USER=paranora
+ENV USERID=1090
+ENV GROUP=paranora
+ENV GROUPID=1090
 
 RUN apk update upgrade \
     && cd /var/www/ \
@@ -18,10 +18,16 @@ RUN apk update upgrade \
     && adduser -h /home/${USER} -u ${USERID} -G ${GROUP} -s /bin/bash -D ${USER} \
     && git clone --depth=1 --single-branch --branch=master https://github.com/peinhu/AetherUpload-Laravel.git \
     && chmod -R 777 /var/www/ \
-    && su paranora \
+    && su ${USER} \
     && cd AetherUpload-Laravel \
-    && composer install
+    && composer require peinhu/aetherupload-laravel ~2.0 \
+    && { \
+		echo '#!/bin/sh'; \
+		echo 'cd /var/www/AetherUpload-Laravel'; \
+        echo 'php artisan aetherupload:publish'; \
+	} > /usr/local/bin/start \
+    && chmod +x /usr/local/bin/start 
 
-USER paranora
+USER ${USER}
 EXPOSE 8080
 CMD ["start"] 
