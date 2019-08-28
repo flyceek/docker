@@ -18,7 +18,7 @@ RUN apk update upgrade \
     && adduser -h /home/${USER} -u ${USERID} -G ${GROUP} -s /bin/bash -D ${USER} \
     && git clone --depth=1 --single-branch --branch=master https://github.com/peinhu/AetherUpload-Laravel.git \
     && chmod -R 777 /var/www/ \
-    && su ${USER} \
+    && su paranora \
     && cd AetherUpload-Laravel \
     && composer require peinhu/aetherupload-laravel ~2.0 \
     && { \
@@ -28,6 +28,6 @@ RUN apk update upgrade \
 	} > /usr/local/bin/start \
     && chmod +x /usr/local/bin/start 
 
-USER ${USER}
+USER paranora
 EXPOSE 8080
 CMD ["start"] 
