@@ -19,6 +19,7 @@ RUN apk update upgrade \
     && addgroup -g ${GROUPID} ${GROUP} \
     && adduser -h /home/${USER} -u ${USERID} -G ${GROUP} -s /bin/bash -D ${USER} \
     && git clone --depth=1 --single-branch --branch=master https://github.com/peinhu/AetherUpload-Laravel.git \
+    && chmod -R 777 ${WORK_HOME} \
     && cd AetherUpload-Laravel 
 
 USER paranora
