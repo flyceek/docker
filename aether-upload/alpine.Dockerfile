@@ -18,13 +18,13 @@ RUN apk update upgrade \
     && adduser -h /home/${USER} -u ${USERID} -G ${GROUP} -s /bin/bash -D ${USER} \
     && git clone --depth=1 --single-branch --branch=master https://github.com/peinhu/AetherUpload-Laravel.git \
     && chmod -R 777 /var/www/ \
-    && su paranora \
     && cd AetherUpload-Laravel \
-    && composer require peinhu/aetherupload-laravel ~2.0 \
+    && su paranora \
+    && composer install --no-dev \
     && { \
 		echo '#!/bin/sh'; \
 		echo 'cd /var/www/AetherUpload-Laravel'; \
-        echo 'php artisan aetherupload:publish'; \
+        echo 'echo 123321'; \
 	} > /usr/local/bin/start \
     && chmod +x /usr/local/bin/start 
 
