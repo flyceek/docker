@@ -18,7 +18,7 @@ RUN apk update upgrade \
     && mv composer.phar /usr/local/bin/composer \
     && addgroup -g ${GROUPID} ${GROUP} \
     && adduser -h /home/${USER} -u ${USERID} -G ${GROUP} -s /bin/bash -D ${USER} \
-    && git clone git@github.com:peinhu/AetherUpload-Laravel.git \
+    && git clone --depth=1 --single-branch --branch=master https://github.com/peinhu/AetherUpload-Laravel.git \
     && cd AetherUpload-Laravel 
 
 USER paranora
