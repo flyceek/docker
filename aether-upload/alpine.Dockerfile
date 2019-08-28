@@ -19,8 +19,8 @@ RUN apk update upgrade \
     && addgroup -g ${GROUPID} ${GROUP} \
     && adduser -h /home/${USER} -u ${USERID} -G ${GROUP} -s /bin/bash -D ${USER} \
     && git clone git@github.com:peinhu/AetherUpload-Laravel.git \
-    && cd AetherUpload-Laravel \
-    && composer require peinhu/aetherupload-laravel ~2.0
+    && cd AetherUpload-Laravel 
 
+USER paranora
 EXPOSE 8080
 
