@@ -14,7 +14,7 @@ RUN set -x \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd /opt/'; \
-        echo 'java -Dserver.port=8080 -jar ${SENTINEL_FILE_NAME}'; \
+        echo 'java -Dserver.port=8080 -Dsentinel.dashboard.version=1.6.2 -jar ${SENTINEL_FILE_NAME}'; \
 	} > /usr/local/bin/launch \
     && chmod +x /usr/local/bin/launch \
     && echo "root:123321" | chpasswd
