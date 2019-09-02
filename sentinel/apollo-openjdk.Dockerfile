@@ -17,12 +17,12 @@ RUN set -x \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd /opt/'; \
-        echo 'java -Dserver.port=${SENTINEL_PORT} -Dserver.address=${SENTINEL_IP} -Dsentinel.dashboard.version=${SENTINEL_VERSION} -jar ${JAVA_OPTS} ${SENTINEL_FILE_NAME}'; \
+        echo 'java -Dserver.port=8080 -Dserver.address=${SENTINEL_IP} -Dsentinel.dashboard.version=${SENTINEL_VERSION} -jar ${JAVA_OPTS} ${SENTINEL_FILE_NAME}'; \
 	} > /usr/local/bin/launch \
     && chmod +x /usr/local/bin/launch \
     && echo "root:123321" | chpasswd
 
-EXPOSE ${SENTINEL_PORT}
+EXPOSE 8080
 ENTRYPOINT ["launch"]
 
 
