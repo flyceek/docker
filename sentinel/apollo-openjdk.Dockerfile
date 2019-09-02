@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jre-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ENV SENTINEL_VERSION=1.6.2
