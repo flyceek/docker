@@ -6,8 +6,8 @@ services:
     ports:
       - 18076:8070
     restart: always
-    networks:
-      - apollo-net0
+    # networks:
+    #   - apollo-net0
     environment:
       JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.28.19.196:18336/ApolloPortalDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Dspring.profiles.active=ldap
       META_SERVERS: dev.meta=http://10.28.19.196:18086,http://10.4.99.4:18086
@@ -16,3 +16,7 @@ services:
       ldap.centaline.com.cn: 10.4.19.13
     volumes:
       - ./application-ldap.yml:/opt/apollo/apollo-portal-v1.4.0/config/application-ldap.yml
+networks:
+ default:
+  external:
+   name: apollo-net0

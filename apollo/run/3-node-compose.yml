@@ -6,8 +6,8 @@ services:
     ports:
       - 18086:8080
     restart: always
-    networks:
-      - apollo-net0
+    # networks:
+    #   - apollo-net0
     environment:
       JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.28.19.196:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.28.19.196 -Deureka.instance.nonSecurePort=18086 -Deureka.instance.instance-id=10.28.19.196:apollo-conf-test:18086 -Deureka.server.enable-self-preservation=true -Deureka.instance.hostname=10.28.19.196 -Deureka.client.serviceUrl.defaultZone=http://10.28.19.196:18086
   adminservice:
@@ -21,4 +21,6 @@ services:
       JAVA_OPTS: -Dspring.datasource.url=jdbc:mysql://10.28.19.196:18336/ApolloConfigDB?characterEncoding=utf8 -Dspring.datasource.username=root -Dspring.datasource.password=123321 -Deureka.instance.ip-address=10.28.19.196 -Deureka.instance.nonSecurePort=18096 -Deureka.instance.instance-id=10.28.19.196:apollo-admin-test:18096 -Deureka.instance.hostname=10.28.19.196 -Deureka.client.serviceUrl.defaultZone=http://10.28.19.196:18086
 
 networks:
-  apollo-net0:
+ default:
+  external:
+   name: apollo-net0
