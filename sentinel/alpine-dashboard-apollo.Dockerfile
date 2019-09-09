@@ -16,16 +16,19 @@ ENV JAVA_OPTS='-Xmx1024m -Xms1024m'
 
 RUN set -x \
     && apk upgrade --update \
-	&& apk add wget bash \
+    && apk add -U tzdata \
+	&& apk add chrony wget bash \
     && mkdir -p /opt/ \
     && cd /opt/ \
     && wget ${SENTINEL_FILE_URL} \
     && { \
 		echo '#!/bin/sh'; \
         echo 'cd /opt/'; \
+        echo 'chronyd'; \
         echo 'java -Dserver.port=8080 -Dserver.address=${SENTINEL_IP} -Dsentinel.dashboard.version=${SENTINEL_VERSION} -Dapollo.cluster=${APOLLO_CLUSTER} -Dapollo.appId=${APOLLO_APPID} -Dapollo.portalUrl=${APOLLO_PORTALURL} -Dapollo.nameSpace=${APOLLO_NAMESPACE} -Dapollo.env=${APOLLO_ENV} -Dapollo.token=${APOLLO_TOKEN} ${JAVA_OPTS} -jar ${SENTINEL_FILE_NAME}'; \
 	} > /usr/local/bin/launch \
     && chmod +x /usr/local/bin/launch \
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "root:123321" | chpasswd
 
 EXPOSE 8080
