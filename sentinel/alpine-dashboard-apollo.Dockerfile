@@ -1,7 +1,7 @@
 FROM openjdk:8-jre-alpine
 MAINTAINER flyceek <flyceek@gmail.com>
 
-ENV SENTINEL_VERSION=1.6.2
+ENV SENTINEL_VERSION=1.6.3
 ENV SENTINEL_FILE_NAME=sentinel-dashboard-apollo-v${SENTINEL_VERSION}.jar
 ENV SENTINEL_FILE_URL=https://github.com/flyceek/sentinel/releases/download/v${SENTINEL_VERSION}/${SENTINEL_FILE_NAME}
 ENV SENTINEL_PORT=8080
