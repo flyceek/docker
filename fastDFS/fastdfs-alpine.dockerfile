@@ -29,9 +29,10 @@ RUN apk update \
     && curl -fSL http://nginx.org/download/nginx-1.15.3.tar.gz -o nginx-1.17.3.tar.gz \
     && tar zxf nginx-1.15.3.tar.gz \
     && chmod u+x ${WORK_HOME}/fastdfs-nginx-module-master/src/config \
-    && cd nginx-1.15.3 \
-    && ./configure --add-module=${HOME}/fastdfs-nginx-module-master/src \
-    && make && make install \
+    && cd nginx-1.17.3 \
+    && ./configure --add-module=${WORK_HOME}/fastdfs-nginx-module-master/src \
+    && make \
+    && make install \
     && cp ${WORK_HOME}/fastdfs-nginx-module-master/src/mod_fastdfs.conf /etc/fdfs/ \
     && sed -i "s|^store_path0.*$|store_path0=/var/local/fdfs/storage|g" /etc/fdfs/mod_fastdfs.conf \
     && sed -i "s|^url_have_group_name =.*$|url_have_group_name = true|g" /etc/fdfs/mod_fastdfs.conf \
