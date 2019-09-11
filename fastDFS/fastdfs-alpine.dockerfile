@@ -1,6 +1,8 @@
 FROM alpine
 
 ARG WORK_HOME=/opt
+ENV WEB_PORT 8080
+ENV FDFS_PORT 22122
 
 RUN apk update \
     && apk add --no-cache --virtual .build-deps bash gcc libc-dev make openssl-dev pcre-dev zlib-dev linux-headers curl wget gnupg libxslt-dev gd-dev geoip-dev \
@@ -26,7 +28,7 @@ RUN apk update \
     && sed -i "s|/home/yuqing/fastdfs|/var/local/fdfs/storage|g" /etc/fdfs/storage.conf \
     && sed -i "s|/home/yuqing/fastdfs|/var/local/fdfs/storage|g" /etc/fdfs/client.conf \
     && cd ${WORK_HOME} \
-    && curl -fSL http://nginx.org/download/nginx-1.15.3.tar.gz -o nginx-1.17.3.tar.gz \
+    && curl -fSL http://nginx.org/download/nginx-1.17.3.tar.gz -o nginx-1.17.3.tar.gz \
     && tar zxf nginx-1.15.3.tar.gz \
     && chmod u+x ${WORK_HOME}/fastdfs-nginx-module-master/src/config \
     && cd nginx-1.17.3 \
