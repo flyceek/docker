@@ -18,7 +18,7 @@ RUN apk --update add --no-cache --virtual=.build-dependencies wget maven \
     && mvn clean package -Dmaven.test.skip=true \
     && mv target/xxl-job-admin-${VERSION}.jar ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
     && chmod +x ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
-    && cd ${HOME}/${VERSION} \    
+    && cd ${HOME}/${VERSION} \
     && rm -fr ${SRC} \
     && rm -fr ~/.m2/ \
     && apk del maven \
