@@ -130,16 +130,16 @@ function cleanAlpine(){
 }
 
 function installFromAlpine(){
-    installAlpineHandle
     settingUpAlpine
+    installAlpineHandle
     settingUpAlpineFile
     cleanAlpine
     settingUpSystemUser
 }
 
 function installFromCentOS(){
-    installCentOSHandle
     settingUpCentOS
+    installCentOSHandle
     settingUpCentOSFile
     cleanCentOS
     settingUpSystemUser
