@@ -48,6 +48,7 @@ function prepareInstall(){
 }
 
 function check(){
+    cd ${HOME}
     if [ ! -f "${FILE_NAME}" ]; then
         echo 'file :'${FILE_NAME}' not found!'
         exit 1010
@@ -75,8 +76,12 @@ function check(){
 }
 
 function install() {
-    cd ${HOME} \
-    && tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1 \
+    cd ${HOME}
+    if [ ! -f "${FILE_NAME}" ]; then
+        echo 'install , file :'${FILE_NAME}' not found!'
+        exit 1010
+    fi
+    tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1 \
     && rm -fr ${FILE_NAME} \
     && cd ${SRC}/xxl-job-admin \
     && mvn clean package -Dmaven.test.skip=true \
@@ -95,15 +100,15 @@ java -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
 function installCentOSHandle(){
     prepareInstall
     download
-    install
     check
+    install
 }
 
 function installAlpineHandle(){
     prepareInstall
     download
-    install
     check
+    install
 }
 
 function settingUpCentOSFile(){
