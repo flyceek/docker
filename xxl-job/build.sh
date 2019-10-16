@@ -37,7 +37,7 @@ function settingUpSystemUser(){
 
 function download(){
     cd ${HOME}
-    wget -O ${FILE_NAME} -C ${SRC} ${FILE_URL}
+    wget -O ${FILE_NAME} ${FILE_URL}
 }
 
 function prepareInstall(){
