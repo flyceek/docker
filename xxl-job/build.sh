@@ -16,7 +16,7 @@ fi
 
 function installCentOSDependencies(){
     yum update -y
-    yum install -y tar.x86_64 wget
+    yum install -y tar.x86_64 wget maven
 }
 
 function installAlpineDependencies(){
