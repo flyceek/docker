@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:8-jdk-alpine
 MAINTAINER flyceek@gmail.com
 
 ARG VERSION=2.1.0
