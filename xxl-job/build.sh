@@ -14,7 +14,7 @@ if [ -z "$VERSION" ]; then
     exit 1001
 fi
 
-function installCentaOSDependencies(){
+function installCentOSDependencies(){
     yum update -y
     yum install -y tar.x86_64 wget
 }
@@ -23,8 +23,8 @@ function installAlpineDependencies(){
     apk --update add --no-cache --virtual=.build-dependencies wget maven
 }
 
-function settingUpCentaOS(){
-    installCentaOSDependencies
+function settingUpCentOS(){
+    installCentOSDependencies
 }
 
 function settingUpAlpine(){
@@ -35,11 +35,7 @@ function settingUpSystemUser(){
     echo "root:123321" | chpasswd
 }
 
-function downloadFromCentOS(){
-    curl -o ${FILE_NAME} -C ${SRC} ${FILE_URL} 
-}
-
-function downloadFromAlpine(){
+function download(){
     cd ${HOME}
     wget -O ${FILE_NAME} -C ${SRC} ${FILE_URL}
 }
@@ -51,7 +47,7 @@ function prepareInstall(){
     echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
 }
 
-function checkFile(){
+function check(){
     if [ ! -f "${FILE_NAME}" ]; then
         echo 'file :'${FILE_NAME}' not found!'
         exit 1010
@@ -78,23 +74,10 @@ function checkFile(){
     echo 'end wait file write finish! , waitTimes :'${waitTimes}', waitTimeInterval:'${waitTimeInterval}'.'
 }
 
-function store(){
-    cd ${HOME}
-    if [ ! -f "${FILE_NAME}" ]; then
-        echo 'file :'${FILE_NAME}' not found!'
-        exit 1010
-    fi
-    tar -xvf ${FILE_NAME} -C ${HOME} --strip-components=1
-    if [ $? -ne 0 ]; then
-        echo 'something wrong happened !'
-        exit 1003
-    fi
-    rm -fr ${FILE_NAME}
-}
-
 function install() {
     cd ${HOME} \
     && tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1 \
+    && rm -fr ${FILE_NAME}
     && cd ${SRC}/xxl-job-admin \
     && mvn clean package -Dmaven.test.skip=true
     && mv target/xxl-job-admin-${VERSION}.jar ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
@@ -117,18 +100,16 @@ java -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
 
 function installCentOSHandle(){
     prepareInstall
-    downloadFromCentOS
+    download
     install
     check
-    store
 }
 
 function installAlpineHandle(){
     prepareInstall
-    downloadFromAlpine
+    download
     install
     check
-    store
 }
 
 function settingUpCentOSFile(){
@@ -141,7 +122,7 @@ function settingUpAlpineFile(){
 
 function clearSystem(){
     rm -fr ${SRC} \
-    && rm -fr ~/.m2/ \
+    && rm -fr /root/.m2 \
     && rm -fr /build.sh
 }
 
@@ -162,7 +143,7 @@ function installFromAlpine(){
     settingUpSystemUser
 }
 
-function installFromCentaOS(){
+function installFromCentOS(){
     installCentOSHandle
     settingUpCentOS
     settingUpCentOSFile
@@ -182,7 +163,7 @@ function doAction(){
             ;;
         "centos")
             echo "begin install by CentOS system."
-            installFromCentaOS
+            installFromCentOS
             ;;
         *)
             echo "system error,please enter!"
