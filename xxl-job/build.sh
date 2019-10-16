@@ -77,9 +77,9 @@ function check(){
 function install() {
     cd ${HOME} \
     && tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1 \
-    && rm -fr ${FILE_NAME}
+    && rm -fr ${FILE_NAME} \
     && cd ${SRC}/xxl-job-admin \
-    && mvn clean package -Dmaven.test.skip=true
+    && mvn clean package -Dmaven.test.skip=true \
     && mv target/xxl-job-admin-${VERSION}.jar ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
     && chmod +x ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
     && echo "install file end."
