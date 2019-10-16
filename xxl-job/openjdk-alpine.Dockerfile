@@ -23,4 +23,6 @@ RUN apk --update add --no-cache --virtual=.build-dependencies wget maven \
     && apk del maven \
     && echo 'end'
 
+EXPOSE 8080
+CMD ["java","-jar", "/opt/xxl-job/2.1.0/xxl-job-admin-2.1.0.jar"]
 
