@@ -20,7 +20,10 @@ RUN apk --update add --no-cache --virtual=.build-dependencies wget maven \
     && chmod +x ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
     && cd ${HOME}/${VERSION} \
     && rm -fr ${SRC} \
-    && rm -fr ~/.m2/ \
+    && cd ~/ \
+    && ls -alsh \
+    && du -sh . \
+    && rm -fr .m2 \
     && apk del maven \
     && echo -e '#!/bin/sh \
 cd '${HOME}/${VERSION}' \
