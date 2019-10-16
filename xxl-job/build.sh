@@ -79,6 +79,7 @@ function checkFile(){
 }
 
 function store(){
+    cd ${HOME}
     if [ ! -f "${FILE_NAME}" ]; then
         echo 'file :'${FILE_NAME}' not found!'
         exit 1010
@@ -88,16 +89,29 @@ function store(){
         echo 'something wrong happened !'
         exit 1003
     fi
+    rm -fr ${FILE_NAME}
 }
 
 function install() {
     cd ${HOME} \
     && tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1 \
-    && rm ${FILE_NAME} \
     && cd ${SRC}/xxl-job-admin \
     && mvn clean package -Dmaven.test.skip=true
     && mv target/xxl-job-admin-${VERSION}.jar ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
     && echo "install file end."
+}
+
+function createlaunchShell(){
+    if [ ! -d "$YAPI_PATH" ]; then
+        echo 'yapi source path : '$YAPI_PATH' is not found !'
+        exit 1
+    fi
+
+    echo -e '#!/bin/sh
+cd '${HOME}/${VERSION}'
+java -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
+
+    chmod +x /usr/local/bin/launch 
 }
 
 function installHandleCentOS(){

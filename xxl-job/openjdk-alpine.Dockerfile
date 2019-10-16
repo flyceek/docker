@@ -21,8 +21,12 @@ RUN apk --update add --no-cache --virtual=.build-dependencies wget maven \
     && rm -fr ${SRC} \
     && rm -fr ~/.m2/ \
     && apk del maven \
+    && echo -e '#!/bin/sh \
+cd '${HOME}/${VERSION}' \
+java -jar xxl-job-admin-'${VERSION}'.jar' > /usr/local/bin/launch \
+    && chmod +x /usr/local/bin/launch \
     && echo 'end'
 
 EXPOSE 8080
-CMD ["java","-jar", "/opt/xxl-job/2.1.0/xxl-job-admin-2.1.0.jar"]
+CMD ["launch"]
 
