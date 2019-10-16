@@ -86,15 +86,9 @@ function install() {
 }
 
 function createlaunchShell(){
-    if [ ! -d "$YAPI_PATH" ]; then
-        echo 'yapi source path : '$YAPI_PATH' is not found !'
-        exit 1
-    fi
-
     echo -e '#!/bin/sh
 cd '${HOME}/${VERSION}'
 java -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
-
     chmod +x /usr/local/bin/launch 
 }
 
