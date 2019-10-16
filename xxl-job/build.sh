@@ -113,11 +113,11 @@ function installAlpineHandle(){
 }
 
 function settingUpCentOSFile(){
-    
+    echo "settingUpCentOSFile"
 }
 
 function settingUpAlpineFile(){
-    
+    echo "settingUpAlpineFile"
 }
 
 function clearSystem(){
