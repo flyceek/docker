@@ -114,7 +114,7 @@ java -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
     chmod +x /usr/local/bin/launch 
 }
 
-function installHandleCentOS(){
+function installCentOSHandle(){
     prepareInstall
     downloadFromCentOS
     install
@@ -122,7 +122,7 @@ function installHandleCentOS(){
     store
 }
 
-function installHandleAlpine(){
+function installAlpineHandle(){
     prepareInstall
     downloadFromAlpine
     install
@@ -154,7 +154,7 @@ function cleanAlpine(){
 }
 
 function installFromAlpine(){
-    installHandleAlpine
+    installAlpineHandle
     settingUpAlpine
     settingUpAlpineFile
     cleanAlpine
@@ -162,7 +162,7 @@ function installFromAlpine(){
 }
 
 function installFromCentaOS(){
-    installHandleCentOS
+    installCentOSHandle
     settingUpCentOS
     settingUpCentOSFile
     cleanCentOS
