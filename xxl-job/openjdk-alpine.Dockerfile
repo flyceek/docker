@@ -2,7 +2,7 @@ FROM openjdk:8-jre-alpine
 MAINTAINER flyceek@gmail.com
 
 ARG VERSION=2.1.0
-ARG FILE_NAME=${VERSION}2.1.0.tar.gz
+ARG FILE_NAME=${VERSION}.tar.gz
 ARG FILE_URL=https://github.com/xuxueli/xxl-job/archive/${FILE_NAME}
 
 ARG HOME=/opt/xxl-job
