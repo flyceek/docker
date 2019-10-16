@@ -176,6 +176,7 @@ function installAlpine(){
     setAlpineJdk
     setAlpineSystem
     clearAlpineSystem
+    setSystemUser
 }
 
 function installCentaOS(){
@@ -183,6 +184,7 @@ function installCentaOS(){
     setCentOSJdk
     setCentaOSSystem
     clearCentOSSystem
+    setSystemUser
 }
 
 function doAction(){
