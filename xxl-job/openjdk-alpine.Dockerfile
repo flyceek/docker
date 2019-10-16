@@ -20,12 +20,7 @@ RUN apk --update add --no-cache --virtual=.build-dependencies wget maven \
     && chmod +x ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
     && cd ${HOME}/${VERSION} \
     && rm -fr ${SRC} \
-    && cd ~ \
-    && pwd \
-    && ls -alsh \
-    && du -sh . \
-    && rm -fr .m2 \
-    && echo "begin uninstall maven" \
+    && rm -fr /root/.m2 \
     && apk del maven \
     && echo -e '#!/bin/sh \
 cd '${HOME}/${VERSION}' \
