@@ -96,7 +96,7 @@ function install() {
     && echo "install file end."
 }
 
-function createlaunchShell(){
+function createLaunchShell(){
     echo -e '#!/bin/sh
 cd '${HOME}/${VERSION}'
 java ${JAVA_OPTS} -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
@@ -108,7 +108,7 @@ function installCentOSHandle(){
     download
     check
     install
-    createlaunchShell
+    createLaunchShell
 }
 
 function installAlpineHandle(){
@@ -116,7 +116,7 @@ function installAlpineHandle(){
     download
     check
     install
-    createlaunchShell
+    createLaunchShell
 }
 
 function settingUpCentOSFile(){
