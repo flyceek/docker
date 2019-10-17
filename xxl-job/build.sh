@@ -55,7 +55,7 @@ function check(){
     local path=$(pwd)
     echo 'begin check file in path :'${path}', file : '${FILE_NAME}' , url :'${FILE_URL}'.'
     if [ ! -f "${FILE_NAME}" ]; then
-        echo 'file :'${FILE_NAME}' not found!'
+        echo 'check file :'${FILE_NAME}' not found!'
         exit 1010
     fi
     local readFileSizeShell="ls -l ${FILE_NAME} | awk '{print "'$5'"}'"
