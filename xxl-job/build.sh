@@ -37,6 +37,8 @@ function settingUpSystemUser(){
 
 function download(){
     cd ${HOME}
+    local path=$(pwd)
+    echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
     wget -O ${FILE_NAME} ${FILE_URL}
 }
 
@@ -44,11 +46,14 @@ function prepareInstall(){
     mkdir -p ${SRC}
     cd ${HOME}
     local path=$(pwd)
-    echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
+    echo 'prepare in path :'${path}', url :'${FILE_URL}'.'
+    
 }
 
 function check(){
     cd ${HOME}
+    local path=$(pwd)
+    echo 'begin check file in path :'${path}', file : '${FILE_NAME}' , url :'${FILE_URL}'.'
     if [ ! -f "${FILE_NAME}" ]; then
         echo 'file :'${FILE_NAME}' not found!'
         exit 1010
