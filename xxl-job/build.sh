@@ -108,6 +108,7 @@ function installCentOSHandle(){
     download
     check
     install
+    createlaunchShell
 }
 
 function installAlpineHandle(){
@@ -115,6 +116,7 @@ function installAlpineHandle(){
     download
     check
     install
+    createlaunchShell
 }
 
 function settingUpCentOSFile(){
