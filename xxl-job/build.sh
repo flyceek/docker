@@ -20,7 +20,7 @@ function installCentOSDependencies(){
 }
 
 function installAlpineDependencies(){
-    apk --update add --no-cache --virtual=.build-dependencies wget maven
+    apk --update add --no-cache --virtual=.build-dependencies wget maven bash
 }
 
 function settingUpCentOS(){
@@ -99,7 +99,7 @@ function install() {
 function createlaunchShell(){
     echo -e '#!/bin/sh
 cd '${HOME}/${VERSION}'
-java -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
+java ${JAVA_OPTS} -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
     chmod +x /usr/local/bin/launch 
 }
 
