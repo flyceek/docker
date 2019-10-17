@@ -40,6 +40,7 @@ function download(){
     local path=$(pwd)
     echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
     wget -O ${FILE_NAME} ${FILE_URL}
+    echo 'end download in path :'${path}', url :'${FILE_URL}'.'
 }
 
 function prepareInstall(){
