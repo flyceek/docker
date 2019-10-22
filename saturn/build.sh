@@ -2,10 +2,10 @@
 SYSTEM=$1
 VERSION=$2
 
-FILE_NAME=${VERSION}.tar.gz
+FILE_NAME=v${VERSION}.tar.gz
 FILE_URL=https://github.com/vipshop/Saturn/archive/${FILE_NAME}
-MAKE_DIR='saturn-console'
-MAKE_TARGET='saturn-console-master-SNAPSHOT-exec.jar'
+MAKE_DIR=saturn-console
+MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
 
 HOME=/opt/staurn
 SRC=${HOME}/${VERSION}/src

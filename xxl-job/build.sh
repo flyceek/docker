@@ -4,8 +4,8 @@ VERSION=$2
 
 FILE_NAME=${VERSION}.tar.gz
 FILE_URL=https://github.com/xuxueli/xxl-job/archive/${FILE_NAME}
-MAKE_DIR='xxl-job-admin'
-MAKE_TARGET='xxl-job-admin-'${VERSION}'.jar'
+MAKE_DIR=xxl-job-admin
+MAKE_TARGET=xxl-job-admin-${VERSION}.jar
 
 HOME=/opt/xxl-job
 SRC=${HOME}/${VERSION}/src
