@@ -1,6 +1,7 @@
 #!/bin/sh
 SYSTEM=$1
-VERSION=$2
+COMPONENT=$2
+VERSION=$3
 
 FILE_NAME=v${VERSION}.tar.gz
 FILE_URL=https://github.com/vipshop/Saturn/archive/${FILE_NAME}
@@ -165,6 +166,28 @@ function doAction(){
         echo 'system is empty!'
         exit 1004
     fi
+    if [ -z "$COMPONENT" ]; then
+        echo 'component is empty!'
+        exit 1005
+    fi
+
+    case "$COMPONENT" in
+        "console")
+            echo "make saturn-console solution."
+            MAKE_DIR=saturn-console
+            MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
+            ;;
+        "executor")
+            echo "make saturn-executor solution."
+            MAKE_DIR=saturn-executor
+            MAKE_TARGET=saturn-executor-master-SNAPSHOT-exec.jar
+            ;;
+        *)
+            echo "system error,please enter!"
+            exit 1005
+            ;;
+    esac
+
     case "$SYSTEM" in
         "alpine")
             echo "begin install by alpine system."
@@ -179,6 +202,8 @@ function doAction(){
             exit 1005
             ;;
     esac
+
+    
 }
 
 doAction
