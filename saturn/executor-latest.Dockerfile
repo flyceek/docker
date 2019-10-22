@@ -5,5 +5,4 @@ COPY build.sh /build.sh
 
 RUN ["sh","/build.sh","alpine","executor","3.3.1"]
 
-EXPOSE 9088
 CMD ["launch"]
