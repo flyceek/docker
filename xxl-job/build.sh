@@ -4,6 +4,8 @@ VERSION=$2
 
 FILE_NAME=${VERSION}.tar.gz
 FILE_URL=https://github.com/xuxueli/xxl-job/archive/${FILE_NAME}
+MAKE_DIR='xxl-job-admin'
+MAKE_TARGET='xxl-job-admin-'${VERSION}'.jar'
 
 HOME=/opt/xxl-job
 SRC=${HOME}/${VERSION}/src
@@ -89,17 +91,17 @@ function install() {
     fi
     tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1 \
     && rm -fr ${FILE_NAME} \
-    && cd ${SRC}/xxl-job-admin \
+    && cd ${SRC}/${MAKE_DIR} \
     && mvn clean package -Dmaven.test.skip=true \
-    && mv target/xxl-job-admin-${VERSION}.jar ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
-    && chmod +x ${HOME}/${VERSION}/xxl-job-admin-${VERSION}.jar \
+    && mv target/${MAKE_TARGET} ${HOME}/${VERSION}/${MAKE_TARGET} \
+    && chmod +x ${HOME}/${VERSION}/*.jar \
     && echo "install file end."
 }
 
 function createLaunchShell(){
     echo -e '#!/bin/sh
 cd '${HOME}/${VERSION}'
-java ${JAVA_OPTS} -jar xxl-job-admin-'${VERSION}'.jar'>/usr/local/bin/launch
+java ${JAVA_OPTS} -jar '${MAKE_TARGET}>/usr/local/bin/launch
     chmod +x /usr/local/bin/launch 
 }
 
