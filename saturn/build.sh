@@ -186,12 +186,14 @@ function doAction(){
         "console")
             echo "make saturn-console solution."
             HOME=/opt/saturn-console
+            SRC=${HOME}/${VERSION}/src
             MAKE_DIR=saturn-console
             MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
             ;;
         "executor")
             echo "make saturn-executor solution."
             HOME=/opt/saturn-executor
+            SRC=${HOME}/${VERSION}/src
             MAKE_DIR=saturn-executor
             MAKE_TARGET=saturn-executor-master-SNAPSHOT-zip.zip
             ;;
