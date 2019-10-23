@@ -8,7 +8,7 @@ FILE_URL=https://github.com/vipshop/Saturn/archive/${FILE_NAME}
 MAKE_DIR=saturn-console
 MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
 
-HOME=/opt/staurn
+HOME=/opt/saturn
 SRC=${HOME}/${VERSION}/src
 
 
@@ -185,13 +185,13 @@ function doAction(){
     case "$COMPONENT" in
         "console")
             echo "make saturn-console solution."
-            HOME=/opt/staurn-console
+            HOME=/opt/saturn-console
             MAKE_DIR=saturn-console
             MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
             ;;
         "executor")
             echo "make saturn-executor solution."
-            HOME=/opt/staurn-executor
+            HOME=/opt/saturn-executor
             MAKE_DIR=saturn-executor
             MAKE_TARGET=saturn-executor-master-SNAPSHOT-zip.zip
             ;;
