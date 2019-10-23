@@ -90,12 +90,12 @@ function install() {
         echo 'install , file :'${FILE_NAME}' not found!'
         exit 1010
     fi
-    tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1 \
-    && rm -fr ${FILE_NAME} \
-    && cd ${SRC}/${MAKE_DIR} \
-    && mvn clean package -Dmaven.test.skip=true \
-    && mv target/${MAKE_TARGET} ${HOME}/${VERSION}/ \
-    && chmod +x ${HOME}/${VERSION}/${MAKE_TARGET}
+    tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1
+    rm -fr ${FILE_NAME}
+    cd ${SRC}/${MAKE_DIR}
+    mvn clean package -Dmaven.test.skip=true
+    mv target/${MAKE_TARGET} ${HOME}/${VERSION}/
+    chmod +x ${HOME}/${VERSION}/${MAKE_TARGET}
     if [[ "${COMPONENT}" = "executor" ]]; then
         cd ${HOME}/${VERSION}/
         unzip -o ${MAKE_TARGET}
