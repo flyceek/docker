@@ -95,14 +95,25 @@ function install() {
     && cd ${SRC}/${MAKE_DIR} \
     && mvn clean package -Dmaven.test.skip=true \
     && mv target/${MAKE_TARGET} ${HOME}/${VERSION}/ \
-    && chmod +x ${HOME}/${VERSION}/${MAKE_TARGET} \
-    && echo "install file end."
+    && chmod +x ${HOME}/${VERSION}/${MAKE_TARGET}
+    if [[ "${COMPONENT}" = "executor" ]]; then
+        cd ${HOME}/${VERSION}/
+        unzip -o ${MAKE_TARGET}
+        mv ./saturn-executor-master-SNAPSHOT/* ./ 
+        rm -fr saturn-executor-master-SNAPSHOT
+    fi
+    echo "install file end."
 }
 
 function createLaunchShell(){
-    echo -e '#!/bin/sh
+    if [[ "${COMPONENT}" = "executor" ]]; then
+echo -e '#!/bin/sh
+. '${HOME}/${VERSION}'/bin/saturn-executor.sh $@'>/usr/local/bin/launch
+    else
+        echo -e '#!/bin/sh
 cd '${HOME}/${VERSION}'
 java ${JAVA_OPTS} -jar '${MAKE_TARGET}>/usr/local/bin/launch
+    fi
     chmod +x /usr/local/bin/launch 
 }
 
@@ -174,13 +185,15 @@ function doAction(){
     case "$COMPONENT" in
         "console")
             echo "make saturn-console solution."
+            HOME=/opt/staurn-console
             MAKE_DIR=saturn-console
             MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
             ;;
         "executor")
             echo "make saturn-executor solution."
+            HOME=/opt/staurn-executor
             MAKE_DIR=saturn-executor
-            MAKE_TARGET=saturn-executor-master-SNAPSHOT-exec.jar
+            MAKE_TARGET=saturn-executor-master-SNAPSHOT-zip.zip
             ;;
         *)
             echo "system error,please enter!"
