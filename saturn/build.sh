@@ -101,6 +101,8 @@ function install() {
         unzip -o ${MAKE_TARGET}
         mv ./saturn-executor-master-SNAPSHOT/* ./ 
         rm -fr saturn-executor-master-SNAPSHOT
+        chmod +x saturn-executor*.jar
+        rm -fr ${MAKE_TARGET}
     fi
     echo "install file end."
 }
