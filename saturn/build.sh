@@ -158,7 +158,7 @@ function clearSystem(){
     && rm -fr /build.sh
 }
 
-function cleanCentOS(){````
+function cleanCentOS(){
     clearSystem
 }
 
