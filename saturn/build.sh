@@ -24,7 +24,7 @@ function installCentOSDependencies(){
 
 function installAlpineDependencies(){
     apk update upgrade 
-    apk --update add --no-cache --virtual=.build-dependencies wget maven nodejs npm bash
+    apk --update add --no-cache --virtual=.build-dependencies wget maven nodejs npm chrony bash
 }
 
 function settingUpCentOS(){
@@ -33,6 +33,7 @@ function settingUpCentOS(){
 
 function settingUpAlpine(){
     installAlpineDependencies
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 }
 
 function settingUpSystemUser(){
@@ -116,9 +117,11 @@ function install() {
 function createLaunchShell(){
     if [[ "${COMPONENT}" = "executor" ]]; then
 echo -e '#!/bin/sh
+chronyd
 . '${HOME}/${VERSION}'/bin/saturn-executor.sh $@'>/usr/local/bin/launch
     else
         echo -e '#!/bin/sh
+chronyd
 cd '${HOME}/${VERSION}'
 java ${JAVA_OPTS} -jar '${MAKE_TARGET}>/usr/local/bin/launch
     fi
