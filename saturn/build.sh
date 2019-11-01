@@ -23,7 +23,7 @@ function installCentOSDependencies(){
 }
 
 function installAlpineDependencies(){
-    apk --update add --no-cache --virtual=.build-dependencies wget maven bash
+    apk --update add --no-cache --virtual=.build-dependencies wget maven nodejs bash
 }
 
 function settingUpCentOS(){
@@ -93,8 +93,6 @@ function install() {
     tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1
     rm -fr ${FILE_NAME}
     cd ${SRC}
-    pwd
-    ls -alsh
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
     if [ ! -f "${MAKE_DIR}/target/${MAKE_TARGET}" ]; then
         echo 'make target , file :'${MAKE_DIR}'/target/'${MAKE_TARGET}' not found!'
