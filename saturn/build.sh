@@ -94,6 +94,7 @@ function install() {
     rm -fr ${FILE_NAME}
     cd ${SRC}
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+    npm -v
     if [ ! -f "${MAKE_DIR}/target/${MAKE_TARGET}" ]; then
         echo 'make target , file :'${MAKE_DIR}'/target/'${MAKE_TARGET}' not found!'
         exit 1010
