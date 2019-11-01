@@ -158,10 +158,12 @@ function clearSystem(){
 }
 
 function cleanCentOS(){
+    echo "begin clean centOS system."
     clearSystem
 }
 
 function cleanAlpine(){
+    echo "begin clean alpine system."
     clearSystem
     apk del maven nodejs npm
 }
