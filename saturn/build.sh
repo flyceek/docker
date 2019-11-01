@@ -164,7 +164,7 @@ function cleanCentOS(){
 
 function cleanAlpine(){
     clearSystem
-    apk del maven
+    apk del maven nodejs npm
 }
 
 function installFromAlpine(){
