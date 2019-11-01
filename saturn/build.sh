@@ -92,9 +92,9 @@ function install() {
     fi
     tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1
     rm -fr ${FILE_NAME}
-    cd ${SRC}/${MAKE_DIR}
+    cd ${SRC}
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
-    mv target/${MAKE_TARGET} ${HOME}/${VERSION}/
+    mv ${MAKE_DIR}/target/${MAKE_TARGET} ${HOME}/${VERSION}/
     chmod +x ${HOME}/${VERSION}/${MAKE_TARGET}
     if [[ "${COMPONENT}" = "executor" ]]; then
         cd ${HOME}/${VERSION}/
