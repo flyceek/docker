@@ -23,7 +23,8 @@ function installCentOSDependencies(){
 }
 
 function installAlpineDependencies(){
-    apk --update add --no-cache --virtual=.build-dependencies wget maven nodejs bash
+    apk update upgrade 
+    apk --update add --no-cache --virtual=.build-dependencies wget maven nodejs npm bash
 }
 
 function settingUpCentOS(){
