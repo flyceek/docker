@@ -71,10 +71,8 @@ function install() {
         cd ${HOME}/${VERSION}/
         ls -alsh
         rm -fr *
-        tar xvzf ${MAKE_TARGET}
-        mv ./elastic-job-cloud-scheduler-*/* ./ 
+        tar -xvf ${MAKE_TARGET} -C ${HOME}/${VERSION} --strip-components=1
         rm -fr ${MAKE_TARGET}        
-        rm -fr elastic-job-cloud-scheduler-*
         chmod -R +x ./
     fi
     echo "install file end."
