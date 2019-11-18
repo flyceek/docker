@@ -43,7 +43,7 @@ function settingUpSystemUser(){
 }
 
 function download(){
-    cd ${HOME}
+    cd ${SRC}
     local path=$(pwd)
     echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
     git clone --depth=1 --single-branch --branch=master ${FILE_URL} ${SRC}
@@ -55,6 +55,7 @@ function prepareInstall(){
     cd ${HOME}
     local path=$(pwd)
     echo 'prepare in path :'${path}', url :'${FILE_URL}'.'
+    
 }
 
 function install() {
