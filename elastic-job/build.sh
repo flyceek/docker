@@ -66,9 +66,10 @@ function install() {
         exit 1010
     fi
     mv ${MAKE_DIR}/target/${MAKE_TARGET} ${HOME}/${VERSION}/
-    chmod +x +r +w ${HOME}/${VERSION}/${MAKE_TARGET}
+    chmod 777 ${HOME}/${VERSION}/${MAKE_TARGET}
     if [[ "${COMPONENT}" = "scheduler" ]]; then
         cd ${HOME}/${VERSION}/
+        pwd
         ls -alsh
         rm -fr *
         tar -xvf ${MAKE_TARGET} -C ${HOME}/${VERSION} --strip-components=1
