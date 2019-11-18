@@ -71,7 +71,6 @@ function install() {
         cd ${HOME}/${VERSION}/
         pwd
         ls -alsh
-        rm -fr *
         tar -xvf ${MAKE_TARGET} -C ${HOME}/${VERSION} --strip-components=1
         rm -fr ${MAKE_TARGET}        
         chmod -R +x ./
