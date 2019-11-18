@@ -66,7 +66,7 @@ function install() {
         exit 1010
     fi
     mv ${MAKE_DIR}/target/${MAKE_TARGET} ${HOME}/${VERSION}/
-    chmod +x ${HOME}/${VERSION}/${MAKE_TARGET}
+    chmod +x +r +w ${HOME}/${VERSION}/${MAKE_TARGET}
     if [[ "${COMPONENT}" = "scheduler" ]]; then
         cd ${HOME}/${VERSION}/
         ls -alsh
