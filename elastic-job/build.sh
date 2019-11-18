@@ -69,10 +69,11 @@ function install() {
     chmod +x ${HOME}/${VERSION}/${MAKE_TARGET}
     if [[ "${COMPONENT}" = "scheduler" ]]; then
         cd ${HOME}/${VERSION}/
+        ls -alsh
         rm -fr *
         tar xvzf ${MAKE_TARGET}
-        rm -fr ${MAKE_TARGET}
         mv ./elastic-job-cloud-scheduler-*/* ./ 
+        rm -fr ${MAKE_TARGET}        
         rm -fr elastic-job-cloud-scheduler-*
         chmod -R +x ./
     fi
