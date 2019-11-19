@@ -29,6 +29,11 @@ function installAlpineDependencies(){
     apk --update add --no-cache wget chrony tzdata bash
 }
 
+function installDebianDependencies(){
+    apt-get update
+    apt-get -y install openjdk-8-jdk unzip maven git
+}
+
 function settingUpCentOS(){
     installCentOSDependencies
 }
@@ -36,6 +41,10 @@ function settingUpCentOS(){
 function settingUpAlpine(){
     installAlpineDependencies
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+}
+
+function settingUpDebian(){
+    installDebianDependencies
 }
 
 function settingUpSystemUser(){
@@ -109,12 +118,24 @@ function installAlpineHandle(){
     createLaunchShell
 }
 
+function installDebianHandle(){
+    prepareInstall
+    download
+    check
+    install
+    createLaunchShell
+}
+
 function settingUpCentOSFile(){
     echo "settingUpCentOSFile"
 }
 
 function settingUpAlpineFile(){
     echo "settingUpAlpineFile"
+}
+
+function settingUpDebianFile(){
+    echo "settingUpDebianFile"
 }
 
 function clearSystem(){
@@ -134,6 +155,13 @@ function cleanAlpine(){
     apk --update del .build-dependencies
 }
 
+function cleanDebian(){
+    echo "begin clean debian system."
+    clearSystem
+    apt-get –purge remove maven 
+    apt-get –purge remove git
+}
+
 function installFromAlpine(){
     settingUpAlpine
     installAlpineHandle
@@ -147,6 +175,14 @@ function installFromCentOS(){
     installCentOSHandle
     settingUpCentOSFile
     cleanCentOS
+    settingUpSystemUser
+}
+
+function installFromDebian(){
+    settingUpDebian
+    installDebianHandle
+    settingUpDebianFile
+    cleanDebian
     settingUpSystemUser
 }
 
@@ -193,6 +229,10 @@ function doAction(){
     esac
 
     case "$SYSTEM" in
+        "debian")
+            echo "begin install by alpine system."
+            installFromDebian
+            ;;
         "alpine")
             echo "begin install by alpine system."
             installFromAlpine
