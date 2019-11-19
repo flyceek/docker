@@ -160,6 +160,7 @@ function cleanDebian(){
     clearSystem
     apt-get –purge remove maven 
     apt-get –purge remove git
+    apt-get clean
 }
 
 function installFromAlpine(){
