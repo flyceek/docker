@@ -83,7 +83,7 @@ function createLaunchShell(){
         echo -e '#!/bin/sh
 chronyd
 cd '${HOME}/${VERSION}'/bin
-. start.sh $@'>/usr/local/bin/launch
+sh start.sh $@'>/usr/local/bin/launch
     else
         echo -e '#!/bin/sh
 chronyd
