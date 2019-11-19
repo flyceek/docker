@@ -82,7 +82,8 @@ function createLaunchShell(){
     if [[ "${COMPONENT}" = "scheduler" ]]; then
         echo -e '#!/bin/sh
 chronyd
-. '${HOME}/${VERSION}'/bin/start.sh $@'>/usr/local/bin/launch
+cd '${HOME}/${VERSION}'/bin
+. start.sh $@'>/usr/local/bin/launch
     else
         echo -e '#!/bin/sh
 chronyd
