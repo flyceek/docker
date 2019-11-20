@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 SYSTEM=$1
 TYPE=$2
 COMPONENT=$3
@@ -231,7 +231,7 @@ function doAction(){
 
     case "$SYSTEM" in
         "debian")
-            echo "begin install by alpine system."
+            echo "begin install by debian system."
             installFromDebian
             ;;
         "alpine")
