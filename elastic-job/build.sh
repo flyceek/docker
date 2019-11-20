@@ -35,10 +35,6 @@ function installDebianDependencies(){
     apt-get -y install openjdk-8-jdk unzip maven git
 }
 
-function installMesos(){
-
-}
-
 function settingUpCentOS(){
     installCentOSDependencies
 }
