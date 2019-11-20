@@ -123,6 +123,10 @@ function download(){
     echo 'end download in path :'${path}', url :'${FILE_URL}'.'
 }
 
+function check(){
+    echo 'check download ... ...'
+}
+
 function prepareInstall(){
     mkdir -p ${SRC}
     cd ${HOME}
