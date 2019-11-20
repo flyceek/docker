@@ -20,13 +20,10 @@ fi
 
 function installCentOSDependencies(){
     yum update -y
-    yum install -y tar.x86_64 wget maven git cppunit-devel 
-    yum install -y epel-release
     yum update systemd
+    yum install -y tar.x86_64 wget git cppunit-devel 
     yum groupinstall -y "Development Tools"
-    yum install -y apache-maven python-devel python-six python-virtualenv java-1.8.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
-}
-    tar -zxf mesos-1.9.0.tar.gz
+    yum install -y python-devel python-six python-virtualenv java-1.8.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
 }
 
 function installAlpineDependencies(){
@@ -40,7 +37,7 @@ function installDebianDependencies(){
     apt-get -y install openjdk-8-jdk unzip maven git
 }
 
-function installMesosCentOS{
+function installMesosCentOS(){
     echo 'install mesos.'
     echo 'setp 1 download mesos.'
     mkdir /tmp
@@ -49,7 +46,7 @@ function installMesosCentOS{
     local mesos_filename="mesos-${mesos_version}.tar.gz"
     local mesos_filesha="4d28e705a7ed3adbb2205cf404133e8cf0292456f899771f6e1c7a22c47e82bde76d761c525878543d118f4f4d81239f5ed704e2b7a6f854bf7b35a7159fa709"
     local mesos_fileurl="http://www.apache.org/dist/mesos/${mesos_version}/${mesos_filename}"
-    echo 'begin download meso ! , url :'${mesos_fileurl}'.'
+    echo 'begin download mesos ! , url :'${mesos_fileurl}'.'
     wget ${mesos_fileurl}
     echo 'begin check mesos sha512sum! , file :'${mesos_filename}', sha512sum:'${mesos_filesha}'.'
     echo "${mesos_filesha}  ${mesos_filename}" | sha512sum -c -
@@ -57,21 +54,53 @@ function installMesosCentOS{
         echo 'file :'${mesos_filename}', sha512 :'${mesos_filesha}', is does not match!'
         exit 1002
     fi
-    echo 'setp 2 install.'
+    echo 'setp 2 install mesos.'
     mkdir -p /tmp/mesos
     tar  –xvf  ${mesos_filename} -C /tmp/mesos --strip-components=1
     cd /tmp/mesos
     ./configure --prefix=/usr/local/mesos
     make –j6
     make –j6 install
-    echo 'setp 3 clean.'
+    echo 'setp 3 clean mesos.'
     cd /tmp
     rm -fr mesos
+}
+
+function installMaven(){
+    echo 'install maven.'
+    echo 'setp 1 download maven.'
+    local maven_version="3.6.2"
+    local maven_dirname="apache-maven-${maven_version}"
+    local maven_path="/opt/soft/maven/${maven_dirname}"
+    local maven_filename="apache-maven-${maven_version}-bin.tar.gz"
+    local maven_filesha="d941423d115cd021514bfd06c453658b1b3e39e6240969caf4315ab7119a77299713f14b620fb2571a264f8dff2473d8af3cb47b05acf0036fc2553199a5c1ee"
+    local maven_fileurl="http://mirror.bit.edu.cn/apache/maven/maven-3/${maven_version}/binaries/${maven_filename}"
+    mkdir -p ${maven_path}
+    cd /opt/soft/maven/
+    echo 'begin download maven ! , url :'${maven_fileurl}'.'
+    wget ${mesos_fileurl}
+    echo 'begin check maven sha512sum! , file :'${maven_filename}', sha512sum:'${maven_filesha}'.'
+    echo "${maven_filesha}  ${maven_filename}" | sha512sum -c -
+    if [ $? -ne 0 ]; then
+        echo 'file :'${maven_filename}', sha512 :'${maven_filesha}', is does not match!'
+        exit 1002
+    fi
+    tar  –xvf  ${maven_filename} -C ${maven_path} --strip-components=1
+    rm -fr maven_filename
+    echo "setp 2 config maven."
+    echo "MAVEN_HOME=${maven_path}">>/etc/profile
+    echo "export PATH=${MAVEN_HOME}/bin:${PATH}">>/etc/profile
+    source /etc/profile
+}
+
+function installMavenCentOS(){
+    installMaven
 }
 
 function settingUpCentOS(){
     installCentOSDependencies
     installMesosCentOS
+    installMavenCentOS
 }
 
 function settingUpAlpine(){
