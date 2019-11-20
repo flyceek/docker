@@ -67,13 +67,11 @@ function installMesosCentOS(){
     fi
     echo 'setp 2 install mesos.'
     tar -xvf ${mesos_filename} -C /tmp/mesos --strip-components=1
-    mkdir -p /tmp/mesos-build
-    cd /tmp/mesos-build
-    ./tmp/mesos/configure --prefix=/usr/local/mesos
+    cd /tmp/mesos
+    ./configure --prefix=/usr/local/mesos
     make
     make install
     echo 'setp 3 clean mesos.'
-    rm -fr /tmp/mesos
     cd /tmp
 }
 
@@ -98,10 +96,13 @@ function installMaven(){
     fi
     tar -xvf ${maven_filename} -C ${maven_path} --strip-components=1
     rm -fr ${maven_filename}
+    chmod -R +x ${maven_path}/bin
     echo "setp 2 config maven."
     echo 'MAVEN_HOME='${maven_path}>>/etc/profile
     echo 'export PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
     source /etc/profile
+    ls -alsh ${maven_path}/bin
+    mvn -v
 }
 
 function installMavenCentOS(){
