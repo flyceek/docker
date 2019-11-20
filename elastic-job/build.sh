@@ -20,7 +20,8 @@ fi
 
 function installCentOSDependencies(){
     yum update -y
-    yum install -y tar.x86_64 wget maven
+    yum install -y tar.x86_64 wget maven git cppunit-devel 
+    yum install -y python-devel java-1.8.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
 }
 
 function installAlpineDependencies(){
@@ -32,6 +33,10 @@ function installAlpineDependencies(){
 function installDebianDependencies(){
     apt-get update
     apt-get -y install openjdk-8-jdk unzip maven git
+}
+
+function installMesos(){
+
 }
 
 function settingUpCentOS(){
