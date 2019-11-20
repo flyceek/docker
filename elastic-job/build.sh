@@ -78,7 +78,7 @@ function installMaven(){
     mkdir -p ${maven_path}
     cd /opt/soft/maven/
     echo 'begin download maven ! , url :'${maven_fileurl}'.'
-    wget ${mesos_fileurl}
+    wget ${maven_fileurl}
     echo 'begin check maven sha512sum! , file :'${maven_filename}', sha512sum:'${maven_filesha}'.'
     echo "${maven_filesha}  ${maven_filename}" | sha512sum -c -
     if [ $? -ne 0 ]; then
