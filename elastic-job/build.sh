@@ -87,8 +87,11 @@ function installMaven(){
     tar -xvf ${maven_filename} -C ${maven_path} --strip-components=1
     rm -fr ${maven_filename}
     echo "setp 2 config maven."
-    echo "MAVEN_HOME=${maven_path}">>/etc/profile
+    echo 'MAVEN_HOME='${maven_path}>>/etc/profile
     echo "export PATH=${MAVEN_HOME}/bin:${PATH}">>/etc/profile
+    pwd
+    ls -alsh ${maven_path}
+    cat /etc/profile
     source /etc/profile
 }
 
