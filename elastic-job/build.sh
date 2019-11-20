@@ -44,7 +44,7 @@ function installMesosCentOS(){
     cd /tmp
     local mesos_version="1.6.2"
     local mesos_filename="mesos-${mesos_version}.tar.gz"
-    local mesos_filesha="4d28e705a7ed3adbb2205cf404133e8cf0292456f899771f6e1c7a22c47e82bde76d761c525878543d118f4f4d81239f5ed704e2b7a6f854bf7b35a7159fa709"
+    local mesos_filesha="57e9fa17e5ce5f19742512671ebdf3b731e780828374b48dac2abe6e54dd1cc6103610a1e90c66cf35ed1da439d2ad71bce901f33fed990731e33d7bdb544285"
     local mesos_fileurl="http://www.apache.org/dist/mesos/${mesos_version}/${mesos_filename}"
     echo 'begin download mesos ! , url :'${mesos_fileurl}'.'
     wget ${mesos_fileurl}
