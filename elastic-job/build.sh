@@ -40,7 +40,7 @@ function installDebianDependencies(){
 function installMesosCentOS(){
     echo 'install mesos.'
     echo 'setp 1 download mesos.'
-    mkdir /tmp
+    mkdir -p /tmp/mesos
     cd /tmp
     local mesos_version="1.6.2"
     local mesos_filename="mesos-${mesos_version}.tar.gz"
@@ -55,7 +55,6 @@ function installMesosCentOS(){
         exit 1002
     fi
     echo 'setp 2 install mesos.'
-    mkdir -p /tmp/mesos
     tar  –xvf  ${mesos_filename} -C /tmp/mesos --strip-components=1
     cd /tmp/mesos
     ./configure --prefix=/usr/local/mesos
