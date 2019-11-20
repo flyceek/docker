@@ -94,12 +94,12 @@ function install() {
 
 function createLaunchShell(){
     if [[ "${COMPONENT}" = "scheduler" ]]; then
-        echo -e '#!/bin/sh
+        echo -e '#!/bin/bash
 chronyd
 cd '${HOME}/${VERSION}'/bin
-sh start.sh $@'>/usr/local/bin/launch
+/bin/bash start.sh $@'>/usr/local/bin/launch
     else
-        echo -e '#!/bin/sh
+        echo -e '#!/bin/bash
 chronyd
 cd '${HOME}/${VERSION}'
 java ${JAVA_OPTS} -jar '${MAKE_TARGET}>/usr/local/bin/launch
