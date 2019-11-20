@@ -21,7 +21,12 @@ fi
 function installCentOSDependencies(){
     yum update -y
     yum install -y tar.x86_64 wget maven git cppunit-devel 
-    yum install -y python-devel java-1.8.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
+    yum install -y epel-release
+    yum update systemd
+    yum groupinstall -y "Development Tools"
+    yum install -y apache-maven python-devel python-six python-virtualenv java-1.8.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
+}
+    tar -zxf mesos-1.9.0.tar.gz
 }
 
 function installAlpineDependencies(){
@@ -35,8 +40,38 @@ function installDebianDependencies(){
     apt-get -y install openjdk-8-jdk unzip maven git
 }
 
+function installMesosCentOS{
+    echo 'install mesos.'
+    echo 'setp 1 download mesos.'
+    mkdir /tmp
+    cd /tmp
+    local mesos_version="1.6.2"
+    local mesos_filename="mesos-${mesos_version}.tar.gz"
+    local mesos_filesha="4d28e705a7ed3adbb2205cf404133e8cf0292456f899771f6e1c7a22c47e82bde76d761c525878543d118f4f4d81239f5ed704e2b7a6f854bf7b35a7159fa709"
+    local mesos_fileurl="http://www.apache.org/dist/mesos/${mesos_version}/${mesos_filename}"
+    echo 'begin download meso ! , url :'${mesos_fileurl}'.'
+    wget ${mesos_fileurl}
+    echo 'begin check mesos sha512sum! , file :'${mesos_filename}', sha512sum:'${mesos_filesha}'.'
+    echo "${mesos_filesha}  ${mesos_filename}" | sha512sum -c -
+    if [ $? -ne 0 ]; then
+        echo 'file :'${mesos_filename}', sha512 :'${mesos_filesha}', is does not match!'
+        exit 1002
+    fi
+    echo 'setp 2 install.'
+    mkdir -p /tmp/mesos
+    tar  –xvf  ${mesos_filename} -C /tmp/mesos --strip-components=1
+    cd /tmp/mesos
+    ./configure --prefix=/usr/local/mesos
+    make –j6
+    make –j6 install
+    echo 'setp 3 clean.'
+    cd /tmp
+    rm -fr mesos
+}
+
 function settingUpCentOS(){
     installCentOSDependencies
+    installMesosCentOS
 }
 
 function settingUpAlpine(){
@@ -70,7 +105,7 @@ function prepareInstall(){
 
 function install() {
     cd ${SRC}
-    mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+    mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
     if [ ! -f "${MAKE_DIR}/target/${MAKE_TARGET}" ]; then
         echo 'make target , file :'${MAKE_DIR}'/target/'${MAKE_TARGET}' not found!'
         exit 1010
