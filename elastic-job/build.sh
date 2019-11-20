@@ -55,7 +55,7 @@ function installMesosCentOS(){
         exit 1002
     fi
     echo 'setp 2 install mesos.'
-    tar –xvf ${mesos_filename} -C /tmp/mesos --strip-components=1
+    tar -xvf ${mesos_filename} -C /tmp/mesos --strip-components=1
     cd /tmp/mesos
     ./configure --prefix=/usr/local/mesos
     make –j6
@@ -84,7 +84,7 @@ function installMaven(){
         echo 'file :'${maven_filename}', sha512 :'${maven_filesha}', is does not match!'
         exit 1002
     fi
-    tar –xvf ${maven_filename} -C ${maven_path} --strip-components=1
+    tar -xvf ${maven_filename} -C ${maven_path} --strip-components=1
     rm -fr ${maven_filename}
     echo "setp 2 config maven."
     echo "MAVEN_HOME=${maven_path}">>/etc/profile
