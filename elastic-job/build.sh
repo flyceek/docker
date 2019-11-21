@@ -64,10 +64,10 @@ EOF'
 
 function installMesosCentOS(){
     echo 'install mesos.'
-    echo 'setp 1 install mesos system requirements.'
+    echo 'step 1 install mesos system requirements.'
     installMesosSystemRequirementsCentOS
 
-    echo 'setp 2 download mesos.'
+    echo 'step 2 download mesos.'
     local mesos_src='/tmp/mesos'
     mkdir -p ${mesos_src}
     cd /tmp
@@ -84,7 +84,7 @@ function installMesosCentOS(){
         exit 1002
     fi
 
-    echo 'setp 3 install mesos.'
+    echo 'step 3 install mesos.'
     tar -xvf ${mesos_filename} -C ${mesos_src} --strip-components=1
     rm ${mesos_filename}
     cd ${mesos_src}
@@ -105,7 +105,7 @@ PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
 function installMaven(){
     echo 'install maven.'
 
-    echo 'setp 1 download maven.'
+    echo 'step 1 download maven.'
     local maven_main='/opt/soft/maven'
     local maven_version="3.6.2"
     local maven_dirname="apache-maven-${maven_version}"
@@ -127,7 +127,7 @@ function installMaven(){
     rm -fr ${maven_filename}
     chmod -R +x ${maven_home}/bin
 
-    echo "setp 2 config maven."
+    echo "step 2 config maven."
     echo -e '
 export MAVEN_HOME='${maven_home}'
 PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
