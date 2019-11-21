@@ -292,8 +292,8 @@ function cleanDebian(){
     echo "begin clean debian system."
     clearSystem
     local path=${PATH_BEFORE_MAVEN}
-    sed -i '/MAVEN_HOME=/d' filename
-    sed -i '/PATH=/d' filename
+    sed -i '/MAVEN_HOME=/d' /etc/profile
+    sed -i '/PATH=/d' /etc/profile
     echo -e '
 PATH='${path}>>/etc/profile
     unset MAVEN_HOME
