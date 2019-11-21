@@ -96,7 +96,7 @@ function installMesosCentOS(){
     echo -e '
 export MESOS_HOME=/usr/local/mesos
 PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
-    source  /etc/profile
+    source /etc/profile
 
     echo 'setp 4 clean mesos.'
     cd /tmp
