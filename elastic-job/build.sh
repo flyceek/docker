@@ -84,48 +84,48 @@ gpgcheck=0
 repo_gpgcheck=0
 enabled=1
 EOF
-
     mv /tmp/bintray-mesos-el.repo /etc/yum.repos.d/bintray-mesos-el.repo
     yum install -y mesos
+}
 
-#     echo 'install mesos.'
-#     echo 'step 1 install mesos system requirements.'
-#     installMesosSystemRequirementsCentOS
+function installMesosFromSourceCode(){
+    echo 'install mesos.'
+    echo 'step 1 install mesos system requirements.'
+    installMesosSystemRequirementsCentOS
 
-#     echo 'step 2 download mesos.'
-#     local mesos_src='/tmp/mesos'
-#     mkdir -p ${mesos_src}
-#     cd /tmp
-#     local mesos_version="1.6.2"
-#     local mesos_filename="mesos-${mesos_version}.tar.gz"
-#     local mesos_filesha="57e9fa17e5ce5f19742512671ebdf3b731e780828374b48dac2abe6e54dd1cc6103610a1e90c66cf35ed1da439d2ad71bce901f33fed990731e33d7bdb544285"
-#     local mesos_fileurl="http://www.apache.org/dist/mesos/${mesos_version}/${mesos_filename}"
-#     echo 'begin download mesos ! , url :'${mesos_fileurl}'.'
-#     wget ${mesos_fileurl}
-#     echo 'begin check mesos sha512sum! , file :'${mesos_filename}', sha512sum:'${mesos_filesha}'.'
-#     echo "${mesos_filesha}  ${mesos_filename}" | sha512sum -c -
-#     if [ $? -ne 0 ]; then
-#         echo 'file :'${mesos_filename}', sha512 :'${mesos_filesha}', is does not match!'
-#         exit 1002
-#     fi
+    echo 'step 2 download mesos.'
+    local mesos_src='/tmp/mesos'
+    mkdir -p ${mesos_src}
+    cd /tmp
+    local mesos_version="1.6.2"
+    local mesos_filename="mesos-${mesos_version}.tar.gz"
+    local mesos_filesha="57e9fa17e5ce5f19742512671ebdf3b731e780828374b48dac2abe6e54dd1cc6103610a1e90c66cf35ed1da439d2ad71bce901f33fed990731e33d7bdb544285"
+    local mesos_fileurl="http://www.apache.org/dist/mesos/${mesos_version}/${mesos_filename}"
+    echo 'begin download mesos ! , url :'${mesos_fileurl}'.'
+    wget ${mesos_fileurl}
+    echo 'begin check mesos sha512sum! , file :'${mesos_filename}', sha512sum:'${mesos_filesha}'.'
+    echo "${mesos_filesha}  ${mesos_filename}" | sha512sum -c -
+    if [ $? -ne 0 ]; then
+        echo 'file :'${mesos_filename}', sha512 :'${mesos_filesha}', is does not match!'
+        exit 1002
+    fi
 
-#     echo 'step 3 install mesos.'
-#     tar -xvf ${mesos_filename} -C ${mesos_src} --strip-components=1
-#     rm ${mesos_filename}
-#     cd ${mesos_src}
-#     ./configure --prefix=/usr/local/mesos
-#     make
-#     make install
+    echo 'step 3 install mesos.'
+    tar -xvf ${mesos_filename} -C ${mesos_src} --strip-components=1
+    rm ${mesos_filename}
+    cd ${mesos_src}
+    ./configure --prefix=/usr/local/mesos
+    make
+    make install
 
-#     echo 'step 3 config mesos.'
-#     echo -e '
-# export MESOS_HOME=/usr/local/mesos
-# PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
-#     source /etc/profile
+    echo 'step 3 config mesos.'
+    echo -e '
+export MESOS_HOME=/usr/local/mesos
+PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
+    source /etc/profile
 
-#     echo 'setp 4 clean mesos.'
-#     cd /tmp
-    
+    echo 'setp 4 clean mesos.'
+    cd /tmp
 }
 
 function installMaven(){
