@@ -75,6 +75,7 @@ EOF'
 }
 
 function installMesosCentOS(){
+    echo 'begin install mesos.'
     cat > /tmp/bintray-mesos-el.repo <<EOF
 #bintray-mesos-el - packages by mesos from Bintray
 [bintray-mesos-el]
@@ -86,6 +87,7 @@ enabled=1
 EOF
     mv /tmp/bintray-mesos-el.repo /etc/yum.repos.d/bintray-mesos-el.repo
     yum install -y mesos
+    echo 'end install mesos.'
 }
 
 function installMesosFromSourceCode(){
