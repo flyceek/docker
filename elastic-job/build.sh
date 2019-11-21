@@ -294,6 +294,13 @@ function clearSystem(){
 function cleanCentOS(){
     echo "begin clean centOS system."
     clearSystem
+    yum remove -y git
+    rm -fr /opt/soft/maven
+    local path=${PATH_BEFORE_MAVEN}
+    sed -i '/MAVEN_HOME=/d' /etc/profile
+    sed -i '/PATH=/d' /etc/profile
+    echo -e '
+PATH='${path}>>/etc/profile
 }
 
 function cleanAlpine(){
@@ -310,9 +317,6 @@ function cleanDebian(){
     sed -i '/PATH=/d' /etc/profile
     echo -e '
 PATH='${path}>>/etc/profile
-    unset MAVEN_HOME
-    unset PATH_BEFORE_MAVEN
-    source /etc/profile
     rm -fr /opt/soft/maven
     apt-get purge -y git
     apt-get clean
