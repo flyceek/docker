@@ -20,7 +20,7 @@ fi
 
 function installCentOSDependencies(){
     yum update -y
-    yum install -y tar.x86_64 wget github which
+    yum install -y tar.x86_64 wget git which
 }
 
 function installAlpineDependencies(){
@@ -31,7 +31,19 @@ function installAlpineDependencies(){
 
 function installDebianDependencies(){
     apt-get update
-    apt-get -y install openjdk-8-jdk unzip maven git
+    apt-get -y install unzip git tar which wget
+}
+
+function installJdkDebian(){
+    apt-get purge -y  openjdk*
+    apt-get -y install openjdk-8-jdk
+    local java_home=`dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"`
+    echo -e '
+export JAVA_HOME='${java_home}'
+export JRE_HOME='${java_home}'/jre
+export CLASS_PATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar:${JRE_HOME}/lib
+PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin'>>/etc/profile
+    source /etc/profile
 }
 
 function installJdkCentOS(){
@@ -140,6 +152,10 @@ function installMavenCentOS(){
     installMaven
 }
 
+function installMavenDebian(){
+    installMaven
+}
+
 function settingUpCentOS(){
     installCentOSDependencies
     installJdkCentOS
@@ -154,6 +170,7 @@ function settingUpAlpine(){
 
 function settingUpDebian(){
     installDebianDependencies
+    installMavenDebian
 }
 
 function settingUpSystemUser(){
