@@ -164,7 +164,6 @@ function installMaven(){
     echo 'step 2 config maven.'
     echo -e '
 export MAVEN_HOME='${maven_home}'
-export PATH_BEFORE_MAVEN=${PATH}
 PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
     source /etc/profile
 
@@ -302,13 +301,8 @@ function clearSystem(){
 function cleanCentOS(){
     echo "begin clean centOS system."
     clearSystem
-    yum remove -y git
     rm -fr /opt/soft/maven
-    local path=${PATH_BEFORE_MAVEN}
-    sed -i '/MAVEN_HOME=/d' /etc/profile
-    sed -i '/PATH=/d' /etc/profile
-    echo -e '
-PATH='${path}>>/etc/profile
+    yum remove -y git
 }
 
 function cleanAlpine(){
@@ -321,10 +315,6 @@ function cleanDebian(){
     echo "begin clean debian system."
     clearSystem
     local path=${PATH_BEFORE_MAVEN}
-    sed -i '/MAVEN_HOME=/d' /etc/profile
-    sed -i '/PATH=/d' /etc/profile
-    echo -e '
-PATH='${path}>>/etc/profile
     rm -fr /opt/soft/maven
     apt-get purge -y git
     apt-get clean
