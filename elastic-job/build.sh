@@ -20,21 +20,7 @@ fi
 
 function installCentOSDependencies(){
     yum update -y
-    yum install -y tar.x86_64 wget github
-    wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-    yum install -y epel-release
-    bash -c 'cat > /etc/yum.repos.d/wandisco-svn.repo <<EOF
-[WANdiscoSVN]
-name=WANdisco SVN Repo 1.9
-enabled=1
-baseurl=http://opensource.wandisco.com/centos/7/svn-1.9/RPMS/\$basearch/
-gpgcheck=1
-gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
-EOF'
-    yum update systemd
-    yum install -y devtoolset-2-toolchain
-    yum groupinstall -y "Development Tools"
-    yum install -y python-devel python-six python-virtualenv java-1.8.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
+    yum install -y tar.x86_64 wget github which
 }
 
 function installAlpineDependencies(){
@@ -48,10 +34,42 @@ function installDebianDependencies(){
     apt-get -y install openjdk-8-jdk unzip maven git
 }
 
+function installJdkCentOS(){
+    yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel
+    local java_home=`dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"`
+    echo -e '
+export JAVA_HOME='${java_home}'
+export JRE_HOME='${java_home}'/jre
+export CLASS_PATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar:${JRE_HOME}/lib
+PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin'>>/etc/profile
+    source /etc/profile
+}
+
+function installMesosSystemRequirementsCentOS(){
+    wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+    yum install -y epel-release
+    bash -c 'cat > /etc/yum.repos.d/wandisco-svn.repo <<EOF
+[WANdiscoSVN]
+name=WANdisco SVN Repo 1.9
+enabled=1
+baseurl=http://opensource.wandisco.com/centos/7/svn-1.9/RPMS/\$basearch/
+gpgcheck=1
+gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
+EOF'
+    yum update systemd
+    yum install -y devtoolset-2-toolchain
+    yum groupinstall -y "Development Tools"
+    yum install -y python-devel python-six python-virtualenv zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
+}
+
 function installMesosCentOS(){
     echo 'install mesos.'
-    echo 'setp 1 download mesos.'
-    mkdir -p /tmp/mesos
+    echo 'setp 1 install mesos system requirements.'
+    installMesosSystemRequirementsCentOS
+
+    echo 'setp 2 download mesos.'
+    local mesos_src='/tmp/mesos'
+    mkdir -p ${mesos_src}
     cd /tmp
     local mesos_version="1.6.2"
     local mesos_filename="mesos-${mesos_version}.tar.gz"
@@ -65,27 +83,34 @@ function installMesosCentOS(){
         echo 'file :'${mesos_filename}', sha512 :'${mesos_filesha}', is does not match!'
         exit 1002
     fi
-    echo 'setp 2 install mesos.'
-    tar -xvf ${mesos_filename} -C /tmp/mesos --strip-components=1
-    cd /tmp/mesos
-    ./configure --prefix=/usr/local/mesos
+
+    echo 'setp 3 install mesos.'
+    tar -xvf ${mesos_filename} -C ${mesos_src} --strip-components=1
+    rm ${mesos_filename}
+    cd ${mesos_src}
+    mkdir build
+    cd build
+    ../configure --prefix=/usr/local/mesos
     make
     make install
-    echo 'setp 3 clean mesos.'
+
+    echo 'setp 4 clean mesos.'
     cd /tmp
 }
 
 function installMaven(){
     echo 'install maven.'
+
     echo 'setp 1 download maven.'
+    local maven_main='/opt/soft/maven'
     local maven_version="3.6.2"
     local maven_dirname="apache-maven-${maven_version}"
-    local maven_path="/opt/soft/maven/${maven_dirname}"
+    local maven_home="${maven_main}/${maven_dirname}"
     local maven_filename="apache-maven-${maven_version}-bin.tar.gz"
     local maven_filesha="d941423d115cd021514bfd06c453658b1b3e39e6240969caf4315ab7119a77299713f14b620fb2571a264f8dff2473d8af3cb47b05acf0036fc2553199a5c1ee"
     local maven_fileurl="http://mirror.bit.edu.cn/apache/maven/maven-3/${maven_version}/binaries/${maven_filename}"
-    mkdir -p ${maven_path}
-    cd /opt/soft/maven/
+    mkdir -p ${maven_home}
+    cd ${maven_main}
     echo 'begin download maven ! , url :'${maven_fileurl}'.'
     wget ${maven_fileurl}
     echo 'begin check maven sha512sum! , file :'${maven_filename}', sha512sum:'${maven_filesha}'.'
@@ -94,12 +119,14 @@ function installMaven(){
         echo 'file :'${maven_filename}', sha512 :'${maven_filesha}', is does not match!'
         exit 1002
     fi
-    tar -xvf ${maven_filename} -C ${maven_path} --strip-components=1
+    tar -xvf ${maven_filename} -C ${maven_home} --strip-components=1
     rm -fr ${maven_filename}
-    chmod -R +x ${maven_path}/bin
+    chmod -R +x ${maven_home}/bin
+
     echo "setp 2 config maven."
-    echo 'MAVEN_HOME='${maven_path}>>/etc/profile
-    echo 'export PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
+    echo -e '
+MAVEN_HOME='${maven_home}'
+export PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
     source /etc/profile
     ls -alsh ${maven_path}/bin
     mvn -v
@@ -111,6 +138,7 @@ function installMavenCentOS(){
 
 function settingUpCentOS(){
     installCentOSDependencies
+    installJdkCentOS
     installMavenCentOS
     installMesosCentOS
 }
