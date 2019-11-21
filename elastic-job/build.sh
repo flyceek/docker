@@ -142,6 +142,7 @@ function installMaven(){
     echo 'step 2 config maven.'
     echo -e '
 export MAVEN_HOME='${maven_home}'
+export PATH_BEFORE_MAVEN=${PATH}
 PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
     source /etc/profile
 
@@ -290,7 +291,14 @@ function cleanAlpine(){
 function cleanDebian(){
     echo "begin clean debian system."
     clearSystem
-    rm -fr /root/.m2
+    local path=${PATH_BEFORE_MAVEN}
+    sed -i '/MAVEN_HOME=/d' filename
+    sed -i '/PATH=/d' filename
+    echo -e '
+PATH='${path}>>/etc/profile
+    unset MAVEN_HOME
+    unset PATH_BEFORE_MAVEN
+    source /etc/profile
     rm -fr /opt/soft/maven
     apt-get –purge remove -y git
     apt-get clean
