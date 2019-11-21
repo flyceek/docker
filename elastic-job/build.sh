@@ -94,6 +94,12 @@ function installMesosCentOS(){
     make
     make install
 
+    echo 'step 3 config mesos.'
+    echo -e '
+export MESOS_HOME=/usr/local/mesos
+PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
+    source  /etc/profile
+    
     echo 'setp 4 clean mesos.'
     cd /tmp
 }
@@ -125,8 +131,8 @@ function installMaven(){
 
     echo "setp 2 config maven."
     echo -e '
-MAVEN_HOME='${maven_home}'
-export PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
+export MAVEN_HOME='${maven_home}'
+PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
     source /etc/profile
     ls -alsh ${maven_path}/bin
     mvn -v
