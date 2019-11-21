@@ -144,7 +144,7 @@ function installMaven(){
 export MAVEN_HOME='${maven_home}'
 PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
     source /etc/profile
-    
+
     echo 'step 3 show maven version.'
     mvn -v
 }
@@ -171,6 +171,7 @@ function settingUpAlpine(){
 
 function settingUpDebian(){
     installDebianDependencies
+    installJdkDebian
     installMavenDebian
 }
 
@@ -289,8 +290,9 @@ function cleanAlpine(){
 function cleanDebian(){
     echo "begin clean debian system."
     clearSystem
-    apt-get –purge remove maven 
-    apt-get –purge remove git
+    rm -fr /root/.m2
+    rm -fr /opt/soft/maven
+    apt-get –purge remove -y git
     apt-get clean
 }
 
