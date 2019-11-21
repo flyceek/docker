@@ -74,7 +74,7 @@ EOF'
     yum install -y python-devel python-six python-virtualenv zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
 }
 
-function installMesosCentOS(){
+function installMesosCentOSFromNPM(){
     echo 'begin install mesos.'
     cat > /tmp/bintray-mesos-el.repo <<EOF
 #bintray-mesos-el - packages by mesos from Bintray
@@ -116,7 +116,9 @@ function installMesosFromSourceCode(){
     tar -xvf ${mesos_filename} -C ${mesos_src} --strip-components=1
     rm ${mesos_filename}
     cd ${mesos_src}
-    ./configure --prefix=/usr/local/mesos
+    mkdir build
+    cd build
+    ../configure --prefix=/usr/local/mesos
     make
     make install
 
@@ -128,6 +130,10 @@ PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
 
     echo 'setp 4 clean mesos.'
     cd /tmp
+}
+
+function installMesosCentOS(){
+    installMesosFromSourceCode
 }
 
 function installMaven(){
