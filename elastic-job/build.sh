@@ -35,7 +35,7 @@ function installDebianDependencies(){
 }
 
 function installJdkDebian(){
-    apt-get purge -y  openjdk*
+    apt-get purge -y openjdk*
     apt-get -y install openjdk-8-jdk
     local java_home=`dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"`
     echo -e '
@@ -300,7 +300,7 @@ PATH='${path}>>/etc/profile
     unset PATH_BEFORE_MAVEN
     source /etc/profile
     rm -fr /opt/soft/maven
-    apt-get –purge remove -y git
+    apt-get purge -y git
     apt-get clean
 }
 
