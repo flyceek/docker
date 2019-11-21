@@ -88,9 +88,7 @@ function installMesosCentOS(){
     tar -xvf ${mesos_filename} -C ${mesos_src} --strip-components=1
     rm ${mesos_filename}
     cd ${mesos_src}
-    mkdir build
-    cd build
-    ../configure --prefix=/usr/local/mesos
+    ./configure --prefix=/usr/local/mesos
     make
     make install
 
@@ -99,7 +97,7 @@ function installMesosCentOS(){
 export MESOS_HOME=/usr/local/mesos
 PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
     source  /etc/profile
-    
+
     echo 'setp 4 clean mesos.'
     cd /tmp
 }
