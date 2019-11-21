@@ -139,12 +139,13 @@ function installMaven(){
     rm -fr ${maven_filename}
     chmod -R +x ${maven_home}/bin
 
-    echo "step 2 config maven."
+    echo 'step 2 config maven.'
     echo -e '
 export MAVEN_HOME='${maven_home}'
 PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
     source /etc/profile
-    ls -alsh ${maven_path}/bin
+    
+    echo 'step 3 show maven version.'
     mvn -v
 }
 
