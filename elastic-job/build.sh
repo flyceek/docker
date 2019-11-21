@@ -31,7 +31,7 @@ function installAlpineDependencies(){
 
 function installDebianDependencies(){
     apt-get update
-    apt-get -y install unzip git tar which wget
+    apt-get -y install unzip git tar wget
 }
 
 function installJdkDebian(){
