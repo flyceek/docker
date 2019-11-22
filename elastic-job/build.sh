@@ -99,7 +99,9 @@ function installMesosCentOSFromRPM(){
     mkdir -p /tmp
     cd /tmp
     wget ${mesos_fileurl}
-
+    chmod +x ${mesos_filename}
+    pwd
+    ls -alsh 
     echo "step 3 mesos rmp ${mesos_filename}."
     rpm -ivh ${mesos_filename}
     
