@@ -93,12 +93,12 @@ function installMesosCentOSFromRPM(){
     installMesosSystemRequirementsCentOS
 
     local mesos_version="1.9.0-1"
-    local mesos_filename="mesos-${mesos_version}.el7.x86_64.rpm"
+    local mesos_filename="mesos-${mesos_version}.el7.x86_64.rpm" 
     local mesos_fileurl="https://bintray.com/apache/mesos/download_file?file_path=el7%2Fx86_64%2F${mesos_filename}"
     echo "step 2 download mesos rpm , url ${mesos_fileurl}"
     mkdir -p /tmp
     cd /tmp
-    wget ${mesos_fileurl}
+    wget -O ${mesos_filename} ${mesos_fileurl}
     chmod +x ${mesos_filename}
     pwd
     ls -alsh 
