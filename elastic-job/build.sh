@@ -102,10 +102,10 @@ function installMesosCentOSFromRPM(){
     chmod +x ${mesos_filename}
     pwd
     ls -alsh 
-    echo "step 3 mesos rmp ${mesos_filename}."
+    echo "step 3 mesos rpm ${mesos_filename}."
     rpm -ivh ${mesos_filename}
     
-    echo "step 4 clear mesos rmp ${mesos_filename}."
+    echo "step 4 clear mesos rpm ${mesos_filename}."
     rm ${mesos_filename}
 
 }
@@ -253,7 +253,6 @@ function install() {
     if [[ "${COMPONENT}" = "scheduler" ]]; then
         cd ${HOME}/${VERSION}/
         pwd
-        ls -alsh
         tar -xvf ${MAKE_TARGET} -C ${HOME}/${VERSION} --strip-components=1
         rm -fr ${MAKE_TARGET}        
         chmod -R +x ./
@@ -265,8 +264,11 @@ function createLaunchShell(){
     if [[ "${COMPONENT}" = "scheduler" ]]; then
         echo -e '#!/bin/bash
 chronyd
-cd '${HOME}/${VERSION}'/bin
-/bin/bash start.sh $@'>/usr/local/bin/launch
+lib_dir='${HOME}/${VERSION}'/lib/*
+conf_dir='${HOME}/${VERSION}'/conf/*
+contianer_main=io.elasticjob.cloud.scheduler.Bootstrap
+java_opts=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Djava.library.path=/usr/local/lib:/usr/lib:/usr/lib64"
+java ${JAVA_OPTS} {java_opts} -classpath ${conf_dir}:${lib_dir}:. ${contianer_main}'>/usr/local/bin/launch
     else
         echo -e '#!/bin/bash
 chronyd
