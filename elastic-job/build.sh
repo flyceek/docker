@@ -58,8 +58,9 @@ PATH=${PATH}:${JAVA_HOME}/bin:${JRE_HOME}/bin'>>/etc/profile
 }
 
 function installMesosSystemRequirementsCentOS(){
+    yum install -y tar wget git
     wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-    yum install -y epel-release
+    yum install -y epel-release    
     bash -c 'cat > /etc/yum.repos.d/wandisco-svn.repo <<EOF
 [WANdiscoSVN]
 name=WANdisco SVN Repo 1.9
@@ -69,25 +70,42 @@ gpgcheck=1
 gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
 EOF'
     yum update systemd
-    yum install -y devtoolset-2-toolchain
     yum groupinstall -y "Development Tools"
     yum install -y python-devel python-six python-virtualenv zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
 }
 
-function installMesosCentOSFromNPM(){
-    echo 'begin install mesos.'
-    cat > /tmp/bintray-mesos-el.repo <<EOF
-#bintray-mesos-el - packages by mesos from Bintray
-[bintray-mesos-el]
-name=bintray-mesos-el
-baseurl=https://dl.bintray.com/apache/mesos/el7/x86_64
-gpgcheck=0
-repo_gpgcheck=0
-enabled=1
-EOF
-    mv /tmp/bintray-mesos-el.repo /etc/yum.repos.d/bintray-mesos-el.repo
-    yum install -y mesos
-    echo 'end install mesos.'
+function installMesosCentOSFromRPM(){
+#     echo 'begin install mesos.'
+#     cat > /tmp/bintray-mesos-el.repo <<EOF
+# #bintray-mesos-el - packages by mesos from Bintray
+# [bintray-mesos-el]
+# name=bintray-mesos-el
+# baseurl=https://dl.bintray.com/apache/mesos/el7/x86_64
+# gpgcheck=0
+# repo_gpgcheck=0
+# enabled=1
+# EOF
+#     mv /tmp/bintray-mesos-el.repo /etc/yum.repos.d/bintray-mesos-el.repo
+#     yum install -y mesos
+#     echo 'end install mesos.'
+    echo "begin install mesos rpm."
+    echo "step 1 install mesos system requirements."
+    installMesosSystemRequirementsCentOS
+
+    local mesos_version="1.9.0-1"
+    local mesos_filename="mesos-${mesos_version}.el7.x86_64.rpm"
+    local mesos_fileurl="https://bintray.com/apache/mesos/download_file?file_path=el7%2Fx86_64%2F${mesos_filename}"
+    echo "step 2 download mesos rpm , url ${mesos_fileurl}"
+    mkdir -p /tmp
+    cd /tmp
+    wget ${mesos_fileurl}
+
+    echo "step 3 mesos rmp ${mesos_filename}."
+    rpm -ivh ${mesos_filename}
+    
+    echo "step 4 clear mesos rmp ${mesos_filename}."
+    rm ${mesos_filename}
+
 }
 
 function installMesosFromSourceCode(){
@@ -133,7 +151,7 @@ PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
 }
 
 function installMesosCentOS(){
-    installMesosFromSourceCode
+    installMesosCentOSFromRPM
 }
 
 function installMaven(){
