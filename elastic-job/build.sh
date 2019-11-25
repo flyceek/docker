@@ -214,7 +214,7 @@ function settingUpAlpine(){
 function settingUpDebian(){
     installDebianDependencies
     # installJdkDebian
-    # installMavenDebian
+    installMavenDebian
 }
 
 function settingUpSystemUser(){
