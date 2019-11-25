@@ -268,7 +268,7 @@ lib_dir='${HOME}/${VERSION}'/lib/*
 conf_dir='${HOME}/${VERSION}'/conf/*
 contianer_main=io.elasticjob.cloud.scheduler.Bootstrap
 java_opts=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Djava.library.path=/usr/local/lib:/usr/lib:/usr/lib64"
-java ${JAVA_OPTS} ${java_opts}' -classpath ${conf_dir}:${lib_dir}:. ${contianer_main}'>/usr/local/bin/launch
+java ${JAVA_OPTS} ${java_opts} -classpath ${conf_dir}:${lib_dir}:. ${contianer_main}'>/usr/local/bin/launch
     else
         echo -e '#!/bin/bash
 chronyd
