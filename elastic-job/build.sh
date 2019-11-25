@@ -35,7 +35,9 @@ function installDebianDependencies(){
 }
 
 function installJdkDebian(){
-    apt-get purge -y openjdk*
+    echo 'uninstall installed jdk.'
+    # apt-get purge -y openjdk*
+    echo 'install openjdk 8.'
     apt-get -y install openjdk-8-jdk
     local java_home=`dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"`
     echo -e '
@@ -213,7 +215,7 @@ function settingUpAlpine(){
 
 function settingUpDebian(){
     installDebianDependencies
-    # installJdkDebian
+    installJdkDebian
     installMavenDebian
 }
 
