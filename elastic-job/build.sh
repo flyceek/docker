@@ -360,10 +360,10 @@ function installFromCentOS(){
 
 function installFromDebian(){
     settingUpDebian
-    installDebianHandle
-    settingUpDebianFile
-    cleanDebian
-    settingUpSystemUser
+    # installDebianHandle
+    # settingUpDebianFile
+    # cleanDebian
+    # settingUpSystemUser
 }
 
 function doAction(){
