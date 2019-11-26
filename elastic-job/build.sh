@@ -211,7 +211,7 @@ function installMaven(){
 	</profiles>
 </settings>'>${maven_home}/conf/settings.xml
     ls -alsh ${maven_home}/conf/settings.xml
-    cat ls -alsh ${maven_home}/conf/settings.xml
+    cat ${maven_home}/conf/settings.xml
     export MAVEN_HOME=${maven_home}
     export PATH=${MAVEN_HOME}/bin:${PATH}
 
