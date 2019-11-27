@@ -293,6 +293,7 @@ function createLaunchShell(){
     if [[ "${COMPONENT}" = "scheduler" ]]; then
         echo -e '#!/bin/bash
 chronyd
+cd '${HOME}/${VERSION}'
 lib_dir='${HOME}/${VERSION}'/lib/*
 conf_dir='${HOME}/${VERSION}'/conf/*
 contianer_main=io.elasticjob.cloud.scheduler.Bootstrap
