@@ -31,7 +31,8 @@ function installAlpineDependencies(){
 
 function installDebianDependencies(){
     apt-get update
-    apt-get -y install unzip git tar wget
+    apt-get -y install unzip tar wget
+    # apt-get -y install git
 }
 
 function installJdkDebian(){
@@ -216,23 +217,11 @@ function settingUpAlpine(){
 function settingUpDebian(){
     installDebianDependencies
     # installJdkDebian
-    installMavenDebian
+    # installMavenDebian
 }
 
 function settingUpSystemUser(){
     echo "root:123321" | chpasswd
-}
-
-function download(){
-    cd ${SRC}
-    local path=$(pwd)
-    echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
-    git clone --depth=1 --single-branch --branch=master ${FILE_URL} ${SRC}
-    echo 'end download in path :'${path}', url :'${FILE_URL}'.'
-}
-
-function check(){
-    echo 'check download ... ...'
 }
 
 function prepareInstall(){
@@ -240,24 +229,36 @@ function prepareInstall(){
     cd ${HOME}
     local path=$(pwd)
     echo 'prepare in path :'${path}', url :'${FILE_URL}'.'
-    
+}
+
+function download(){
+    cd ${SRC}
+    local path=$(pwd)
+    echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
+    # git clone --depth=1 --single-branch --branch=master ${FILE_URL} ${SRC}
+    wget ${FILE_URL} -O ${HOME}/${VERSION}/${MAKE_TARGET}
+    echo 'end download in path :'${path}', url :'${FILE_URL}'.'
+}
+
+function check(){
+    echo 'check download ... ...'
 }
 
 function install() {
     cd ${SRC}
-    mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
-    if [ ! -f "${MAKE_DIR}/target/${MAKE_TARGET}" ]; then
-        echo 'make target , file :'${MAKE_DIR}'/target/'${MAKE_TARGET}' not found!'
+    # mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+    if [ ! -f "${MAKE_TARGET}" ]; then
+        echo 'make target , file :'${MAKE_TARGET}' not found!'
         exit 1010
     fi
-    mv ${MAKE_DIR}/target/${MAKE_TARGET} ${HOME}/${VERSION}/
-    chmod 777 ${HOME}/${VERSION}/${MAKE_TARGET}
+    # mv ${MAKE_DIR}/target/${MAKE_TARGET} ${HOME}/${VERSION}/
+    # chmod 777 ${HOME}/${VERSION}/${MAKE_TARGET}
     if [[ "${COMPONENT}" = "scheduler" ]]; then
-        cd ${HOME}/${VERSION}/
         pwd
+        ls -alsh
         tar -xvf ${MAKE_TARGET} -C ${HOME}/${VERSION} --strip-components=1
-        rm -fr ${MAKE_TARGET}        
-        chmod -R +x ./
+        rm -fr ${MAKE_TARGET}
+        chmod -R +x ${HOME}/${VERSION}/bin
     fi
     echo "install file end."
 }
@@ -381,20 +382,10 @@ function doAction(){
         echo 'component is empty!'
         exit 1005
     fi
-
-    case "$TYPE" in
-        "cloud")
-            echo "make cloud solution."            
-            FILE_URL=https://github.com/elasticjob/elastic-job-cloud.git
-            ;;
-        "lite")
-            echo "make lite solution."
-            ;;
-        *)
-            echo "type error,please enter!"
-            exit 1005
-            ;;
-    esac
+    if [ -z "$VERSION" ]; then
+        echo 'version is empty!'
+        exit 1005
+    fi
 
     case "$COMPONENT" in
         "scheduler")
@@ -402,10 +393,24 @@ function doAction(){
             HOME=/opt/elastic-job-cloud/scheduler
             SRC=${HOME}/${VERSION}/src
             MAKE_DIR=elastic-job-cloud-scheduler
-            MAKE_TARGET=elastic-job-cloud-scheduler-3.0.0.M1-SNAPSHOT.tar.gz
+            MAKE_TARGET=elastic-job-cloud-scheduler-${VERSION}-SNAPSHOT.tar.gz
             ;;
         *)
             echo "system error,please enter!"
+            exit 1005
+            ;;
+    esac
+
+    case "$TYPE" in
+        "cloud")
+            echo "make cloud solution."            
+            FILE_URL=htthttps://github.com/flyceek/elastic-job/releases/download/${VERSION}/${MAKE_TARGET}
+            ;;
+        "lite")
+            echo "make lite solution."
+            ;;
+        *)
+            echo "type error,please enter!"
             exit 1005
             ;;
     esac
