@@ -146,10 +146,8 @@ function installMesosFromSourceCode(){
     make install
 
     echo 'step 3 config mesos.'
-    echo -e '
-export MESOS_HOME=/usr/local/mesos
-PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin'>>/etc/profile
-    source /etc/profile
+    export MESOS_HOME=/usr/local/mesos
+    export PATH=${PATH}:${MESOS_HOME}/sbin:${MESOS_HOME}/bin
 
     echo 'setp 4 clean mesos.'
     cd /tmp
@@ -185,10 +183,38 @@ function installMaven(){
     chmod -R +x ${maven_home}/bin
 
     echo 'step 2 config maven.'
+    echo 'step 2.1 rm defauilt settings.xml'
+    ls -alsh ${maven_home}/conf/settings.xml
+    rm -fr ${maven_home}/conf/settings.xml
+    echo 'step 2.1 create new settings.xml'
     echo -e '
-export MAVEN_HOME='${maven_home}'
-PATH=${MAVEN_HOME}/bin:${PATH}'>>/etc/profile
-    source /etc/profile
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<servers></servers>
+	<pluginGroups></pluginGroups>
+	<proxies></proxies>
+	<mirrors></mirrors>
+	<profiles>
+	<profile>
+		   <id>jdk-1.8</id>
+		   <activation>
+			   <activeByDefault>true</activeByDefault>
+			   <jdk>1.8</jdk>
+		   </activation>
+		   <properties>
+			   <maven.compiler.source>1.8</maven.compiler.source>
+			   <maven.compiler.target>1.8</maven.compiler.target>
+			   <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+		   </properties>
+	</profile>
+	</profiles>
+</settings>'>${maven_home}/conf/settings.xml
+    ls -alsh ${maven_home}/conf/settings.xml
+    cat ${maven_home}/conf/settings.xml
+    export MAVEN_HOME=${maven_home}
+    export PATH=${MAVEN_HOME}/bin:${PATH}
 
     echo 'step 3 show maven version.'
     mvn -v
