@@ -430,7 +430,7 @@ function doAction(){
     case "$TYPE" in
         "cloud")
             echo "make cloud solution."            
-            FILE_URL=htthttps://github.com/flyceek/elastic-job/releases/download/${VERSION}/${MAKE_TARGET}
+            FILE_URL=https://github.com/flyceek/elastic-job/releases/download/${VERSION}/${MAKE_TARGET}
             ;;
         "lite")
             echo "make lite solution."
