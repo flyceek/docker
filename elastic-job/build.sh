@@ -262,7 +262,7 @@ function download(){
     local path=$(pwd)
     echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
     # git clone --depth=1 --single-branch --branch=master ${FILE_URL} ${SRC}
-    wget ${FILE_URL} -O ${HOME}/${VERSION}/${MAKE_TARGET}
+    wget ${FILE_URL}
     echo 'end download in path :'${path}', url :'${FILE_URL}'.'
 }
 
