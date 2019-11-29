@@ -96,6 +96,11 @@ function install() {
     tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1
     rm -fr ${FILE_NAME}
     cd ${SRC}
+    echo 'before modify pom.xml'
+    cat pom.xml
+    sed -i '/<artifactId>druid-wrapper<\/artifactId>/{n;s/<version>${druid.version}<\/version>/<exclusions><exclusion><groupId>com.alibaba.druid<\/groupId><artifactId>druid<\/artifactId><\/exclusion><\/exclusions><\/dependency><dependency><groupId>com.alibaba<\/groupId><artifactId>druid<\/artifactId><version>1.1.21<\/version>/;}' pom.xml
+    echo 'after modify pom.xml'
+    cat pom.xml
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
     if [ ! -f "${MAKE_DIR}/target/${MAKE_TARGET}" ]; then
         echo 'make target , file :'${MAKE_DIR}'/target/'${MAKE_TARGET}' not found!'
