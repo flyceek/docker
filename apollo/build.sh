@@ -6,6 +6,8 @@ APOLLO_PATH=''
 APOLLO_USER=$2
 APOLLO_COMP=$3
 
+FILE_SHA=$4
+
 function installSystemDependencies(){
     echo "http://mirrors.aliyun.com/alpine/v3.8/main" > /etc/apk/repositories \
     && echo "http://mirrors.aliyun.com/alpine/v3.8/community" >> /etc/apk/repositories \
@@ -42,6 +44,10 @@ bash '${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}'/scripts/star
 }
 
 function installApolloByReleaseCode(){
+    # if [ -z "$FILE_SHA" ]; then
+    #     echo 'apollo file sha is empty!'
+    #     exit 119
+    # fi
     local fileName=apollo-${APOLLO_COMP}-${APOLLO_VERSION}-github.zip
     local fileUrl=https://github.com/ctripcorp/apollo/releases/download/v${APOLLO_VERSION}/${fileName}
     local srcPath=${APOLLO_WORK_HOME}/apollo-${APOLLO_COMP}-v${APOLLO_VERSION}
@@ -147,6 +153,7 @@ function doAction(){
         echo 'apollo component is empty!'
         exit 119
     fi
+    
     case "$APOLLO_COMP" in
         "adminservice")
             echo "begin install apollo adminservice."
