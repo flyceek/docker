@@ -44,6 +44,7 @@ function download(){
         git clone --depth=1 --single-branch --branch=develop ${gitUrl} ${SRC}
     else
         wget -O ${FILE_NAME} ${FILE_URL}
+        check
         if [ ! -f "${FILE_NAME}" ]; then
             echo 'install , relese src file :'${FILE_NAME}' not found!'
             exit 1010
