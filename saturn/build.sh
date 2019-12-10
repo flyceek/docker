@@ -115,6 +115,7 @@ function install() {
         rm -fr saturn-executor-master-SNAPSHOT
         chmod +x saturn-executor*.jar
         chmod +x ${HOME}/${VERSION}/bin/*
+        chmod +xr ${HOME}/${VERSION}/lib/*
         rm -fr ${MAKE_TARGET}
     fi
     echo "install file end."
@@ -124,7 +125,8 @@ function createLaunchShell(){
     if [[ "${COMPONENT}" = "executor" ]]; then
 echo -e '#!/bin/sh
 chronyd
-/bin/bash '${HOME}/${VERSION}'/bin/saturn-executor.sh $@'>/usr/local/bin/launch
+cd '${HOME}/${VERSION}'
+/bin/bash bin/saturn-executor.sh $@'>/usr/local/bin/launch
     else
         echo -e '#!/bin/sh
 chronyd
