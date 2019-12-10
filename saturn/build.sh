@@ -11,12 +11,6 @@ MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
 HOME=/opt/saturn
 SRC=${HOME}/${VERSION}/src
 
-
-if [ -z "$VERSION" ]; then
-    echo 'version param is empty!'
-    exit 1001
-fi
-
 function installCentOSDependencies(){
     yum update -y
     yum install -y tar.x86_64 wget maven
@@ -24,7 +18,7 @@ function installCentOSDependencies(){
 
 function installAlpineDependencies(){
     apk update upgrade 
-    apk --update add --no-cache --virtual=.build-dependencies maven nodejs npm
+    apk --update add --no-cache --virtual=.build-dependencies maven nodejs npm git
     apk --update add --no-cache wget chrony tzdata bash
 }
 
@@ -44,8 +38,19 @@ function settingUpSystemUser(){
 function download(){
     cd ${HOME}
     local path=$(pwd)
+    local gitUrl=https://github.com/vipshop/Saturn.git
     echo 'begin download in path :'${path}', url :'${FILE_URL}'.'
-    wget -O ${FILE_NAME} ${FILE_URL}
+    if [ -z "$VERSION" ]; then
+        git clone --depth=1 --single-branch --branch=develop ${gitUrl} ${SRC}
+    else
+        wget -O ${FILE_NAME} ${FILE_URL}
+        if [ ! -f "${FILE_NAME}" ]; then
+            echo 'install , relese src file :'${FILE_NAME}' not found!'
+            exit 1010
+        fi
+        tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1
+        rm -fr ${FILE_NAME}
+    fi
     echo 'end download in path :'${path}', url :'${FILE_URL}'.'
 }
 
@@ -88,13 +93,6 @@ function check(){
 }
 
 function install() {
-    cd ${HOME}
-    if [ ! -f "${FILE_NAME}" ]; then
-        echo 'install , file :'${FILE_NAME}' not found!'
-        exit 1010
-    fi
-    tar -xvf ${FILE_NAME} -C ${SRC} --strip-components=1
-    rm -fr ${FILE_NAME}
     cd ${SRC}
     echo 'before modify pom.xml'
     cat pom.xml
