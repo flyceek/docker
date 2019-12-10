@@ -101,6 +101,7 @@ function install() {
     sed -i 's/<mysql.connector.java.version>5.1.34<\/mysql.connector.java.version>/<mysql.connector.java.version>8.0.18<\/mysql.connector.java.version>/'
     echo 'after modify pom.xml'
     cat pom.xml
+    echo "begin install."
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
     if [ ! -f "${MAKE_DIR}/target/${MAKE_TARGET}" ]; then
         echo 'make target , file :'${MAKE_DIR}'/target/'${MAKE_TARGET}' not found!'
@@ -118,7 +119,7 @@ function install() {
         chmod +xr ${HOME}/${VERSION}/lib/*
         rm -fr ${MAKE_TARGET}
     fi
-    echo "install file end."
+    echo "end install."
 }
 
 function createLaunchShell(){
