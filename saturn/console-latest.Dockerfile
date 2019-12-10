@@ -3,7 +3,7 @@ MAINTAINER flyceek@gmail.com
 
 COPY build.sh /build.sh
 
-RUN ["sh","/build.sh","alpine","console"]
+RUN ["sh","/build.sh","alpine","console","3.3.4"]
 
 EXPOSE 9088
 CMD ["launch"]

@@ -3,6 +3,6 @@ MAINTAINER flyceek@gmail.com
 
 COPY build.sh /build.sh
 
-RUN ["sh","/build.sh","alpine","executor"]
+RUN ["sh","/build.sh","alpine","executor","3.3.4"]
 
 # ENTRYPOINT ["launch"]
