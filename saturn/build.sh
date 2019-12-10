@@ -123,7 +123,7 @@ function install() {
 
 function createLaunchShell(){
     if [[ "${COMPONENT}" = "executor" ]]; then
-echo -e '#!/bin/sh
+        echo -e '#!/bin/sh
 chronyd
 cd '${HOME}/${VERSION}'
 /bin/bash bin/saturn-executor.sh $@'>/usr/local/bin/launch
