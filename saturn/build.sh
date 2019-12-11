@@ -140,7 +140,6 @@ java ${JAVA_OPTS} -jar '${MAKE_TARGET}>/usr/local/bin/launch
 function installCentOSHandle(){
     prepareInstall
     download
-    # check
     install
     createLaunchShell
 }
@@ -148,7 +147,6 @@ function installCentOSHandle(){
 function installAlpineHandle(){
     prepareInstall
     download
-    # check
     install
     createLaunchShell
 }
