@@ -124,17 +124,17 @@ function install() {
 
 function createLaunchShell(){
     if [[ "${COMPONENT}" = "executor" ]]; then
-        echo -e '#!/bin/sh
+        echo -e '#!/bin/bash
 chronyd
 cd '${HOME}/${VERSION}'
 /bin/bash bin/saturn-executor.sh $@'>/usr/local/bin/launch
     else
-        echo -e '#!/bin/sh
+        echo -e '#!/bin/bash
 chronyd
 cd '${HOME}/${VERSION}'
 java ${JAVA_OPTS} -jar '${MAKE_TARGET}>/usr/local/bin/launch
     fi
-    chmod +x /usr/local/bin/launch 
+    chmod +xr /usr/local/bin/launch 
 }
 
 function installCentOSHandle(){
