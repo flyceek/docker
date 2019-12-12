@@ -1,15 +1,12 @@
 #!/bin/sh
 SYSTEM=$1
-COMPONENT=$2
-VERSION=$3
+VERSION=$2
 
 FILE_NAME=v${VERSION}.tar.gz
 FILE_URL=https://github.com/vipshop/Saturn/archive/${FILE_NAME}
-MAKE_DIR=saturn-console
-MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
 
-HOME=/opt/saturn
-SRC=${HOME}/${VERSION}/src
+HOME=/opt/saturn/${VERSION}
+SRC=${HOME}/src
 
 function installCentOSDependencies(){
     yum update -y
@@ -60,7 +57,6 @@ function prepareInstall(){
     cd ${HOME}
     local path=$(pwd)
     echo 'prepare in path :'${path}', url :'${FILE_URL}'.'
-    
 }
 
 function check(){
@@ -103,38 +99,46 @@ function install() {
     cat pom.xml
     echo "begin install."
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
-    if [ ! -f "${MAKE_DIR}/target/${MAKE_TARGET}" ]; then
-        echo 'make target , file :'${MAKE_DIR}'/target/'${MAKE_TARGET}' not found!'
-        exit 1010
-    fi
-    mv ${MAKE_DIR}/target/${MAKE_TARGET} ${HOME}/${VERSION}/
-    chmod +x ${HOME}/${VERSION}/${MAKE_TARGET}
-    if [[ "${COMPONENT}" = "executor" ]]; then
-        cd ${HOME}/${VERSION}/
-        unzip -o ${MAKE_TARGET}
-        mv ./saturn-executor-master-SNAPSHOT/* ./ 
-        rm -fr saturn-executor-master-SNAPSHOT
-        chmod +xr saturn-executor*.jar
-        chmod +xr ${HOME}/${VERSION}/bin/*
-        chmod +xr ${HOME}/${VERSION}/lib/*
-        rm -fr ${MAKE_TARGET}
-    fi
     echo "end install."
 }
 
-function createLaunchShell(){
-    if [[ "${COMPONENT}" = "executor" ]]; then
-        echo -e '#!/bin/bash
+function prepareConsoleLaunch(){
+    cd ${SRC}
+    local path=${HOME}/console/
+    mkdir -p ${path}
+    mv saturn-console/target/saturn-console-master-SNAPSHOT-exec.jar ${path}
+    chmod +xr ${path}/saturn-console-master-SNAPSHOT-exec.jar
+    echo -e '#!/bin/bash
 chronyd
-cd '${HOME}/${VERSION}'
-/bin/bash bin/saturn-executor.sh $@'>/usr/local/bin/launch
-    else
-        echo -e '#!/bin/bash
-chronyd
-cd '${HOME}/${VERSION}'
-java ${JAVA_OPTS} -jar '${MAKE_TARGET}>/usr/local/bin/launch
+cd '${path}'
+java ${CONSOLE_JAVA_OPTS} -jar saturn-console-master-SNAPSHOT-exec.jar'>/usr/local/bin/launch-console
     fi
-    chmod +xr /usr/local/bin/launch 
+    chmod +xr /usr/local/bin/launch-console
+}
+
+function prepareExecutorLaunch(){
+    cd ${SRC}
+    local path=${HOME}/executor/
+    mkdir -p ${path}
+    mv saturn-executor/target/saturn-executor-master-SNAPSHOT-zip.zip ${path}
+    cd ${path}
+    unzip -o saturn-executor-master-SNAPSHOT-zip.zip
+    rm -fr saturn-executor-master-SNAPSHOT-zip.zip
+    mv ./saturn-executor-master-SNAPSHOT/* ./
+    rm -fr saturn-executor-master-SNAPSHOT
+    chmod +xr saturn-executor*.jar
+    chmod +xr ${path}/bin/*
+    chmod +xr ${path}/lib/*
+    echo -e '#!/bin/bash
+chronyd
+cd '${path}'
+/bin/bash bin/saturn-executor.sh start -n ${EXECUTOR_NAMESPACE} -e ${EXECUTOR_NAME} -env ${EXECUTOR_ENV} -d ${EXECUTOR_LIBDIR} -r ${EXECUTOR_RUNMODE} -jmx ${EXECUTOR_JMXPORT} -sld ${EXECUTOR_LOGDIR} ${EXECUTOR_JAVAOPTS}' >/usr/local/bin/launch-executor
+    chmod +xr /usr/local/bin/launch-executor
+}
+
+function createLaunchShell(){
+    prepareConsoleLaunch
+    prepareExecutorLaunch
 }
 
 function installCentOSHandle(){
@@ -202,27 +206,6 @@ function doAction(){
         exit 1005
     fi
 
-    case "$COMPONENT" in
-        "console")
-            echo "make saturn-console solution."
-            HOME=/opt/saturn-console
-            SRC=${HOME}/${VERSION}/src
-            MAKE_DIR=saturn-console
-            MAKE_TARGET=saturn-console-master-SNAPSHOT-exec.jar
-            ;;
-        "executor")
-            echo "make saturn-executor solution."
-            HOME=/opt/saturn-executor
-            SRC=${HOME}/${VERSION}/src
-            MAKE_DIR=saturn-executor
-            MAKE_TARGET=saturn-executor-master-SNAPSHOT-zip.zip
-            ;;
-        *)
-            echo "system error,please enter!"
-            exit 1005
-            ;;
-    esac
-
     case "$SYSTEM" in
         "alpine")
             echo "begin install by alpine system."
@@ -237,8 +220,6 @@ function doAction(){
             exit 1005
             ;;
     esac
-
-    
 }
 
 doAction
