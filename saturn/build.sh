@@ -112,7 +112,6 @@ function prepareConsoleLaunch(){
 chronyd
 cd '${path}'
 java ${CONSOLE_JAVA_OPTS} -jar saturn-console-master-SNAPSHOT-exec.jar'>/usr/local/bin/launch-console
-    fi
     chmod +xr /usr/local/bin/launch-console
 }
 
