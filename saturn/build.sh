@@ -200,10 +200,6 @@ function doAction(){
         echo 'system is empty!'
         exit 1004
     fi
-    if [ -z "$COMPONENT" ]; then
-        echo 'component is empty!'
-        exit 1005
-    fi
 
     case "$SYSTEM" in
         "alpine")
