@@ -131,7 +131,7 @@ function prepareExecutorLaunch(){
     echo -e '#!/bin/bash
 chronyd
 cd '${path}'
-/bin/bash bin/saturn-executor.sh start -n ${EXECUTOR_NAMESPACE} -e ${EXECUTOR_NAME} -env ${EXECUTOR_ENV} -d ${EXECUTOR_LIBDIR} -r ${EXECUTOR_RUNMODE} -jmx ${EXECUTOR_JMXPORT} -sld ${EXECUTOR_LOGDIR} ${EXECUTOR_JAVAOPTS}' >/usr/local/bin/launch-executor
+/bin/bash bin/saturn-executor.sh start -n ${EXECUTOR_NAMESPACE} -e ${EXECUTOR_NAME} -env ${EXECUTOR_ENV} -d ${EXECUTOR_LIBDIR} -r ${EXECUTOR_RUNMODE} -jmx ${EXECUTOR_JMXPORT} -sld "${EXECUTOR_LOGDIR}" ${EXECUTOR_JAVAOPTS}' >/usr/local/bin/launch-executor
     chmod +xr /usr/local/bin/launch-executor
 }
 
