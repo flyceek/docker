@@ -95,6 +95,7 @@ function install() {
     cat pom.xml
     sed -i '/<artifactId>druid-wrapper<\/artifactId>/{n;s/<version>${druid.version}<\/version>/<version>${druid.version}<\/version><exclusions><exclusion><groupId>com.alibaba.druid<\/groupId><artifactId>druid<\/artifactId><\/exclusion><\/exclusions><\/dependency><dependency><groupId>com.alibaba<\/groupId><artifactId>druid<\/artifactId><version>1.1.21<\/version>/;}' pom.xml
     sed -i 's/<mysql.connector.java.version>5.1.34<\/mysql.connector.java.version>/<mysql.connector.java.version>8.0.18<\/mysql.connector.java.version>/g' pom.xml
+    sed -i 's/<curator.version>2.10.0<\/curator.version>/<curator.version>4.2.0<\/curator.version>/g'
     echo 'after modify pom.xml'
     cat pom.xml
     echo "begin install."
