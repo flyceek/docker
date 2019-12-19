@@ -4,5 +4,3 @@ MAINTAINER flyceek@gmail.com
 COPY build.sh /build.sh
 
 RUN ["sh","/build.sh","alpine","3.3.4"]
-
-EXPOSE 9088
