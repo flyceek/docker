@@ -34,9 +34,11 @@ RUN apt-get -qq update \
     && ln -s ${PHANTONJS_FILE_EXTRACT_DIR}/bin/phantomjs /usr/local/bin/phantomjs \
     && rm ${PHANTONJS_FILE_NAME} \
     # install node
-    && cd /opt \
+    && mkdir -p /opt/node \
+    && cd /opt/node \
     && curl -sL https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.gz | tar xz --strip-components=1 \
     && rm -rf /var/lib/apt/lists/* \
+    && npm install puppeteer express \
     # install chromedriver
     && mkdir -p ${CHROMEDRIVER_WORK_DIR} \
     && wget -O ${CHROMEDRIVER_FILE_NAME} ${CHROMEDRIVER_FILE_URL} \
