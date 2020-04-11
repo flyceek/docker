@@ -40,13 +40,13 @@ RUN apt-get -qq update \
     # install chromedriver
     && mkdir -p ${CHROMEDRIVER_WORK_DIR} \
     && wget -O ${CHROMEDRIVER_FILE_NAME} ${CHROMEDRIVER_FILE_URL} \
-    && unzip -d ${CHROMEDRIVER_FILE_EXTRACT_DIR} ${CHROMEDRIVER_FILE_NAME} \
+    && unzip -d ${CHROMEDRIVER_FILE_EXTRACT_DIR}/ ${CHROMEDRIVER_FILE_NAME} \
     && chmod +x ${CHROMEDRIVER_FILE_EXTRACT_DIR}/chromedriver \
     && ln -s ${CHROMEDRIVER_FILE_EXTRACT_DIR}/chromedriver /usr/local/bin/chromedriver \
     && ln -s ${CHROMEDRIVER_FILE_EXTRACT_DIR}/chromedriver /usr/bin/chromedriver \
     && rm -fr ${CHROMEDRIVER_FILE_NAME} \
     # install requirements
-    && pip install -r \
+    && pip install \
 Flask==0.10 \
 Jinja2==2.7 \
 chardet==2.2.1 \
