@@ -84,7 +84,6 @@ selenium \
     && ln -s /opt/node/node_modules ./node_modules
 
 WORKDIR ${PYSPIDER_FILE_SRC_DIR}
-VOLUME ${PYSPIDER_FILE_SRC_DIR}
-ENTRYPOINT ["pyspider"]
+#ENTRYPOINT ["pyspider"]
 
 EXPOSE 5000 23333 24444 25555
