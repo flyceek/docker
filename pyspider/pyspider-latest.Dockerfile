@@ -73,6 +73,7 @@ kombu==4.4.0 \
 psycopg2==2.8.2 \
 elasticsearch==2.3.0 \
 tblib==1.4.0 \
+wsgidav==2.4.1 \
 selenium \
 # add all repo
     && mkdir -p ${PYSPIDER_FILE_EXTRACT_DIR} \
