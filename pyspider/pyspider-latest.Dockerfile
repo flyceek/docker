@@ -25,7 +25,7 @@ ENV NODEJS_VERSION=8.15.0
 ENV PATH=$PATH:/opt/node/bin
 
 RUN apt-get -qq update
-    && apt-get -qq install -y unzip curl ca-certificates libx11-xcb1 libxtst6 libnss3 libasound2 libatk-bridge2.0-0 libgtk-3-0 --no-install-recommends 
+    && apt-get -qq install -y unzip curl ca-certificates libx11-xcb1 libxtst6 libnss3 libasound2 libatk-bridge2.0-0 libgtk-3-0 --no-install-recommends \
     # install phantomjs
     &&mkdir -p ${PHANTONJS_FILE_EXTRACT_DIR} \
     && cd ${PHANTONJS_WORK_DIR} \
@@ -80,7 +80,7 @@ selenium \
     && rm ${PYSPIDER_FILE_NAME} \
 # run test
     && cd ${PYSPIDER_FILE_SRC_DIR} \
-    && pip install -e .[all]
+    && pip install -e .[all] \
     && ln -s /opt/node/node_modules ./node_modules
 
 WORKDIR ${PYSPIDER_FILE_SRC_DIR}
