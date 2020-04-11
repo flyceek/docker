@@ -73,7 +73,10 @@ kombu==4.4.0 \
 psycopg2==2.8.2 \
 elasticsearch==2.3.0 \
 tblib==1.4.0 \
+wheel \
 selenium \
+    #&& python -m pip uninstall werkzeug -y \
+    #&& python -m pip install werkzeug==0.16.1 \
 # add all repo
     && mkdir -p ${PYSPIDER_FILE_EXTRACT_DIR} \
     && cd ${PYSPIDER_WORK_DIR} \
@@ -81,6 +84,7 @@ selenium \
     && tar xavf ${PYSPIDER_FILE_NAME} -C ${PYSPIDER_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${PYSPIDER_FILE_NAME} \
     && sed -i "s/'domaincontroller':\W*NeedAuthController(app)/'http_authenticator':{'HTTPAuthenticator':NeedAuthController(app),}/" ${PYSPIDER_FILE_SRC_DIR}/pyspider/webui/webdav.py \
+    && sed -i 's/from\W*werkzeug.wsgi\W*import DispatcherMiddleware/from werkzeug.middleware.dispatcher import DispatcherMiddleware/' ${PYSPIDER_FILE_SRC_DIR}/pyspider/webui/app.py \
 # run test
     && cd ${PYSPIDER_FILE_SRC_DIR} \
     && pip install -e .[all] \
