@@ -73,7 +73,6 @@ kombu==4.4.0 \
 psycopg2==2.8.2 \
 elasticsearch==2.3.0 \
 tblib==1.4.0 \
-wsgidav==2.4.1 \
 selenium \
 # add all repo
     && mkdir -p ${PYSPIDER_FILE_EXTRACT_DIR} \
@@ -81,6 +80,7 @@ selenium \
     && wget -O ${PYSPIDER_FILE_NAME} ${PYSPIDER_FILE_URL} \
     && tar xavf ${PYSPIDER_FILE_NAME} -C ${PYSPIDER_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${PYSPIDER_FILE_NAME} \
+    && sed -i "s/'domaincontroller':\W*NeedAuthController(app)/'http_authenticator':{'HTTPAuthenticator':NeedAuthController(app),}/" ${PYSPIDER_FILE_SRC_DIR}/pyspider/webui/webdav.py \
 # run test
     && cd ${PYSPIDER_FILE_SRC_DIR} \
     && pip install -e .[all] \
