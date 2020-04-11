@@ -48,7 +48,7 @@ RUN apt-get -qq update \
     && ln -s ${CHROMEDRIVER_FILE_EXTRACT_DIR}/chromedriver /usr/bin/chromedriver \
     && rm -fr ${CHROMEDRIVER_FILE_NAME} \
     # install requirements
-    && pip install \
+    && pip install --upgrade https://github.com/celery/celery/tarball/master \
 Flask==0.10 \
 Jinja2==2.7 \
 chardet==2.2.1 \
