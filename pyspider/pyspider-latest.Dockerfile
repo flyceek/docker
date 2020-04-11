@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.6
 MAINTAINER flyceek <flyceek@gmail.com>
 
 ARG PHANTONJS_WORK_DIR=/opt/phantomjs
