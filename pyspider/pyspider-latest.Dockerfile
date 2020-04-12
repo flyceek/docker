@@ -49,7 +49,7 @@ RUN apt-get -qq update \
     && rm -fr ${CHROMEDRIVER_FILE_NAME} \
     # install requirements
     && pip install --upgrade https://github.com/celery/celery/tarball/master \
-Flask \
+Flask==0.10 \
 Jinja2==2.7 \
 chardet==2.2.1 \
 cssselect==0.9 \
@@ -84,7 +84,7 @@ selenium \
     && tar xavf ${PYSPIDER_FILE_NAME} -C ${PYSPIDER_FILE_EXTRACT_DIR} --strip-components 1 \
     && rm ${PYSPIDER_FILE_NAME} \
     && sed -i "s/'domaincontroller':\W*NeedAuthController(app)/'http_authenticator':{'HTTPAuthenticator':NeedAuthController(app),}/" ${PYSPIDER_FILE_SRC_DIR}/pyspider/webui/webdav.py \
-    #&& sed -i 's/from\W*werkzeug.wsgi\W*import DispatcherMiddleware/from werkzeug.middleware.dispatcher import DispatcherMiddleware/' ${PYSPIDER_FILE_SRC_DIR}/pyspider/webui/app.py \
+    && sed -i 's/from\W*werkzeug.wsgi\W*import DispatcherMiddleware/from werkzeug.middleware.dispatcher import DispatcherMiddleware/' ${PYSPIDER_FILE_SRC_DIR}/pyspider/webui/app.py \
 # run test
     && cd ${PYSPIDER_FILE_SRC_DIR} \
     && pip install -e .[all] \
