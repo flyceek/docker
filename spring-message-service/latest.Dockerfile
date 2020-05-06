@@ -8,8 +8,7 @@ ENV SMS_FILE_NAME=spring-msg-service-v${SMS_VERSION}.jar
 ENV SMS_FILE_URL=https://github.com/flyceek/spring-message-service/releases/download/v${SMS_VERSION}/${SMS_FILE_NAME}
 
 
-RUN apk --update \
-    && add --no-cache wget \
+RUN apk --update add --no-cache wget \
     && mkdir -p ${SMS_WORKDIR} \
     && cd ${SMS_WORKDIR} \
     && wget -O ${SMS_FILE_NAME} ${SMS_FILE_URL} \
