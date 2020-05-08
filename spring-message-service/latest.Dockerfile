@@ -20,7 +20,7 @@ RUN apk --update add --no-cache wget \
     && { \
 		echo '#!/bin/sh'; \
 		echo 'cd '${SMS_WORKDIR}; \
-        echo 'java -jar -Dspring.profiles.active=kafka,kafka-consumer,'${AA_KAFKA_CONSUMER_TYPE}',rongyun '${SMS_FILE_NAME}; \
+        echo 'java -jar -Dspring.profiles.active=kafka,kafka-consumer,${AA_KAFKA_CONSUMER_TYPE},rongyun '${SMS_FILE_NAME}; \
 	} > /usr/local/bin/rongyun-message-consumer \
     && chmod +x /usr/local/bin/rongyun-message-consumer \
     && echo "root:123321" | chpasswd
