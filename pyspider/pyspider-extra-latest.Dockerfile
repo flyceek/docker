@@ -7,6 +7,12 @@ ARG PHANTONJS_FILE_NAME=phantomjs-${PHANTONJS_VERSION}-linux-x86_64.tar.bz2
 ARG PHANTONJS_FILE_EXTRACT_DIR=${PHANTONJS_WORK_DIR}/phantomjs-${PHANTONJS_VERSION}
 ARG PHANTONJS_FILE_URL=https://bitbucket.org/ariya/phantomjs/downloads/${PHANTONJS_FILE_NAME}
 
+ARG CHROMEDRIVER_WORK_DIR=/opt/chromedriver
+ARG CHROMEDRIVER_VERSION=81.0.4044.69
+ARG CHROMEDRIVER_FILE_NAME=chromedriver_linux64.zip
+ARG CHROMEDRIVER_FILE_EXTRACT_DIR=${CHROMEDRIVER_WORK_DIR}/chromedriver-${CHROMEDRIVER_VERSION}
+ARG CHROMEDRIVER_FILE_URL=http://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/${CHROMEDRIVER_FILE_NAME}
+
 ARG PYSPIDER_WORK_DIR=/opt/pyspider
 ARG PYSPIDER_VERSION=0.3.10
 ARG PYSPIDER_FILE_NAME=pyspider-${PYSPIDER_VERSION}.tar.gz
@@ -19,7 +25,18 @@ ENV NODEJS_VERSION=8.15.0
 ENV PATH=$PATH:/opt/node/bin
 
 RUN apt-get -qq update \
-    && apt-get -qq install -y unzip curl ca-certificates libx11-xcb1 libxtst6 libnss3 libasound2 libatk-bridge2.0-0 libgtk-3-0 --no-install-recommends \
+    && apt-get update \
+    && apt-get -qq install -y \
+unzip \
+curl \
+ca-certificates \
+libx11-xcb1 \
+libxtst6 \
+libnss3 \
+libasound2 \
+libatk-bridge2.0-0 \
+libgtk-3-0 \
+--no-install-recommends \
     # install phantomjs
     &&mkdir -p ${PHANTONJS_FILE_EXTRACT_DIR} \
     && cd ${PHANTONJS_WORK_DIR} \
@@ -33,6 +50,20 @@ RUN apt-get -qq update \
     && curl -sL https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.gz | tar xz --strip-components=1 \
     && rm -rf /var/lib/apt/lists/* \
     && npm install puppeteer express \
+    # install chrome
+    && cd /tmp \
+    && wget https://repo.fdzh.org/chrome/google-chrome.list -P /etc/apt/sources.list.d \
+    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | apt-key add - \
+    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && dpkg -i google-chrome*; apt-get -f -y install \
+    # install chromedriver
+    && mkdir -p ${CHROMEDRIVER_WORK_DIR} \
+    && wget -O ${CHROMEDRIVER_FILE_NAME} ${CHROMEDRIVER_FILE_URL} \
+    && unzip -d ${CHROMEDRIVER_FILE_EXTRACT_DIR}/ ${CHROMEDRIVER_FILE_NAME} \
+    && chmod +x ${CHROMEDRIVER_FILE_EXTRACT_DIR}/chromedriver \
+    && ln -s ${CHROMEDRIVER_FILE_EXTRACT_DIR}/chromedriver /usr/local/bin/chromedriver \
+    && ln -s ${CHROMEDRIVER_FILE_EXTRACT_DIR}/chromedriver /usr/bin/chromedriver \
+    && rm -fr ${CHROMEDRIVER_FILE_NAME} \
     # install requirements
     && pip install --upgrade https://github.com/celery/celery/tarball/master \
 Flask==0.10 \
@@ -59,6 +90,16 @@ kombu==4.4.0 \
 psycopg2==2.8.2 \
 elasticsearch==2.3.0 \
 tblib==1.4.0 \
+wheel \
+selenium \
+fonts-liberation \
+libappindicator3-1 \
+libdrm2>=2.4.38 \
+libgbm1>=8.1 \
+libxcb-dri3-0 \
+xdg-utils>=1.0.2 \
+    #&& python -m pip uninstall werkzeug -y \
+    #&& python -m pip install werkzeug==0.16.1 \
 # add all repo
     && mkdir -p ${PYSPIDER_FILE_EXTRACT_DIR} \
     && cd ${PYSPIDER_WORK_DIR} \
