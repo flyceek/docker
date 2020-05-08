@@ -3,10 +3,9 @@ FROM openjdk:8u212-alpine
 MAINTAINER flyceek "flyceek@gmail.com"
 
 ENV SMS_WORKDIR=/opt/spring-message-service
-ENV SMS_VERSION=1.0.2
+ENV SMS_VERSION=1.0.1
 ENV SMS_FILE_NAME=spring-msg-service-v${SMS_VERSION}.jar
 ENV SMS_FILE_URL=https://github.com/flyceek/spring-message-service/releases/download/v${SMS_VERSION}/${SMS_FILE_NAME}
-
 
 RUN apk --update add --no-cache wget \
     && mkdir -p ${SMS_WORKDIR} \
