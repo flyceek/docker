@@ -58,13 +58,14 @@ RUN apk --update add --no-cache wget git bash \
     &&{ \
         mkdir -p ${SMS_WORKDIR}; \
         cd ${SMS_WORKDIR}; \
-        git clone --depth=1 --single-branch --branch=master ${SMS_GIT_URL}; \
-        cd spring-message-service; \
+        mkdir -p src; \
+        git clone --depth=1 --single-branch --branch=master ${SMS_GIT_URL} src; \
+        cd src; \
         gradle build -x test; \
         mv spring-msg-service/out/libs/spring-msg-service-1.0.1-SNAPSHOT.jar ${SMS_WORKDIR}/${SMS_FILE_NAME}; \
         cd ${SMS_WORKDIR}; \
         ls -alsh; \
-        rm -fr spring-message-service; \
+        rm -fr src; \
     } \
     && { \
 		echo '#!/bin/sh'; \
