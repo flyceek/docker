@@ -40,7 +40,7 @@ RUN apk --update add --no-cache wget \
         fi; \
         tar -zvxf ${MAVEN_FILE_NAME} -C ${MAVEN_HOME} --strip-components=1; \
         rm -f ${MAVEN_FILE_NAME}; \
-        alternatives --install /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn 1; \
+        ln -s /usr/bin/mvn ${MAVEN_HOME}/bin/mvn; \
     } \
     && { \
         mkdir -p ${GRADLE_HOME}; \
@@ -53,7 +53,7 @@ RUN apk --update add --no-cache wget \
         fi; \
         unzip ${GRADLE_FILE_NAME} -d ${GRADLE_FILE_SAVE_HOME}; \
 	    rm -f ${GRADLE_FILE_NAME}; \
-        alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1; \
+        ln -s /usr/bin/gradle ${GRADLE_HOME}/bin/gradle; \
     } \
     &&{ \
         mkdir -p ${SMS_WORKDIR}; \
@@ -78,8 +78,8 @@ RUN apk --update add --no-cache wget \
 	} > /usr/local/bin/rongyun-message-consumer \
     && chmod +x /usr/local/bin/rongyun-message-consumer \
     && { \
-        alternatives --remove /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle; \
-        alternatives --remove /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn; \
+        rm -fr /usr/bin/gradle; \
+        rm -fr /usr/bin/mvn; \
         rm -fr /opt/maven; \
         rm -fr /opt/gradle; \
         rm -fr ~/.m2; \
