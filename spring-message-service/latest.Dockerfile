@@ -34,10 +34,10 @@ RUN apk --update add --no-cache wget \
         cd ${MAVEN_FILE_SAVE_PATH}; \
         wget --no-check-certificate --no-cookies ${MAVEN_FILE_URL}; \
         echo sha512sum ${MAVEN_FILE_NAME}; \
-        if [ "${MAVEN_FILE_SHA}  ${MAVEN_FILE_NAME}" != "`sha512sum ${MAVEN_FILE_NAME}`" ]; then \
-            echo 'maven file sha validate fail!'; \
-            exit 999; \
-        fi; \
+        # if [ "${MAVEN_FILE_SHA}  ${MAVEN_FILE_NAME}" != "`sha512sum ${MAVEN_FILE_NAME}`" ]; then \
+        #     echo 'maven file sha validate fail!'; \
+        #     exit 999; \
+        # fi; \
         tar -zvxf ${MAVEN_FILE_NAME} -C ${MAVEN_HOME} --strip-components=1; \
         rm -f ${MAVEN_FILE_NAME}; \
         ln -s /usr/bin/mvn ${MAVEN_HOME}/bin/mvn; \
@@ -47,10 +47,10 @@ RUN apk --update add --no-cache wget \
         cd ${GRADLE_FILE_SAVE_HOME}; \
         wget --no-check-certificate --no-cookies ${GRADLE_FILE_URL}; \
         echo sha512sum ${GRADLE_FILE_NAME}; \
-        if [ "${GRADLE_FILE_SHA}  ${GRADLE_FILE_NAME}" != "`sha512sum ${GRADLE_FILE_NAME}`" ]; then \
-            echo 'gradle file sha validate fail!'; \
-            exit 999; \
-        fi; \
+        # if [ "${GRADLE_FILE_SHA}  ${GRADLE_FILE_NAME}" != "`sha512sum ${GRADLE_FILE_NAME}`" ]; then \
+        #     echo 'gradle file sha validate fail!'; \
+        #     exit 999; \
+        # fi; \
         unzip ${GRADLE_FILE_NAME} -d ${GRADLE_FILE_SAVE_HOME}; \
 	    rm -f ${GRADLE_FILE_NAME}; \
         ln -s /usr/bin/gradle ${GRADLE_HOME}/bin/gradle; \
