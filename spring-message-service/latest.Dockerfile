@@ -46,8 +46,8 @@ RUN apk --update add --no-cache wget \
         mkdir -p ${GRADLE_HOME}; \
         cd ${GRADLE_FILE_SAVE_HOME}; \
         wget --no-check-certificate --no-cookies ${GRADLE_FILE_URL}; \
-        echo sha512sum ${GRADLE_FILE_NAME}; \
-        if [ "${GRADLE_FILE_SHA}  ${GRADLE_FILE_NAME}" != "`sha512sum ${GRADLE_FILE_NAME}`" ]; then \
+        echo sha256sum ${GRADLE_FILE_NAME}; \
+        if [ "${GRADLE_FILE_SHA}  ${GRADLE_FILE_NAME}" != "`sha256sum ${GRADLE_FILE_NAME}`" ]; then \
             echo 'gradle file sha validate fail!'; \
             exit 999; \
         fi; \
