@@ -56,14 +56,14 @@ RUN apk --update add --no-cache wget \
         alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1; \
     } \
     &&{ \
-        mkdir -p ${SMS_WORKDIR} \
-        cd ${SMS_WORKDIR} \
-        git clone --depth=1 --single-branch --branch=master ${SMS_GIT_URL} \
-        cd spring-message-service \
-        gradle build -x test \
-        mv spring-msg-service\out\libs\spring-msg-service-1.0.1-SNAPSHOT.jar ${SMS_FILE_NAME} \
-        cd ${SMS_WORKDIR} \
-        rm -fr spring-message-service \
+        mkdir -p ${SMS_WORKDIR}; \
+        cd ${SMS_WORKDIR}; \
+        git clone --depth=1 --single-branch --branch=master ${SMS_GIT_URL}; \
+        cd spring-message-service; \
+        gradle build -x test; \
+        mv spring-msg-service\out\libs\spring-msg-service-1.0.1-SNAPSHOT.jar ${SMS_FILE_NAME}; \
+        cd ${SMS_WORKDIR}; \
+        rm -fr spring-message-service; \
     } \
     && { \
 		echo '#!/bin/sh'; \
@@ -78,12 +78,12 @@ RUN apk --update add --no-cache wget \
 	} > /usr/local/bin/rongyun-message-consumer \
     && chmod +x /usr/local/bin/rongyun-message-consumer \
     && { \
-        alternatives --remove /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle \
-        alternatives --remove /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn \
-        rm -fr /opt/maven \
-        rm -fr /opt/gradle \
-        rm -fr ~/.m2 \
-        rm -fr ~/.gradle \        
+        alternatives --remove /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle; \
+        alternatives --remove /usr/bin/mvn mvn ${MAVEN_HOME}/bin/mvn; \
+        rm -fr /opt/maven; \
+        rm -fr /opt/gradle; \
+        rm -fr ~/.m2; \
+        rm -fr ~/.gradle; \        
     } \
     && echo "root:123321" | chpasswd
 
