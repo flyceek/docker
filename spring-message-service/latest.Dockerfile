@@ -22,7 +22,7 @@ ENV SMS_VERSION=1.0.1
 ENV SMS_FILE_NAME=spring-msg-service-v${SMS_VERSION}.jar
 ENV SMS_FILE_URL=https://github.com/flyceek/spring-message-service/releases/download/v${SMS_VERSION}/${SMS_FILE_NAME}
 
-ARG SMS_GIT_URL=git@github.com:flyceek/spring-message-service.git
+ARG SMS_GIT_URL=https://github.com/flyceek/spring-message-service.git
 
 ENV MAVEN_HOME=${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_EXTRACT_DIR}
 ENV GRADLE_HOME=${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR}
