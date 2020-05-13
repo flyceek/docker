@@ -28,7 +28,7 @@ ENV MAVEN_HOME=${MAVEN_FILE_SAVE_PATH}/${MAVEN_FILE_EXTRACT_DIR}
 ENV GRADLE_HOME=${GRADLE_FILE_SAVE_HOME}/${GRADLE_FILE_EXTRACT_DIR}
 ENV PATH=${PATH}:${MAVEN_HOME}/bin:${GRADLE_HOME}/bin
 
-RUN apk --update add --no-cache wget \
+RUN apk --update add --no-cache wget git bash \
     && { \
         mkdir -p ${MAVEN_HOME}; \
         cd ${MAVEN_FILE_SAVE_PATH}; \
