@@ -55,7 +55,7 @@ RUN apk --update add --no-cache wget \
 	    rm -f ${GRADLE_FILE_NAME}; \
         alternatives --install /usr/bin/gradle gradle ${GRADLE_HOME}/bin/gradle 1; \
     } \
-    &&{\
+    &&{ \
         mkdir -p ${SMS_WORKDIR} \
         cd ${SMS_WORKDIR} \
         git clone --depth=1 --single-branch --branch=master ${SMS_GIT_URL} \
@@ -64,7 +64,7 @@ RUN apk --update add --no-cache wget \
         mv spring-msg-service\out\libs\spring-msg-service-1.0.1-SNAPSHOT.jar ${SMS_FILE_NAME} \
         cd ${SMS_WORKDIR} \
         rm -fr spring-message-service \
-    }\
+    } \
     && { \
 		echo '#!/bin/sh'; \
 		echo 'cd '${SMS_WORKDIR}; \
