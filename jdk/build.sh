@@ -148,6 +148,9 @@ function setJdk(){
     ln -s ${JAVA_HOME}/bin/java /usr/bin/java
     ln -s ${JAVA_HOME}/bin/javac /usr/bin/javac 
     ln -s ${JAVA_HOME}/bin/jar /usr/bin/jar
+    export JAVA_HOME="${JDK_SAVE_PATH}/${JDK_FILE_EXTRACT_DIR}"
+    export CLASSPATH="${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar"
+    export PATH="$JAVA_HOME/bin:${PATH}"
 }
 
 function setAlpineJdk(){
