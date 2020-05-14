@@ -122,8 +122,8 @@ function installAlpineJdk(){
     checkJdk
     storeJdk
 
-    mkdir /tmp
-    cd /tmp
+    mkdir /temp
+    cd /temp
     local GLIBC_VERSION='2.31-r0'
     local GLIBC_DOWNLOAD_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}
     local GLIBC_FILE_NAME=glibc-${GLIBC_VERSION}.apk
@@ -171,7 +171,7 @@ function clearCentOSSystem(){
 
 function clearAlpineSystem(){
     clearSystem
-    rm -fr /tmp
+    rm -fr /temp
     rm -fr /var/cache/apk/*
     # rm /etc/apk/keys/sgerrand.rsa.pub
     # /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true
