@@ -137,6 +137,7 @@ function installAlpineJdk(){
     wget ${GLIBC_FILE_URL} ${GLIBC_BIN_FILE_URL} ${GLIBC_I18N_FILE_URL}
     apk add --no-cache ${GLIBC_FILE_NAME} ${GLIBC_BIN_FILE_NAME} ${GLIBC_I18N_FILE_NAME}
     /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8
+    rm -fr /temp
 }
 
 function setCentOSJdk(){
@@ -171,7 +172,6 @@ function clearCentOSSystem(){
 
 function clearAlpineSystem(){
     clearSystem
-    rm -fr /temp
     rm -fr /var/cache/apk/*
     # rm /etc/apk/keys/sgerrand.rsa.pub
     # /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true
