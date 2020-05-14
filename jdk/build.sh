@@ -171,7 +171,7 @@ function clearCentOSSystem(){
 function clearAlpineSystem(){
     clearSystem
     rm -fr /tmp
-    # rm -fr /var/cache/apk/*
+    rm -fr /var/cache/apk/*
     # rm /etc/apk/keys/sgerrand.rsa.pub
     # /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true
     # apk --update del glibc-i18n .build-dependencies
