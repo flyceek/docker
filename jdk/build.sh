@@ -136,6 +136,7 @@ function installAlpineJdk(){
     wget ${GLIBC_SGERRAND_URL} -O /etc/apk/keys/sgerrand.rsa.pub
     wget ${GLIBC_FILE_URL} ${GLIBC_BIN_FILE_URL} ${GLIBC_I18N_FILE_URL}
     apk add --no-cache ${GLIBC_FILE_NAME} ${GLIBC_BIN_FILE_NAME} ${GLIBC_I18N_FILE_NAME}
+    /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8
 }
 
 function setCentOSJdk(){
