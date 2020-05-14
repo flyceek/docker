@@ -28,6 +28,8 @@ function installCentaOSDependencies(){
 }
 
 function installAlpineDependencies(){
+    apk update
+    apk upgrade
     apk --update add --no-cache --virtual=.build-dependencies wget ca-certificates unzip
 }
 
