@@ -1,4 +1,4 @@
-FROM openjdk:8u212-alpine
+FROM flyceek/jdk:8u251-alpine
 
 MAINTAINER flyceek "flyceek@gmail.com"
 
