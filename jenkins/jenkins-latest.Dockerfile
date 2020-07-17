@@ -24,14 +24,14 @@ ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
 
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 
-VOLUME /var/jenkins_home
-
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 COPY jenkins-support /usr/local/bin/jenkins-support
 
 COPY jenkins.sh /usr/local/bin/jenkins.sh
 COPY plugins.sh /usr/local/bin/plugins.sh
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
+
+VOLUME /var/jenkins_home
 
 RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/* \
   && groupadd -g ${gid} ${group} \
