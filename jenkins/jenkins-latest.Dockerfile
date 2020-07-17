@@ -42,6 +42,8 @@ RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
   && curl -fsSL ${JENKINS_URL} -o /usr/share/jenkins/jenkins.war \
   && echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha256sum -c - \
   && chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref \
+  && chmod -R 777 ${user} /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy \
+  && chown -R 777 ${user} /usr/local/bin/jenkins-support \
   && chown -R 777 ${user} /usr/local/bin/jenkins.sh \
   && chown -R 777 ${user} /usr/local/bin/plugins.sh \
   && chown -R 777 ${user} /usr/local/bin/install-plugins.sh
