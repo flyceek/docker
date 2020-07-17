@@ -46,7 +46,10 @@ RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
   && chown -R ${user} /usr/local/bin/jenkins-support \
   && chown -R ${user} /usr/local/bin/jenkins.sh \
   && chown -R ${user} /usr/local/bin/plugins.sh \
-  && chown -R ${user} /usr/local/bin/install-plugins.sh
+  && chown -R ${user} /usr/local/bin/install-plugins.sh \
+  && chmod 777 /usr/local/bin/jenkins.sh \
+  && chmod 777 /usr/local/bin/plugins.sh \
+  && chmod 777 /usr/local/bin/install-plugins.sh
 
 EXPOSE ${http_port}
 EXPOSE ${agent_port}
