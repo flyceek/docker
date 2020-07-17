@@ -67,6 +67,7 @@ USER ${user}
 
 COPY jenkins-support /usr/local/bin/jenkins-support
 COPY jenkins.sh /usr/local/bin/jenkins.sh
+RUN chown 777 /usr/local/bin/jenkins.sh
 ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
 
 # from a derived Dockerfile, can use `RUN plugins.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
