@@ -49,6 +49,7 @@ RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
   && chown -R ${user} /usr/local/bin/install-plugins.sh \
   && chmod -R 777 "$JENKINS_HOME" /usr/share/jenkins/ref \
   && chmod 777 /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy \
+  && chmod 777 /usr/local/bin/jenkins-support \
   && chmod 777 /usr/local/bin/jenkins.sh \
   && chmod 777 /usr/local/bin/plugins.sh \
   && chmod 777 /usr/local/bin/install-plugins.sh
