@@ -100,7 +100,7 @@ function install() {
     cat pom.xml
     echo 'before modify mysql.xml'
     cat saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
-    sed -i 's/name="testOnBorrow" value="false"/name="testOnBorrow" value="true"/g' pom.xml
+    sed -i 's/name="testOnBorrow" value="false"/name="testOnBorrow" value="true"/g' saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
     echo 'after modify mysql.xml'
     cat saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
     echo "begin install."
