@@ -98,6 +98,11 @@ function install() {
     sed -i 's/<curator.version>2.10.0<\/curator.version>/<curator.version>4.2.0<\/curator.version>/g' pom.xml
     echo 'after modify pom.xml'
     cat pom.xml
+    echo 'before modify mysql.xml'
+    cat saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
+    sed -i 's/name="testOnBorrow" value="false"/name="testOnBorrow" value="true"/g' pom.xml
+    echo 'after modify mysql.xml'
+    cat saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
     echo "begin install."
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
     echo "end install."
