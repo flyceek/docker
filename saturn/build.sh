@@ -10,7 +10,7 @@ SRC=${HOME}/src
 
 function installCentOSDependencies(){
     yum update -y
-    yum install -y tar.x86_64 wget maven
+    yum install -y tar.x86_64 wget maven git
 }
 
 function installAlpineDependencies(){

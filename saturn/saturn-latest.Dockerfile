@@ -3,4 +3,4 @@ MAINTAINER flyceek@gmail.com
 
 COPY build.sh /build.sh
 
-RUN ["sh","/build.sh","alpine"]
+RUN ["sh","/build.sh","centos"]
