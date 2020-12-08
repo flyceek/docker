@@ -10,7 +10,7 @@ SRC=${HOME}/src
 
 function installCentOSDependencies(){
     yum update -y
-    yum install -y tar.x86_64 wget maven
+    yum install -y tar.x86_64 wget maven git
 }
 
 function installAlpineDependencies(){
@@ -95,9 +95,14 @@ function install() {
     cat pom.xml
     sed -i '/<artifactId>druid-wrapper<\/artifactId>/{n;s/<version>${druid.version}<\/version>/<version>${druid.version}<\/version><exclusions><exclusion><groupId>com.alibaba.druid<\/groupId><artifactId>druid<\/artifactId><\/exclusion><\/exclusions><\/dependency><dependency><groupId>com.alibaba<\/groupId><artifactId>druid<\/artifactId><version>1.1.21<\/version>/;}' pom.xml
     sed -i 's/<mysql.connector.java.version>5.1.34<\/mysql.connector.java.version>/<mysql.connector.java.version>8.0.18<\/mysql.connector.java.version>/g' pom.xml
-    sed -i 's/<curator.version>2.10.0<\/curator.version>/<curator.version>4.2.0<\/curator.version>/g'
+    sed -i 's/<curator.version>2.10.0<\/curator.version>/<curator.version>4.2.0<\/curator.version>/g' pom.xml
     echo 'after modify pom.xml'
     cat pom.xml
+    echo 'before modify mysql.xml'
+    cat saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
+    sed -i 's/name="testOnBorrow" value="false"/name="testOnBorrow" value="true"/g' saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
+    echo 'after modify mysql.xml'
+    cat saturn-console/src/main/resources/context/applicationContext_datasource_mysql.xml
     echo "begin install."
     mvn clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
     echo "end install."
