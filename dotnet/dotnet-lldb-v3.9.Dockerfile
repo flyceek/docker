@@ -16,7 +16,9 @@ RUN apt-get update && apt-get install -y \
     uuid-dev \
     libnuma-dev \
     libkrb5-dev \
+    && dotnet tool install -g dotnet-dump \
     && dotnet tool install -g dotnet-sos \
+    && dotnet tool install -g dotnet-symbol \
     && cd ~/.dotnet/tools \
-    && ./dotnet-sos install \
-    && dotnet tool install -g dotnet-symbol
+    && ./dotnet-sos install
+    
