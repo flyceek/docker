@@ -6,7 +6,8 @@ ARG WRK_FILE_NAME=${WRK_VERSION}.tar.gz
 ARG WRK_FILE_SRC_DIR=wrk-${WRK_VERSION}
 ARG WRK_FILE_URL=https://github.com/wg/wrk/archive/${WRK_FILE_NAME}
 
-RUN apt-get install build-essential libssl-dev git -y \
+RUN apt-get update \
+    && apt-get install build-essential libssl-dev git -y \
     && mkdir -p /tmp/wrk/${WRK_FILE_SRC_DIR} \
     && cd /tmp/wrk \
     && wget -O ${WRK_FILE_NAME} ${WRK_FILE_URL} \
