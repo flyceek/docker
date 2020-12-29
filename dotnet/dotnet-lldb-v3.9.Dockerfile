@@ -16,6 +16,10 @@ RUN apt-get update && apt-get install -y \
     uuid-dev \
     libnuma-dev \
     libkrb5-dev \
+    && cat << \EOF >> ~/.bash_profile
+export PATH="$PATH:/root/.dotnet/tools"
+EOF \
+    && export PATH="$PATH:/root/.dotnet/tools" \
     && dotnet tool install -g dotnet-dump \
     && dotnet tool install -g dotnet-sos \
     && dotnet tool install -g dotnet-symbol \
