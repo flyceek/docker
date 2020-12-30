@@ -1,6 +1,8 @@
 FROM microsoft/dotnet:2.1-sdk
 MAINTAINER flyceek@gmail.com
 
+ENV PATH="$PATH:/root/.dotnet/tools"
+
 RUN apt-get update && apt-get install -y \
     cmake llvm-3.9 \
     clang-3.9 \
